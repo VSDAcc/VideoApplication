@@ -40,25 +40,6 @@ class YoutubeSettingsMenuView: UIView {
             return CGSize(width: width, height: height)
         }
     }
-    private func createCollectionView() -> UICollectionView {
-        let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.scrollDirection = .vertical
-        flowLayout.sectionHeadersPinToVisibleBounds = true
-        flowLayout.minimumInteritemSpacing = 0
-        flowLayout.minimumLineSpacing = 0
-        flowLayout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        let collection = UICollectionView(frame: self.frame, collectionViewLayout: flowLayout)
-        collection.translatesAutoresizingMaskIntoConstraints = false
-        collection.register(YoutubeSettingsMenuCollectionViewCell.self, forCellWithReuseIdentifier: CellID.youtubeSettingsMenuCellID)
-        collection.delegate = self
-        collection.dataSource = self
-        collection.backgroundColor = UIColor.red
-        collection.alpha = 0.7
-        collection.isHidden = true
-        collection.isScrollEnabled = false
-        addSubview(collection)
-        return collection
-    }
     var viewModel = YoutubeSettingsMenuViewModel()
     //MARK:-Loading
     override init(frame: CGRect) {
@@ -70,6 +51,10 @@ class YoutubeSettingsMenuView: UIView {
     }
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
+        self.hideSettingsMenu()
+    }
+    override func layoutSubviews() {
+        super.layoutSubviews()
         guard let flowLayout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout else {
             return
         }
@@ -80,7 +65,7 @@ class YoutubeSettingsMenuView: UIView {
         sender.numberOfTapsRequired = 1
         hideSettingsMenu()
     }
-    func showSettingsMenu() {
+    public func showSettingsMenu() {
         if collectionView.isHidden && backgroundSettingsMenuView.isHidden && self.isHidden {
             self.isHidden = false
             collectionView.isHidden = false
@@ -94,7 +79,7 @@ class YoutubeSettingsMenuView: UIView {
             hideSettingsMenu()
         }
     }
-    func hideSettingsMenu() {
+    public func hideSettingsMenu() {
         if !collectionView.isHidden && !backgroundSettingsMenuView.isHidden && !self.isHidden  {
             collectionViewHeightConstaint?.constant = 0
             backgroundSettingsMenuViewHeightConstaint?.constant = 0
@@ -108,6 +93,25 @@ class YoutubeSettingsMenuView: UIView {
         }
     }
     //MARK:-CreateConstraints
+    private func createCollectionView() -> UICollectionView {
+        let flowLayout = UICollectionViewFlowLayout()
+        flowLayout.scrollDirection = .vertical
+        flowLayout.sectionHeadersPinToVisibleBounds = true
+        flowLayout.minimumInteritemSpacing = 0
+        flowLayout.minimumLineSpacing = 0
+        flowLayout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        let collection = UICollectionView(frame: self.frame, collectionViewLayout: flowLayout)
+        collection.translatesAutoresizingMaskIntoConstraints = false
+        collection.register(YoutubeSettingsMenuCollectionViewCell.self, forCellWithReuseIdentifier: CellID.youtubeSettingsMenuCellID)
+        collection.delegate = self
+        collection.dataSource = self
+        collection.backgroundColor = UIColor.white
+        collection.alpha = 1
+        collection.isHidden = true
+        collection.isScrollEnabled = false
+        addSubview(collection)
+        return collection
+    }
     private func createYoutubeBlackBackgroundSettingsMenuView() -> UIView {
         let background = UIView()
         background.translatesAutoresizingMaskIntoConstraints = false

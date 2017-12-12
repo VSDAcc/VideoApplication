@@ -28,6 +28,20 @@ class YoutubeMenuBarView: UIView {
         collection.isScrollEnabled = false
         return collection
     }()
+    fileprivate var collectionViewItemSizeToPortrait: CGSize {
+        get {
+            let width: CGFloat = (self.frame.width / 4)
+            let height: CGFloat = self.frame.height
+            return CGSize(width: width, height: height)
+        }
+    }
+    fileprivate var collectionViewitemSizeToLandscape: CGSize {
+        get {
+            let width: CGFloat = (self.frame.width / 4)
+            let height: CGFloat = self.frame.height
+            return CGSize(width: width, height: height)
+        }
+    }
     var viewModel = YoutubeMenuBarViewModel()
     //MARK:-Loading
     override init(frame: CGRect) {
@@ -43,20 +57,6 @@ class YoutubeMenuBarView: UIView {
     private func homeSelectedItem() {
         let selectedItem = IndexPath(item: 0, section: 0)
         collectionView.selectItem(at: selectedItem, animated: true, scrollPosition: .bottom)
-    }
-    fileprivate var collectionViewItemSizeToPortrait: CGSize {
-        get {
-            let width: CGFloat = (self.frame.width / 4)
-            let height: CGFloat = self.frame.height
-            return CGSize(width: width, height: height)
-        }
-    }
-    fileprivate var collectionViewitemSizeToLandscape: CGSize {
-        get {
-            let width: CGFloat = (self.frame.width / 4)
-            let height: CGFloat = self.frame.height
-            return CGSize(width: width, height: height)
-        }
     }
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)

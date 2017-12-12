@@ -51,7 +51,6 @@ class YoutubeTimelineViewController: UICollectionViewController, UICollectionVie
         guard let flowLayout = collectionView?.collectionViewLayout as? UICollectionViewFlowLayout else {
             return
         }
-        settingsMenuView.hideSettingsMenu()
         flowLayout.invalidateLayout()
     }
     //MARK:-YoutubeTimelineViewControllerInput
