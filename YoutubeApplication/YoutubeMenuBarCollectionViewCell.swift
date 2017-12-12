@@ -9,6 +9,7 @@
 import UIKit
 
 class YoutubeMenuBarCollectionViewCell: UICollectionViewCell {
+    
     lazy var menuImageView: UIImageView = self.createmMenuImageView()
     private var unhiglitedColor: UIColor {
         return UIColor(r: 91, g: 14, b: 13, alpha: 1)
@@ -37,6 +38,16 @@ class YoutubeMenuBarCollectionViewCell: UICollectionViewCell {
             DispatchQueue.main.async {
                 self.menuImageView.tintColor = self.isSelected ? UIColor.white : self.unhiglitedColor
             }
+        }
+    }
+    var menuBar: YoutubeMenuBarItem! {
+        didSet {
+            updateUI()
+        }
+    }
+    private func updateUI() {
+        DispatchQueue.main.async {
+            self.menuImageView.image = UIImage(named: self.menuBar.itemImageName)?.withRenderingMode(.alwaysTemplate)
         }
     }
     //MARK:-SetupViews

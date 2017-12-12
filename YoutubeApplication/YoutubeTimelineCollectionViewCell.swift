@@ -9,6 +9,7 @@
 import UIKit
 
 class YoutubeTimelineCollectionViewCell: UICollectionViewCell {
+    
     private lazy var videoContentBubbleView: UIView = self.createContentBubbleView()
     private lazy var separatingLineView: UIView = self.createSeparatingLineView()
     lazy var videoAuthorImageView: UIImageView = self.createVideoAuthorImageView()
@@ -20,14 +21,6 @@ class YoutubeTimelineCollectionViewCell: UICollectionViewCell {
         imageView.contentMode = .scaleAspectFill
         return imageView
     }()
-    private lazy var subtitleContentBubbleView: UIView = {
-        let content = UIView()
-        content.translatesAutoresizingMaskIntoConstraints = false
-        content.backgroundColor = UIColor.white
-        content.layer.cornerRadius = 12.0
-        content.clipsToBounds = true
-        return content
-    }()
     private var videoSubtitleLabelHeightAnchor: NSLayoutConstraint?
     var youtubeHelpedMethods = YoutubeHelpedMethods()
     var youtubeVideo: YoutubeVideoItem! {
@@ -36,22 +29,19 @@ class YoutubeTimelineCollectionViewCell: UICollectionViewCell {
         }
     }
     private func updateUI() {
-        DispatchQueue.main.async {
-            self.thumbnailImageView.downloadImageUsingCache(stringURL: self.youtubeVideo.thumbnailImage)
-            if let channel = self.youtubeVideo.channel {
-                self.videoAuthorImageView.downloadImageUsingCache(stringURL: channel.channelProfileImageLink)
-                self.videoSubtitleDescriptionLabel.text = channel.channelName
-            }
-            self.videoSubtitleLabelHeightAnchor?.constant = self.youtubeHelpedMethods.configureEstimatedHeightForText(self.youtubeVideo.videoTitle).height + 20.0
-            self.videoSubtitleLabel.text = self.youtubeVideo.videoTitle
+        self.thumbnailImageView.downloadImageUsingCache(stringURL: self.youtubeVideo.thumbnailImage)
+        if let channel = self.youtubeVideo.channel {
+            self.videoAuthorImageView.downloadImageUsingCache(stringURL: channel.channelProfileImageLink)
+            self.videoSubtitleDescriptionLabel.text = channel.channelName
         }
+        self.videoSubtitleLabel.text = self.youtubeVideo.videoTitle
+        self.videoSubtitleLabelHeightAnchor?.constant = self.youtubeHelpedMethods.configureEstimatedHeightForText(self.youtubeVideo.videoTitle).height + 20.0
     }
     //MARK:-Loading
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.contentView.backgroundColor = UIColor.clear
         videoContentBubbleView.addSubview(thumbnailImageView)
-        addSubview(subtitleContentBubbleView)
         addAllConstraintsToViews()
     }
     required init?(coder aDecoder: NSCoder) {
@@ -78,8 +68,7 @@ class YoutubeTimelineCollectionViewCell: UICollectionViewCell {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFill
-        imageView.image = UIImage(named: "Street")
-        subtitleContentBubbleView.addSubview(imageView)
+        addSubview(imageView)
         return imageView
     }
     private func createVideoSubtitleLabelWith(font: UIFont) -> UILabel {
@@ -87,9 +76,9 @@ class YoutubeTimelineCollectionViewCell: UICollectionViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = font
         label.contentMode = .left
+        label.adjustsFontSizeToFitWidth = true
         label.numberOfLines = 0
-        label.text = "sadaksdkjahdkahdkjhakjsdjasdhjak"
-        subtitleContentBubbleView.addSubview(label)
+        addSubview(label)
         return label
     }
     private func createSeparatingLineView() -> UIView {
@@ -102,7 +91,6 @@ class YoutubeTimelineCollectionViewCell: UICollectionViewCell {
     //MARK:-SetupConstraints
     private func addAllConstraintsToViews() {
         addConstraintsToVideoContentBubbleView()
-        addConstraintsToSubtitleContentBubbleView()
         addConstraintsToThumbnailImageView()
         addConstraintsToVideoAuthorImageView()
         addConstraintsToVideoSubtitleLabel()
@@ -115,12 +103,6 @@ class YoutubeTimelineCollectionViewCell: UICollectionViewCell {
         videoContentBubbleView.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
         videoContentBubbleView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 4/6).isActive = true
     }
-    private func addConstraintsToSubtitleContentBubbleView() {
-        subtitleContentBubbleView.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
-        subtitleContentBubbleView.topAnchor.constraint(equalTo: self.videoContentBubbleView.bottomAnchor, constant: 15).isActive = true
-        subtitleContentBubbleView.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
-        subtitleContentBubbleView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -6.0).isActive = true
-    }
     private func addConstraintsToThumbnailImageView() {
         thumbnailImageView.centerXAnchor.constraint(equalTo: videoContentBubbleView.centerXAnchor).isActive = true
         thumbnailImageView.centerYAnchor.constraint(equalTo: videoContentBubbleView.centerYAnchor).isActive = true
@@ -128,23 +110,23 @@ class YoutubeTimelineCollectionViewCell: UICollectionViewCell {
         thumbnailImageView.heightAnchor.constraint(equalTo: videoContentBubbleView.heightAnchor, multiplier: 1).isActive = true
     }
     private func addConstraintsToVideoAuthorImageView() {
-        videoAuthorImageView.leftAnchor.constraint(equalTo: subtitleContentBubbleView.leftAnchor).isActive = true
-        videoAuthorImageView.topAnchor.constraint(equalTo: subtitleContentBubbleView.topAnchor, constant: 0).isActive = true
+        videoAuthorImageView.leftAnchor.constraint(equalTo:  self.leftAnchor).isActive = true
+        videoAuthorImageView.topAnchor.constraint(equalTo: videoContentBubbleView.bottomAnchor, constant: 15).isActive = true
         videoAuthorImageView.widthAnchor.constraint(equalTo: videoAuthorImageView.heightAnchor).isActive = true
-        videoAuthorImageView.heightAnchor.constraint(equalTo: subtitleContentBubbleView.heightAnchor, multiplier: 0.6).isActive = true
+        videoAuthorImageView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.2).isActive = true
     }
     private func addConstraintsToVideoSubtitleLabel() {
         videoSubtitleLabel.leftAnchor.constraint(equalTo: videoAuthorImageView.rightAnchor, constant: 10).isActive = true
         videoSubtitleLabel.topAnchor.constraint(equalTo: videoAuthorImageView.topAnchor).isActive = true
-        videoSubtitleLabel.rightAnchor.constraint(equalTo: subtitleContentBubbleView.rightAnchor).isActive = true
-        videoSubtitleLabelHeightAnchor = videoSubtitleLabel.heightAnchor.constraint(equalToConstant: 40.0)
+        videoSubtitleLabel.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
+        videoSubtitleLabelHeightAnchor = videoSubtitleLabel.heightAnchor.constraint(equalToConstant: 60.0)
         videoSubtitleLabelHeightAnchor?.isActive = true
     }
     private func addConstraintsToVideoSubtitleDescriptionLabel() {
-        videoSubtitleDescriptionLabel.leftAnchor.constraint(equalTo: videoAuthorImageView.rightAnchor, constant: 10).isActive = true
+        videoSubtitleDescriptionLabel.leftAnchor.constraint(equalTo: videoSubtitleLabel.leftAnchor).isActive = true
         videoSubtitleDescriptionLabel.topAnchor.constraint(equalTo: videoSubtitleLabel.bottomAnchor).isActive = true
-        videoSubtitleDescriptionLabel.rightAnchor.constraint(equalTo: subtitleContentBubbleView.rightAnchor).isActive = true
-        videoSubtitleDescriptionLabel.bottomAnchor.constraint(equalTo: subtitleContentBubbleView.bottomAnchor).isActive = true
+        videoSubtitleDescriptionLabel.rightAnchor.constraint(equalTo: videoSubtitleLabel.rightAnchor).isActive = true
+        videoSubtitleDescriptionLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
     }
     private func addConstraintsToSeparatingLineView() {
         separatingLineView.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true

@@ -18,12 +18,12 @@ class YoutubeTimelineViewController: UICollectionViewController, UICollectionVie
     }
     private lazy var backgroundImageView: UIImageView = self.createBackgroundImageView()
     private lazy var menuBar: UIView = self.createYoutubeMenuBar()
-    var viewModel = YoutubeTimelineViewModel()
+    private lazy var settingsMenuView: YoutubeSettingsMenuView = self.createYoutubeSettingsMenuView()
     private var cellsOffeset: CGFloat = 20.0
     fileprivate var collectionViewItemSizeToPortrait: CGSize {
         get {
             let width: CGFloat = view.frame.width - cellsOffeset
-            let height: CGFloat = (width / 1.2)
+            let height: CGFloat = (width / 1.15)
             return CGSize(width: width, height: height)
         }
     }
@@ -34,6 +34,7 @@ class YoutubeTimelineViewController: UICollectionViewController, UICollectionVie
             return CGSize(width: width, height: height)
         }
     }
+    var viewModel = YoutubeTimelineViewModel()
     //MARK-Loading
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,6 +51,7 @@ class YoutubeTimelineViewController: UICollectionViewController, UICollectionVie
         guard let flowLayout = collectionView?.collectionViewLayout as? UICollectionViewFlowLayout else {
             return
         }
+        settingsMenuView.hideSettingsMenu()
         flowLayout.invalidateLayout()
     }
     //MARK:-YoutubeTimelineViewControllerInput
@@ -82,7 +84,6 @@ class YoutubeTimelineViewController: UICollectionViewController, UICollectionVie
         navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         navigationTitleView.titleLabel.text = "Home"
         navigationItem.titleView = navigationTitleView
-        
         navigationItem.rightBarButtonItems = [setupMoreBarButtonItem(),setupSeratchBarButtonItem()]
     }
     private func configureTimelineCollectionView() {
@@ -106,7 +107,7 @@ class YoutubeTimelineViewController: UICollectionViewController, UICollectionVie
         return barButton
     }
     @objc private func actionMoreButtonDidPressed(_ sender: UIBarButtonItem) {
-        print("Helloo")
+        settingsMenuView.showSettingsMenu()
     }
     //MARK:-CreateViews
     private func createBackgroundImageView() -> UIImageView {
@@ -116,21 +117,36 @@ class YoutubeTimelineViewController: UICollectionViewController, UICollectionVie
         imgeView.contentMode = .scaleAspectFill
         return imgeView
     }
-    private func createYoutubeMenuBar() -> UIView {
-        let menu = YoutubeMenuBar()
+    private func createYoutubeMenuBar() -> YoutubeMenuBarView {
+        let menu = YoutubeMenuBarView()
         menu.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(menu)
+        return menu
+    }
+    private func createYoutubeSettingsMenuView() -> YoutubeSettingsMenuView {
+        let menu = YoutubeSettingsMenuView()
+        menu.translatesAutoresizingMaskIntoConstraints = false
+        menu.isHidden = true
+        menu.backgroundColor = UIColor.clear
         self.view.addSubview(menu)
         return menu
     }
     //MARK:-SetupConstraints
     private func addAllConstraintsToViews() {
         addConstraintsToMenuBarView()
+        addConstraintsToYoutubeSettingsMenuView()
     }
     private func addConstraintsToMenuBarView() {
         menuBar.leftAnchor.constraint(lessThanOrEqualTo: self.view.leftAnchor).isActive = true
         menuBar.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
         menuBar.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
         menuBar.heightAnchor.constraint(equalToConstant: 50.0).isActive = true
+    }
+    private func addConstraintsToYoutubeSettingsMenuView() {
+        settingsMenuView.leftAnchor.constraint(lessThanOrEqualTo: self.view.leftAnchor).isActive = true
+        settingsMenuView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        settingsMenuView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+        settingsMenuView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
     }
     //MARK:-CollectionViewDataSource
     override func numberOfSections(in collectionView: UICollectionView) -> Int {

@@ -1,0 +1,166 @@
+//
+//  YoutubeSettingsMenuView.swift
+//  YoutubeApplication
+//
+//  Created by wSong on 12/11/17.
+//  Copyright © 2017 VladymyrShorokhov. All rights reserved.
+//
+
+import UIKit
+
+class YoutubeSettingsMenuView: UIView {
+    fileprivate struct CellID {
+        static let youtubeSettingsMenuCellID = "youtubeSettingsMenuCell"
+    }
+    private lazy var backgroundSettingsMenuView: UIView = self.createYoutubeBlackBackgroundSettingsMenuView()
+    private var collectionViewHeightConstaint: NSLayoutConstraint?
+    private var backgroundSettingsMenuViewHeightConstaint: NSLayoutConstraint?
+    lazy var collectionView: UICollectionView = self.createCollectionView()
+    private var collectionViewHeight: CGFloat {
+        get {
+            return self.frame.height / 2.2
+        }
+    }
+    private var backgroundSettingsMenuViewHeight: CGFloat {
+        get {
+            return self.frame.height - collectionViewHeight
+        }
+    }
+    fileprivate var collectionViewItemSizeToPortrait: CGSize {
+        get {
+            let width: CGFloat = self.frame.width
+            let height: CGFloat = collectionViewHeight / 6
+            return CGSize(width: width, height: height)
+        }
+    }
+    fileprivate var collectionViewitemSizeToLandscape: CGSize {
+        get {
+            let width: CGFloat = self.frame.width / 2.2
+            let height: CGFloat = collectionViewHeight / 3
+            return CGSize(width: width, height: height)
+        }
+    }
+    private func createCollectionView() -> UICollectionView {
+        let flowLayout = UICollectionViewFlowLayout()
+        flowLayout.scrollDirection = .vertical
+        flowLayout.sectionHeadersPinToVisibleBounds = true
+        flowLayout.minimumInteritemSpacing = 0
+        flowLayout.minimumLineSpacing = 0
+        flowLayout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        let collection = UICollectionView(frame: self.frame, collectionViewLayout: flowLayout)
+        collection.translatesAutoresizingMaskIntoConstraints = false
+        collection.register(YoutubeSettingsMenuCollectionViewCell.self, forCellWithReuseIdentifier: CellID.youtubeSettingsMenuCellID)
+        collection.delegate = self
+        collection.dataSource = self
+        collection.backgroundColor = UIColor.red
+        collection.alpha = 0.7
+        collection.isHidden = true
+        collection.isScrollEnabled = false
+        addSubview(collection)
+        return collection
+    }
+    var viewModel = YoutubeSettingsMenuViewModel()
+    //MARK:-Loading
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        addAllConstraintsToViews()
+    }
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        guard let flowLayout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout else {
+            return
+        }
+        flowLayout.invalidateLayout()
+    }
+    //MARK:-Actions
+    @objc private func actionBackgroundSettingsDidPressed(_ sender: UITapGestureRecognizer) {
+        sender.numberOfTapsRequired = 1
+        hideSettingsMenu()
+    }
+    func showSettingsMenu() {
+        if collectionView.isHidden && backgroundSettingsMenuView.isHidden && self.isHidden {
+            self.isHidden = false
+            collectionView.isHidden = false
+            backgroundSettingsMenuView.isHidden = false
+            collectionViewHeightConstaint?.constant = collectionViewHeight
+            backgroundSettingsMenuViewHeightConstaint?.constant = backgroundSettingsMenuViewHeight
+            UIView.animate(withDuration: 0.3, delay: 0, options: [.curveEaseInOut], animations: {
+                self.layoutIfNeeded()
+            }, completion: { (finished) in })
+        }else {
+            hideSettingsMenu()
+        }
+    }
+    func hideSettingsMenu() {
+        if !collectionView.isHidden && !backgroundSettingsMenuView.isHidden && !self.isHidden  {
+            collectionViewHeightConstaint?.constant = 0
+            backgroundSettingsMenuViewHeightConstaint?.constant = 0
+            UIView.animate(withDuration: 0.3, delay: 0, options: [.curveEaseIn], animations: {
+                self.layoutIfNeeded()
+            }, completion: { (finished) in
+                self.collectionView.isHidden = true
+                self.backgroundSettingsMenuView.isHidden = true
+                self.isHidden = true
+            })
+        }
+    }
+    //MARK:-CreateConstraints
+    private func createYoutubeBlackBackgroundSettingsMenuView() -> UIView {
+        let background = UIView()
+        background.translatesAutoresizingMaskIntoConstraints = false
+        background.isHidden = true
+        background.alpha = 0.5
+        background.backgroundColor = UIColor.black
+        background.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(actionBackgroundSettingsDidPressed(_ :))))
+        addSubview(background)
+        bringSubview(toFront: background)
+        return background
+    }
+    //MARK:-SetupConstraints
+    private func addAllConstraintsToViews() {
+        addConstraintsToCollectionView()
+        addConstraintsToBackgroundSettingsMenuView()
+    }
+    private func addConstraintsToCollectionView() {
+        collectionView.leftAnchor.constraint(lessThanOrEqualTo: self.leftAnchor).isActive = true
+        collectionView.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
+        collectionView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
+        collectionViewHeightConstaint = collectionView.heightAnchor.constraint(equalToConstant: 0)
+        collectionViewHeightConstaint?.isActive = true
+    }
+    private func addConstraintsToBackgroundSettingsMenuView() {
+        backgroundSettingsMenuView.leftAnchor.constraint(lessThanOrEqualTo: self.leftAnchor).isActive = true
+        backgroundSettingsMenuView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
+        backgroundSettingsMenuView.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
+        backgroundSettingsMenuViewHeightConstaint = backgroundSettingsMenuView.heightAnchor.constraint(equalToConstant: 0)
+        backgroundSettingsMenuViewHeightConstaint?.isActive = true
+    }
+}
+extension YoutubeSettingsMenuView: UICollectionViewDataSource {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return viewModel.numerOfItemsInSection(section: section)
+    }
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let settingsCell = collectionView.dequeueReusableCell(withReuseIdentifier: CellID.youtubeSettingsMenuCellID, for: indexPath) as! YoutubeSettingsMenuCollectionViewCell
+        let settingsMenu = viewModel.selectedItemAt(indexPath: indexPath)
+        settingsCell.settingsMenu = settingsMenu
+        return settingsCell
+    }
+}
+extension YoutubeSettingsMenuView: UICollectionViewDelegate {
+}
+extension YoutubeSettingsMenuView: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        if UIInterfaceOrientationIsLandscape(UIApplication.shared.statusBarOrientation) {
+            return collectionViewitemSizeToLandscape
+        }else {
+            return collectionViewItemSizeToPortrait
+        }
+    }
+}

@@ -12,7 +12,7 @@ protocol YoutubeVideoChannelItem {
     var channelName: String! {get set}
     var channelProfileImageLink: String! {get set}
 }
-class YoutubeVideoChannel: YoutubeVideoChannelItem {
+struct YoutubeVideoChannel: YoutubeVideoChannelItem {
     var channelName: String!
     var channelProfileImageLink: String!
     init(response: JSON) {
@@ -34,7 +34,7 @@ protocol YoutubeVideoItem {
     var videoNumberOfViews: Int! {get set}
     var videoDuration: Int! {get set}
 }
-class YoutubeVideo: YoutubeVideoItem {
+struct YoutubeVideo: YoutubeVideoItem {
     var channel: YoutubeVideoChannelItem?
     var videoTitle: String!
     var thumbnailImage: String!
@@ -57,7 +57,7 @@ class YoutubeVideo: YoutubeVideoItem {
             self.videoDuration = duration
         }
     }
-    convenience init(response: JSON, channel: YoutubeVideoChannelItem) {
+    init(response: JSON, channel: YoutubeVideoChannelItem) {
         self.init(response: response)
         self.channel = channel
     }
