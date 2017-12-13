@@ -26,8 +26,16 @@ class YoutubeMenuBarView: UIView {
         collection.dataSource = self
         collection.backgroundColor = UIColor.clear
         collection.isScrollEnabled = false
+        collection.selectItem(at: self.menuSelectedItem, animated: true, scrollPosition: .bottom)
         return collection
     }()
+    private lazy var underlineView: UIView = self.createMenuBarUnderlineView()
+    fileprivate var underlineViewLeadingConstraint: NSLayoutConstraint?
+    fileprivate var menuSelectedItem: IndexPath = IndexPath(item: 0, section: 0) {
+        didSet {
+            actionPushUnderlineViewLeadingConstraint(item: menuSelectedItem.item)
+        }
+    }
     fileprivate var collectionViewItemSizeToPortrait: CGSize {
         get {
             let width: CGFloat = (self.frame.width / 4)
@@ -49,31 +57,56 @@ class YoutubeMenuBarView: UIView {
         self.backgroundColor = UIColor.red
         addSubview(collectionView)
         addAllConstraintsToViews()
-        homeSelectedItem()
     }
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    private func homeSelectedItem() {
-        let selectedItem = IndexPath(item: 0, section: 0)
-        collectionView.selectItem(at: selectedItem, animated: true, scrollPosition: .bottom)
     }
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         guard let flowLayout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout else {
             return
         }
+        actionPushUnderlineViewLeadingConstraint(item: menuSelectedItem.item)
         flowLayout.invalidateLayout()
+    }
+    //MARK:-Actions
+    fileprivate func actionPushUnderlineViewLeadingConstraint(item: Int) {
+        DispatchQueue.main.async {
+            let leading = CGFloat(item) * self.frame.width / 4.0
+            self.underlineViewLeadingConstraint?.constant = leading
+            UIView.animate(withDuration: 0.3, delay: 0, options: [.curveEaseOut], animations: {
+                self.layoutIfNeeded()
+            }, completion: { (finished) in })
+        }
+    }
+    //MARK:-SetupViews
+    private func createMenuBarUnderlineView() -> UIView {
+        let underline = UIView()
+        underline.translatesAutoresizingMaskIntoConstraints = false
+        underline.backgroundColor = UIColor.white
+        underline.layer.cornerRadius = 2
+        underline.layer.masksToBounds = true
+        addSubview(underline)
+        bringSubview(toFront: underline)
+        return underline
     }
     //MARK:-SetupConstraints
     private func addAllConstraintsToViews() {
         addConstraintsToCollectionView()
+        addConstraintsToUnderlineView()
     }
     private func addConstraintsToCollectionView() {
         collectionView.centerXAnchor.constraint(lessThanOrEqualTo: self.centerXAnchor).isActive = true
         collectionView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
         collectionView.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
         collectionView.heightAnchor.constraint(equalTo: self.heightAnchor).isActive = true
+    }
+    private func addConstraintsToUnderlineView() {
+        underlineViewLeadingConstraint = underlineView.leftAnchor.constraint(lessThanOrEqualTo: self.leftAnchor)
+        underlineViewLeadingConstraint?.isActive = true
+        underlineView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
+        underlineView.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 1/4).isActive = true
+        underlineView.heightAnchor.constraint(equalToConstant: 4).isActive = true
     }
 }
 extension YoutubeMenuBarView: UICollectionViewDataSource {
@@ -92,6 +125,9 @@ extension YoutubeMenuBarView: UICollectionViewDataSource {
     }
 }
 extension YoutubeMenuBarView: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        menuSelectedItem = indexPath
+    }
 }
 extension YoutubeMenuBarView: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

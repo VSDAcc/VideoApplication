@@ -89,6 +89,8 @@ class YoutubeTimelineViewController: UICollectionViewController, UICollectionVie
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.shadowImage = UIImage()
         navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        navigationController?.hidesBarsOnSwipe = true
+        navigationController?.hidesBarsOnTap = false
         navigationTitleView.titleLabel.text = "Home"
         navigationItem.titleView = navigationTitleView
         navigationItem.rightBarButtonItems = [setupMoreBarButtonItem(),setupSeratchBarButtonItem()]
@@ -153,7 +155,7 @@ class YoutubeTimelineViewController: UICollectionViewController, UICollectionVie
     private func addConstraintsToYoutubeSettingsMenuView() {
         settingsMenuView.leftAnchor.constraint(lessThanOrEqualTo: self.view.leftAnchor).isActive = true
         settingsMenuView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        settingsMenuView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+        settingsMenuView.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor).isActive = true
         settingsMenuView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
     }
     //MARK:-CollectionViewDataSource
