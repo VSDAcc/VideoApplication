@@ -47,8 +47,8 @@ class YoutubeSettingsMenuCollectionViewCell: UICollectionViewCell {
     }
     private func updateUI() {
         DispatchQueue.main.async {
-            self.menuImageView.image = UIImage(named: self.settingsMenu.settingsImageName)?.withRenderingMode(.alwaysTemplate)
-            self.settingsTitleLabel.text = self.settingsMenu.settingsTitle
+            self.menuImageView.image = UIImage(named: self.settingsMenu.settingsImageName.description)?.withRenderingMode(.alwaysTemplate)
+            self.settingsTitleLabel.text = self.settingsMenu.settingsTitle.description
         }
     }
     //MAKR:-SetupViews
@@ -82,7 +82,7 @@ class YoutubeSettingsMenuCollectionViewCell: UICollectionViewCell {
         menuImageView.heightAnchor.constraint(equalToConstant: 28.0).isActive = true
     }
     private func addConstraintsToTitleLabel() {
-        settingsTitleLabel.leftAnchor.constraint(equalTo: menuImageView.leftAnchor, constant: 35.0).isActive = true
+        settingsTitleLabel.leftAnchor.constraint(equalTo: menuImageView.rightAnchor, constant: 10.0).isActive = true
         settingsTitleLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
         settingsTitleLabel.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -10.0).isActive = true
     }

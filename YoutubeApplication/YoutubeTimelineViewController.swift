@@ -11,6 +11,14 @@ protocol YoutubeTimelineViewControllerInput: class {
     func didFinishUpdates()
     func didHandleError(_ error: String)
 }
+protocol YoutubeSettingsMenuHandler: class {
+    func didPressedSettingsMenu(settings: YoutubeSettingsMenuItem)
+    func didPressedTermsAndPrivacyMenu(settings: YoutubeSettingsMenuItem)
+    func didPressedSendFeedbackMenu(settings: YoutubeSettingsMenuItem)
+    func didPressedHelpMenu(settings: YoutubeSettingsMenuItem)
+    func didPressedSwitchAccountMenu(settings: YoutubeSettingsMenuItem)
+    func didPressedCancelMenu(settings: YoutubeSettingsMenuItem)
+}
 class YoutubeTimelineViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout, YoutubeTimelineViewControllerInput, PresenterAlertHandler {
     
     fileprivate struct CellID {
@@ -127,6 +135,7 @@ class YoutubeTimelineViewController: UICollectionViewController, UICollectionVie
         menu.translatesAutoresizingMaskIntoConstraints = false
         menu.isHidden = true
         menu.backgroundColor = UIColor.clear
+        menu.settingsMenuHandler = self
         self.view.addSubview(menu)
         return menu
     }
@@ -172,7 +181,26 @@ class YoutubeTimelineViewController: UICollectionViewController, UICollectionVie
         }
     }
 }
-
+extension YoutubeTimelineViewController: YoutubeSettingsMenuHandler {
+    func didPressedSettingsMenu(settings: YoutubeSettingsMenuItem) {
+        print(settings.settingsTitle)
+    }
+    func didPressedTermsAndPrivacyMenu(settings: YoutubeSettingsMenuItem) {
+        print(settings.settingsTitle)
+    }
+    func didPressedSendFeedbackMenu(settings: YoutubeSettingsMenuItem) {
+        print(settings.settingsTitle)
+    }
+    func didPressedHelpMenu(settings: YoutubeSettingsMenuItem) {
+        print(settings.settingsTitle)
+    }
+    func didPressedSwitchAccountMenu(settings: YoutubeSettingsMenuItem) {
+        print(settings.settingsTitle)
+    }
+    func didPressedCancelMenu(settings: YoutubeSettingsMenuItem) {
+        print(settings.settingsTitle)
+    }
+}
 
 
 

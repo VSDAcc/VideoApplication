@@ -8,7 +8,14 @@
 
 import Foundation
 class YoutubeSettingsMenuViewModel {
-    fileprivate var menuSettingsArray = [YoutubeSettingsMenu(settingsTitle: "Settings", settingsImageName: "settings"), YoutubeSettingsMenu(settingsTitle: "Terms & Privacy policy", settingsImageName: "privacy"),YoutubeSettingsMenu(settingsTitle: "Send Feedback", settingsImageName: "feedback"),YoutubeSettingsMenu(settingsTitle: "Help", settingsImageName: "help"),YoutubeSettingsMenu(settingsTitle: "Switch Account", settingsImageName: "switch_account"),YoutubeSettingsMenu(settingsTitle: "Cancel", settingsImageName: "cancel")]
+    fileprivate var menuSettingsArray = [
+        YoutubeSettingsMenu(settingsTitle: .settings, settingsImageName: .settings),
+        YoutubeSettingsMenu(settingsTitle: .termsPrivacy, settingsImageName: .termsPrivacy),
+        YoutubeSettingsMenu(settingsTitle: .sendFeedback, settingsImageName: .sendFeedback),
+        YoutubeSettingsMenu(settingsTitle: .help, settingsImageName: .help),
+        YoutubeSettingsMenu(settingsTitle: .switchAccount, settingsImageName: .switchAccount),
+        YoutubeSettingsMenu(settingsTitle: .cancel, settingsImageName: .cancel)
+    ]
 }
 extension YoutubeSettingsMenuViewModel {
     func selectedItemAt(indexPath: IndexPath) -> YoutubeSettingsMenuItem {

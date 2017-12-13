@@ -7,9 +7,18 @@
 //
 
 import Foundation
+enum YoutubeMenuBarImageNameItem: String, CustomStringConvertible {
+    case home = "home"
+    case trending = "trending"
+    case subscriptions = "subscriptions"
+    case account = "account"
+    var description: String {
+        return self.rawValue
+    }
+}
 protocol YoutubeMenuBarItem {
-    var itemImageName: String {get set}
+    var itemImageName: YoutubeMenuBarImageNameItem {get}
 }
 struct YoutubeMenuBar: YoutubeMenuBarItem {
-    var itemImageName: String
+    var itemImageName: YoutubeMenuBarImageNameItem
 }

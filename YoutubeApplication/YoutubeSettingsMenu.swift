@@ -7,11 +7,33 @@
 //
 
 import Foundation
+enum YoutubeSettingsMenuTitleNameItem: String, CustomStringConvertible {
+    case settings = "Settings"
+    case termsPrivacy = "Terms & Privacy policy"
+    case sendFeedback = "Send Feedback"
+    case help = "Help"
+    case switchAccount = "Switch Account"
+    case cancel = "Cancel"
+    var description: String {
+        return self.rawValue
+    }
+}
+enum YoutubeSettingsMenuImageNameItem: String, CustomStringConvertible{
+    case settings = "settings"
+    case termsPrivacy = "privacy"
+    case sendFeedback = "feedback"
+    case help = "help"
+    case switchAccount = "switch_account"
+    case cancel = "cancel"
+    var description: String {
+        return self.rawValue
+    }
+}
 protocol YoutubeSettingsMenuItem {
-    var settingsTitle: String {get set}
-    var settingsImageName: String {get set}
+    var settingsTitle: YoutubeSettingsMenuTitleNameItem {get}
+    var settingsImageName: YoutubeSettingsMenuImageNameItem {get}
 }
 struct YoutubeSettingsMenu: YoutubeSettingsMenuItem {
-    var settingsTitle: String
-    var settingsImageName: String
+    var settingsTitle: YoutubeSettingsMenuTitleNameItem
+    var settingsImageName: YoutubeSettingsMenuImageNameItem
 }

@@ -47,7 +47,7 @@ class YoutubeMenuBarCollectionViewCell: UICollectionViewCell {
     }
     private func updateUI() {
         DispatchQueue.main.async {
-            self.menuImageView.image = UIImage(named: self.menuBar.itemImageName)?.withRenderingMode(.alwaysTemplate)
+            self.menuImageView.image = UIImage(named: self.menuBar.itemImageName.description)?.withRenderingMode(.alwaysTemplate)
         }
     }
     //MARK:-SetupViews

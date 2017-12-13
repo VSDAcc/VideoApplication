@@ -12,6 +12,7 @@ class YoutubeSettingsMenuView: UIView {
     fileprivate struct CellID {
         static let youtubeSettingsMenuCellID = "youtubeSettingsMenuCell"
     }
+    weak var settingsMenuHandler: YoutubeSettingsMenuHandler?
     private lazy var backgroundSettingsMenuView: UIView = self.createYoutubeBlackBackgroundSettingsMenuView()
     private var collectionViewHeightConstaint: NSLayoutConstraint?
     private var backgroundSettingsMenuViewHeightConstaint: NSLayoutConstraint?
@@ -51,7 +52,7 @@ class YoutubeSettingsMenuView: UIView {
     }
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-        self.hideSettingsMenu()
+        hideSettingsMenu() {}
     }
     override func layoutSubviews() {
         super.layoutSubviews()
@@ -63,7 +64,7 @@ class YoutubeSettingsMenuView: UIView {
     //MARK:-Actions
     @objc private func actionBackgroundSettingsDidPressed(_ sender: UITapGestureRecognizer) {
         sender.numberOfTapsRequired = 1
-        hideSettingsMenu()
+        hideSettingsMenu() {}
     }
     public func showSettingsMenu() {
         if collectionView.isHidden && backgroundSettingsMenuView.isHidden && self.isHidden {
@@ -76,10 +77,10 @@ class YoutubeSettingsMenuView: UIView {
                 self.layoutIfNeeded()
             }, completion: { (finished) in })
         }else {
-            hideSettingsMenu()
+            hideSettingsMenu() {}
         }
     }
-    public func hideSettingsMenu() {
+    public func hideSettingsMenu(onSuccess: @escaping() -> Void) {
         if !collectionView.isHidden && !backgroundSettingsMenuView.isHidden && !self.isHidden  {
             collectionViewHeightConstaint?.constant = 0
             backgroundSettingsMenuViewHeightConstaint?.constant = 0
@@ -89,7 +90,21 @@ class YoutubeSettingsMenuView: UIView {
                 self.collectionView.isHidden = true
                 self.backgroundSettingsMenuView.isHidden = true
                 self.isHidden = true
+                onSuccess()
             })
+        }
+    }
+    //MARK:-YoutubeSettingsMenuHandler
+    fileprivate func actionSettingsMenuDidPressed(settings: YoutubeSettingsMenuItem) {
+        hideSettingsMenu { [weak self] in
+            switch settings.settingsTitle {
+            case .settings: self?.settingsMenuHandler?.didPressedSettingsMenu(settings: settings)
+            case .sendFeedback: self?.settingsMenuHandler?.didPressedSendFeedbackMenu(settings: settings)
+            case .help: self?.settingsMenuHandler?.didPressedHelpMenu(settings: settings)
+            case .cancel: self?.settingsMenuHandler?.didPressedCancelMenu(settings: settings)
+            case .switchAccount: self?.settingsMenuHandler?.didPressedSwitchAccountMenu(settings: settings)
+            case .termsPrivacy: self?.settingsMenuHandler?.didPressedTermsAndPrivacyMenu(settings: settings)
+            }
         }
     }
     //MARK:-CreateConstraints
@@ -158,6 +173,10 @@ extension YoutubeSettingsMenuView: UICollectionViewDataSource {
     }
 }
 extension YoutubeSettingsMenuView: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let settingsMenu = viewModel.selectedItemAt(indexPath: indexPath)
+        self.actionSettingsMenuDidPressed(settings: settingsMenu)
+    }
 }
 extension YoutubeSettingsMenuView: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
