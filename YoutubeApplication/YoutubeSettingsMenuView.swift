@@ -36,7 +36,7 @@ class YoutubeSettingsMenuView: UIView {
     }
     fileprivate var collectionViewitemSizeToLandscape: CGSize {
         get {
-            let width: CGFloat = self.frame.width / 2.2
+            let width: CGFloat = self.frame.width / 2.05
             let height: CGFloat = collectionViewHeight / 3
             return CGSize(width: width, height: height)
         }
@@ -68,30 +68,34 @@ class YoutubeSettingsMenuView: UIView {
     }
     public func showSettingsMenu() {
         if collectionView.isHidden && backgroundSettingsMenuView.isHidden && self.isHidden {
-            self.isHidden = false
-            collectionView.isHidden = false
-            backgroundSettingsMenuView.isHidden = false
-            collectionViewHeightConstaint?.constant = collectionViewHeight
-            backgroundSettingsMenuViewHeightConstaint?.constant = backgroundSettingsMenuViewHeight
-            UIView.animate(withDuration: 0.3, delay: 0, options: [.curveEaseInOut], animations: {
-                self.layoutIfNeeded()
-            }, completion: { (finished) in })
+            DispatchQueue.main.async {
+                self.isHidden = false
+                self.collectionView.isHidden = false
+                self.backgroundSettingsMenuView.isHidden = false
+                self.collectionViewHeightConstaint?.constant = self.collectionViewHeight
+                self.backgroundSettingsMenuViewHeightConstaint?.constant = self.backgroundSettingsMenuViewHeight
+                UIView.animate(withDuration: 0.3, delay: 0, options: [.curveEaseInOut], animations: {
+                    self.layoutIfNeeded()
+                }, completion: { (finished) in })
+            }
         }else {
             hideSettingsMenu() {}
         }
     }
     public func hideSettingsMenu(onSuccess: @escaping() -> Void) {
-        if !collectionView.isHidden && !backgroundSettingsMenuView.isHidden && !self.isHidden  {
-            collectionViewHeightConstaint?.constant = 0
-            backgroundSettingsMenuViewHeightConstaint?.constant = 0
-            UIView.animate(withDuration: 0.3, delay: 0, options: [.curveEaseIn], animations: {
-                self.layoutIfNeeded()
-            }, completion: { (finished) in
-                self.collectionView.isHidden = true
-                self.backgroundSettingsMenuView.isHidden = true
-                self.isHidden = true
-                onSuccess()
-            })
+        if !self.collectionView.isHidden && !self.backgroundSettingsMenuView.isHidden && !self.isHidden  {
+            DispatchQueue.main.async {
+                self.collectionViewHeightConstaint?.constant = 0
+                self.backgroundSettingsMenuViewHeightConstaint?.constant = 0
+                UIView.animate(withDuration: 0.3, delay: 0, options: [.curveEaseIn], animations: {
+                    self.layoutIfNeeded()
+                }, completion: { (finished) in
+                    self.collectionView.isHidden = true
+                    self.backgroundSettingsMenuView.isHidden = true
+                    self.isHidden = true
+                    onSuccess()
+                })
+            }
         }
     }
     //MARK:-YoutubeSettingsMenuHandler

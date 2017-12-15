@@ -31,9 +31,11 @@ class YoutubeMenuBarView: UIView {
     }()
     private lazy var underlineView: UIView = self.createMenuBarUnderlineView()
     fileprivate var underlineViewLeadingConstraint: NSLayoutConstraint?
-    fileprivate var menuSelectedItem: IndexPath = IndexPath(item: 0, section: 0) {
+    weak var menuBarDidSelectItemAtInexPath: YoutubeMenuBarDidSelectItemAtInexPath?
+    var menuSelectedItem: IndexPath = IndexPath(item: 0, section: 0) {
         didSet {
             actionPushUnderlineViewLeadingConstraint(item: menuSelectedItem.item)
+            menuBarDidSelectItemAtInexPath?.didSelectYoutubeMenuItem(viewModel.selectedItemAt(indexPath: menuSelectedItem))
         }
     }
     fileprivate var collectionViewItemSizeToPortrait: CGSize {
@@ -127,6 +129,7 @@ extension YoutubeMenuBarView: UICollectionViewDataSource {
 extension YoutubeMenuBarView: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         menuSelectedItem = indexPath
+        menuBarDidSelectItemAtInexPath?.didSelectMenuBarItemAtIndexPath(indexPath)
     }
 }
 extension YoutubeMenuBarView: UICollectionViewDelegateFlowLayout {

@@ -16,9 +16,20 @@ enum YoutubeMenuBarImageNameItem: String, CustomStringConvertible {
         return self.rawValue
     }
 }
+enum YoutubeMenuBarTitleNameItem: String, CustomStringConvertible {
+    case home = "Home"
+    case trending = "Trending"
+    case subscriptions = "Subscriptions"
+    case account = "Account"
+    var description: String {
+        return self.rawValue
+    }
+}
 protocol YoutubeMenuBarItem {
     var itemImageName: YoutubeMenuBarImageNameItem {get}
+    var itemTitleName: YoutubeMenuBarTitleNameItem {get}
 }
 struct YoutubeMenuBar: YoutubeMenuBarItem {
     var itemImageName: YoutubeMenuBarImageNameItem
+    var itemTitleName: YoutubeMenuBarTitleNameItem
 }

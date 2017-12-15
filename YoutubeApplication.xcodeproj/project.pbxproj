@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8A4915C01FE3C62700A187CD /* YoutubeTimelineContainerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4915BF1FE3C62700A187CD /* YoutubeTimelineContainerCollectionViewCell.swift */; };
 		8A7B030C1FD6A76F0028BB9B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7B030B1FD6A76F0028BB9B /* AppDelegate.swift */; };
 		8A7B03111FD6A76F0028BB9B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8A7B030F1FD6A76F0028BB9B /* Main.storyboard */; };
 		8A7B03131FD6A76F0028BB9B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8A7B03121FD6A76F0028BB9B /* Assets.xcassets */; };
@@ -35,6 +36,7 @@
 		181FD587350F5FC5526A520C /* Pods-YoutubeApplication.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YoutubeApplication.release.xcconfig"; path = "Pods/Target Support Files/Pods-YoutubeApplication/Pods-YoutubeApplication.release.xcconfig"; sourceTree = "<group>"; };
 		46B9F88867E3F501E11D73EA /* Pods_YoutubeApplication.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_YoutubeApplication.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5C1120AABFD1715058793DF6 /* Pods-YoutubeApplication.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YoutubeApplication.debug.xcconfig"; path = "Pods/Target Support Files/Pods-YoutubeApplication/Pods-YoutubeApplication.debug.xcconfig"; sourceTree = "<group>"; };
+		8A4915BF1FE3C62700A187CD /* YoutubeTimelineContainerCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YoutubeTimelineContainerCollectionViewCell.swift; sourceTree = "<group>"; };
 		8A7B03081FD6A76E0028BB9B /* YoutubeApplication.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YoutubeApplication.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8A7B030B1FD6A76F0028BB9B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8A7B03101FD6A76F0028BB9B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -190,6 +192,7 @@
 		8A7B032C1FD6B0280028BB9B /* YoutubeTimeline */ = {
 			isa = PBXGroup;
 			children = (
+				8A4915BF1FE3C62700A187CD /* YoutubeTimelineContainerCollectionViewCell.swift */,
 				8A7B032D1FD6B0510028BB9B /* YoutubeTimelineCollectionViewCell.swift */,
 				8A8906B31FD86DD600D303E6 /* YoutubeMenuBarCollectionViewCell.swift */,
 				8A9E0FF41FDEB5EF0065108D /* YoutubeSettingsMenuCollectionViewCell.swift */,
@@ -358,6 +361,7 @@
 				8A9E0FF51FDEB5EF0065108D /* YoutubeSettingsMenuCollectionViewCell.swift in Sources */,
 				8A9E0FEF1FDEAEBA0065108D /* YoutubeMenuBar.swift in Sources */,
 				8A9E0FE51FDAB1870065108D /* YoutubeDataManager.swift in Sources */,
+				8A4915C01FE3C62700A187CD /* YoutubeTimelineContainerCollectionViewCell.swift in Sources */,
 				8A9E0FE71FDE801F0065108D /* Box.swift in Sources */,
 				8A7B032A1FD6AEA20028BB9B /* YoutubeTimelineViewModel.swift in Sources */,
 				8A7B03311FD6D3250028BB9B /* YoutubeExtensions.swift in Sources */,

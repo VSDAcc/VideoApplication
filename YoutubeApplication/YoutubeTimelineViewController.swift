@@ -7,10 +7,6 @@
 //
 
 import UIKit
-protocol YoutubeTimelineViewControllerInput: class {
-    func didFinishUpdates()
-    func didHandleError(_ error: String)
-}
 protocol YoutubeSettingsMenuHandler: class {
     func didPressedSettingsMenu(settings: YoutubeSettingsMenuItem)
     func didPressedTermsAndPrivacyMenu(settings: YoutubeSettingsMenuItem)
@@ -19,34 +15,36 @@ protocol YoutubeSettingsMenuHandler: class {
     func didPressedSwitchAccountMenu(settings: YoutubeSettingsMenuItem)
     func didPressedCancelMenu(settings: YoutubeSettingsMenuItem)
 }
-class YoutubeTimelineViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout, YoutubeTimelineViewControllerInput, PresenterAlertHandler {
+protocol YoutubeMenuBarDidSelectItemAtInexPath: class {
+    func didSelectMenuBarItemAtIndexPath(_ indexPath: IndexPath)
+    func didSelectYoutubeMenuItem(_ item: YoutubeMenuBarItem)
+}
+class YoutubeTimelineViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout, PresenterAlertHandler {
     
     fileprivate struct CellID {
-        static let youtubeTimelineCellID = "youtubeTimelineCellID"
+        static let youtubeTimelineContainerCellID = "youtubeTimelineContainerCell"
     }
-    private lazy var backgroundImageView: UIImageView = self.createBackgroundImageView()
-    private lazy var menuBar: UIView = self.createYoutubeMenuBar()
-    private lazy var settingsMenuView: YoutubeSettingsMenuView = self.createYoutubeSettingsMenuView()
-    private var cellsOffeset: CGFloat = 20.0
+    fileprivate lazy var backgroundImageView: UIImageView = self.createBackgroundImageView()
+    fileprivate lazy var menuBar: YoutubeMenuBarView = self.createYoutubeMenuBar()
+    fileprivate lazy var settingsMenuView: YoutubeSettingsMenuView = self.createYoutubeSettingsMenuView()
+    private var menuBarHeight: CGFloat  = 55.0
     fileprivate var collectionViewItemSizeToPortrait: CGSize {
         get {
-            let width: CGFloat = view.frame.width - cellsOffeset
-            let height: CGFloat = (width / 1.15)
+            let width: CGFloat = view.frame.width
+            let height: CGFloat = view.frame.height - menuBarHeight
             return CGSize(width: width, height: height)
         }
     }
     fileprivate var collectionViewitemSizeToLandscape: CGSize {
         get {
-            let width: CGFloat = view.frame.width / 2.1
-            let height: CGFloat = (width / 1.5) * (4 / 3)
+            let width: CGFloat = view.frame.width
+            let height: CGFloat = view.frame.height - menuBarHeight
             return CGSize(width: width, height: height)
         }
     }
-    var viewModel = YoutubeTimelineViewModel()
     //MARK-Loading
     override func viewDidLoad() {
         super.viewDidLoad()
-        viewModel.view = self
         configureCollectionViewLayout()
         configureNavigationBar()
         addAllConstraintsToViews()
@@ -61,13 +59,6 @@ class YoutubeTimelineViewController: UICollectionViewController, UICollectionVie
         }
         flowLayout.invalidateLayout()
     }
-    //MARK:-YoutubeTimelineViewControllerInput
-    func didFinishUpdates() {
-        collectionView?.reloadData()
-    }
-    func didHandleError(_ error: String) {
-        presentAlertWith(title: "Data Error", massage: error)
-    }
     //MARK:-ConfigureMethods
     fileprivate lazy var navigationTitleView: YoutubeNavigationBarTitleView = {
         let titleView = YoutubeNavigationBarTitleView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height))
@@ -78,28 +69,28 @@ class YoutubeTimelineViewController: UICollectionViewController, UICollectionVie
         guard let flowLayout = collectionView?.collectionViewLayout as? UICollectionViewFlowLayout else {
             return
         }
-        flowLayout.scrollDirection = .vertical
+        flowLayout.scrollDirection = .horizontal
         flowLayout.sectionHeadersPinToVisibleBounds = true
-        flowLayout.minimumInteritemSpacing = 1
-        flowLayout.sectionInset = UIEdgeInsetsMake(10, 10, 10, 10)
-        flowLayout.minimumLineSpacing = 10
+        flowLayout.minimumInteritemSpacing = 0
+        flowLayout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0)
+        flowLayout.minimumLineSpacing = 0
     }
     private func configureNavigationBar() {
         navigationController?.navigationBar.barTintColor = UIColor(r: 230, g: 32, b: 31, alpha: 1)
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.shadowImage = UIImage()
         navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        navigationController?.hidesBarsOnSwipe = true
-        navigationController?.hidesBarsOnTap = false
         navigationTitleView.titleLabel.text = "Home"
         navigationItem.titleView = navigationTitleView
         navigationItem.rightBarButtonItems = [setupMoreBarButtonItem(),setupSeratchBarButtonItem()]
     }
     private func configureTimelineCollectionView() {
         self.collectionView?.backgroundColor = UIColor.white
-        self.collectionView?.contentInset = UIEdgeInsetsMake(50.0, 0, 0, 0)
-        self.collectionView?.scrollIndicatorInsets = UIEdgeInsetsMake(50.0, 0, 0, 0)
-        collectionView?.register(YoutubeTimelineCollectionViewCell.self, forCellWithReuseIdentifier: CellID.youtubeTimelineCellID)
+        self.collectionView?.contentInset = UIEdgeInsetsMake(menuBarHeight, 0, 0, 0)
+        self.collectionView?.scrollIndicatorInsets = UIEdgeInsetsMake(menuBarHeight, 0, 0, 0)
+        self.collectionView?.isPagingEnabled = true
+        self.collectionView?.showsHorizontalScrollIndicator = false
+        self.collectionView?.register(YoutubeTimelineContainerCollectionViewCell.self, forCellWithReuseIdentifier: CellID.youtubeTimelineContainerCellID)
     }
     //MARK:-SetupViews
     private func setupSeratchBarButtonItem() -> UIBarButtonItem {
@@ -129,6 +120,7 @@ class YoutubeTimelineViewController: UICollectionViewController, UICollectionVie
     private func createYoutubeMenuBar() -> YoutubeMenuBarView {
         let menu = YoutubeMenuBarView()
         menu.translatesAutoresizingMaskIntoConstraints = false
+        menu.menuBarDidSelectItemAtInexPath = self
         self.view.addSubview(menu)
         return menu
     }
@@ -150,7 +142,7 @@ class YoutubeTimelineViewController: UICollectionViewController, UICollectionVie
         menuBar.leftAnchor.constraint(lessThanOrEqualTo: self.view.leftAnchor).isActive = true
         menuBar.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
         menuBar.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-        menuBar.heightAnchor.constraint(equalToConstant: 50.0).isActive = true
+        menuBar.heightAnchor.constraint(equalToConstant: menuBarHeight).isActive = true
     }
     private func addConstraintsToYoutubeSettingsMenuView() {
         settingsMenuView.leftAnchor.constraint(lessThanOrEqualTo: self.view.leftAnchor).isActive = true
@@ -163,17 +155,23 @@ class YoutubeTimelineViewController: UICollectionViewController, UICollectionVie
         return 1
     }
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return viewModel.numerOfItemsInSection(section: section)
+        return 4
     }
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let timelineCell = collectionView.dequeueReusableCell(withReuseIdentifier: CellID.youtubeTimelineCellID, for: indexPath) as! YoutubeTimelineCollectionViewCell
-        let video = viewModel.selectedItemAt(indexPath: indexPath)
-        timelineCell.youtubeVideo = video
-        timelineCell.layoutIfNeeded()
+        let timelineCell = collectionView.dequeueReusableCell(withReuseIdentifier: CellID.youtubeTimelineContainerCellID, for: indexPath) as! YoutubeTimelineContainerCollectionViewCell
+        DispatchQueue.main.async {
+            timelineCell.setNeedsLayout()
+            timelineCell.layoutIfNeeded()
+        }
         return timelineCell
     }
-    //MARK:-CollectionViewDelegate
-    
+    //MARK:-ScrollViewDelegate
+    override func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        let index = targetContentOffset.pointee.x / view.frame.width
+        let indexPath = IndexPath(item: Int(index), section: 0)
+        menuBar.menuSelectedItem = indexPath
+        menuBar.collectionView.selectItem(at: indexPath, animated: true, scrollPosition: .right)
+    }
     //MARK:-UICollectionViewFlowLayout
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if UIInterfaceOrientationIsLandscape(UIApplication.shared.statusBarOrientation) {
@@ -201,6 +199,14 @@ extension YoutubeTimelineViewController: YoutubeSettingsMenuHandler {
     }
     func didPressedCancelMenu(settings: YoutubeSettingsMenuItem) {
         print(settings.settingsTitle)
+    }
+}
+extension YoutubeTimelineViewController: YoutubeMenuBarDidSelectItemAtInexPath {
+    func didSelectMenuBarItemAtIndexPath(_ indexPath: IndexPath) {
+        self.collectionView?.scrollToItem(at: indexPath, at: .right, animated: true)
+    }
+    func didSelectYoutubeMenuItem(_ item: YoutubeMenuBarItem) {
+        self.navigationTitleView.titleLabel.text = item.itemTitleName.description
     }
 }
 
