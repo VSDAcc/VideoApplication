@@ -8,10 +8,12 @@
 
 import Foundation
 class YoutubeMenuBarViewModel {
-    fileprivate var menuBarArray = [YoutubeMenuBar(itemImageName: .home, itemTitleName: .home),
-                                    YoutubeMenuBar(itemImageName: .trending, itemTitleName: .trending),
-                                    YoutubeMenuBar(itemImageName: .subscriptions, itemTitleName: .subscriptions),
-                                    YoutubeMenuBar(itemImageName: .account, itemTitleName: .account)]
+    fileprivate var menuBarArray = [
+        YoutubeMenuBar(itemImageName: .home, itemTitleName: .home),
+        YoutubeMenuBar(itemImageName: .trending, itemTitleName: .trending),
+        YoutubeMenuBar(itemImageName: .subscriptions, itemTitleName: .subscriptions),
+        YoutubeMenuBar(itemImageName: .account, itemTitleName: .account)
+    ]
 }
 extension YoutubeMenuBarViewModel {
     func selectedItemAt(indexPath: IndexPath) -> YoutubeMenuBarItem {

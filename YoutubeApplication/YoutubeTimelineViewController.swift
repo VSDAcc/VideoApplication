@@ -22,7 +22,13 @@ protocol YoutubeMenuBarDidSelectItemAtInexPath: class {
 class YoutubeTimelineViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout, PresenterAlertHandler {
     
     fileprivate struct CellID {
-        static let youtubeTimelineContainerCellID = "youtubeTimelineContainerCell"
+        static let youtubeTimelineHomeCellID = "youtubeTimelineHomeCell"
+        static let youtubeTimelineTrendingCellID = "youtubeTimelineTrendingCell"
+        static let youtubeTimelineSubscriptionsCellID = "youtubeTimelineSubscriptionsCell"
+        static let youtubeTimelineAccountCellID = "youtubeTimelineAccountCell"
+    }
+    fileprivate enum TimelineMenu: Int {
+        case home, trending, subscriptions, account
     }
     fileprivate lazy var backgroundImageView: UIImageView = self.createBackgroundImageView()
     fileprivate lazy var menuBar: YoutubeMenuBarView = self.createYoutubeMenuBar()
@@ -63,6 +69,7 @@ class YoutubeTimelineViewController: UICollectionViewController, UICollectionVie
     fileprivate lazy var navigationTitleView: YoutubeNavigationBarTitleView = {
         let titleView = YoutubeNavigationBarTitleView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height))
         titleView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        titleView.titleLabel.text = "Home"
         return titleView
     }()
     private func configureCollectionViewLayout() {
@@ -80,7 +87,6 @@ class YoutubeTimelineViewController: UICollectionViewController, UICollectionVie
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.shadowImage = UIImage()
         navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        navigationTitleView.titleLabel.text = "Home"
         navigationItem.titleView = navigationTitleView
         navigationItem.rightBarButtonItems = [setupMoreBarButtonItem(),setupSeratchBarButtonItem()]
     }
@@ -90,7 +96,10 @@ class YoutubeTimelineViewController: UICollectionViewController, UICollectionVie
         self.collectionView?.scrollIndicatorInsets = UIEdgeInsetsMake(menuBarHeight, 0, 0, 0)
         self.collectionView?.isPagingEnabled = true
         self.collectionView?.showsHorizontalScrollIndicator = false
-        self.collectionView?.register(YoutubeTimelineContainerCollectionViewCell.self, forCellWithReuseIdentifier: CellID.youtubeTimelineContainerCellID)
+        self.collectionView?.register(YoutubeTimelineHomeCollectionViewCell.self, forCellWithReuseIdentifier: CellID.youtubeTimelineHomeCellID)
+        self.collectionView?.register(YoutubeTimelineTrendingCollectionViewCell.self, forCellWithReuseIdentifier: CellID.youtubeTimelineTrendingCellID)
+        self.collectionView?.register(YoutubeTimelineSubscriptionsCollectionViewCell.self, forCellWithReuseIdentifier: CellID.youtubeTimelineSubscriptionsCellID)
+        self.collectionView?.register(YoutubeTimelineAccountCollectionViewCell.self, forCellWithReuseIdentifier: CellID.youtubeTimelineAccountCellID)
     }
     //MARK:-SetupViews
     private func setupSeratchBarButtonItem() -> UIBarButtonItem {
@@ -158,12 +167,35 @@ class YoutubeTimelineViewController: UICollectionViewController, UICollectionVie
         return 4
     }
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let timelineCell = collectionView.dequeueReusableCell(withReuseIdentifier: CellID.youtubeTimelineContainerCellID, for: indexPath) as! YoutubeTimelineContainerCollectionViewCell
-        DispatchQueue.main.async {
-            timelineCell.setNeedsLayout()
-            timelineCell.layoutIfNeeded()
+        if indexPath.row == TimelineMenu.home.rawValue {
+            let timelineCell = collectionView.dequeueReusableCell(withReuseIdentifier: CellID.youtubeTimelineHomeCellID, for: indexPath) as! YoutubeTimelineHomeCollectionViewCell
+            DispatchQueue.main.async {
+                timelineCell.setNeedsLayout()
+                timelineCell.layoutIfNeeded()
+            }
+            return timelineCell
+        }else if indexPath.row == TimelineMenu.trending.rawValue {
+            let timelineCell = collectionView.dequeueReusableCell(withReuseIdentifier: CellID.youtubeTimelineTrendingCellID, for: indexPath) as! YoutubeTimelineTrendingCollectionViewCell
+            DispatchQueue.main.async {
+                timelineCell.setNeedsLayout()
+                timelineCell.layoutIfNeeded()
+            }
+            return timelineCell
+        }else if indexPath.row == TimelineMenu.subscriptions.rawValue {
+            let timelineCell = collectionView.dequeueReusableCell(withReuseIdentifier: CellID.youtubeTimelineSubscriptionsCellID, for: indexPath) as! YoutubeTimelineSubscriptionsCollectionViewCell
+            DispatchQueue.main.async {
+                timelineCell.setNeedsLayout()
+                timelineCell.layoutIfNeeded()
+            }
+            return timelineCell
+        }else {
+            let timelineCell = collectionView.dequeueReusableCell(withReuseIdentifier: CellID.youtubeTimelineAccountCellID, for: indexPath) as! YoutubeTimelineAccountCollectionViewCell
+            DispatchQueue.main.async {
+                timelineCell.setNeedsLayout()
+                timelineCell.layoutIfNeeded()
+            }
+            return timelineCell
         }
-        return timelineCell
     }
     //MARK:-ScrollViewDelegate
     override func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {

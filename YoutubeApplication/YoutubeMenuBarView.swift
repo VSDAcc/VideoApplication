@@ -68,18 +68,18 @@ class YoutubeMenuBarView: UIView {
         guard let flowLayout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout else {
             return
         }
-        actionPushUnderlineViewLeadingConstraint(item: menuSelectedItem.item)
+        DispatchQueue.main.async {
+            self.actionPushUnderlineViewLeadingConstraint(item: self.menuSelectedItem.item)
+        }
         flowLayout.invalidateLayout()
     }
     //MARK:-Actions
     fileprivate func actionPushUnderlineViewLeadingConstraint(item: Int) {
-        DispatchQueue.main.async {
-            let leading = CGFloat(item) * self.frame.width / 4.0
-            self.underlineViewLeadingConstraint?.constant = leading
-            UIView.animate(withDuration: 0.3, delay: 0, options: [.curveEaseOut], animations: {
-                self.layoutIfNeeded()
-            }, completion: { (finished) in })
-        }
+        let leading = CGFloat(item) * self.frame.width / 4.0
+        self.underlineViewLeadingConstraint?.constant = leading
+        UIView.animate(withDuration: 0.3, delay: 0, options: [.curveEaseOut], animations: {
+            self.layoutIfNeeded()
+        }, completion: { (finished) in })
     }
     //MARK:-SetupViews
     private func createMenuBarUnderlineView() -> UIView {

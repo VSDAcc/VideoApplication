@@ -42,6 +42,7 @@ class YoutubeTimelineContainerCollectionViewCell: UICollectionViewCell, YoutubeT
         addAllConstraintsToViews()
         self.contentView.backgroundColor = UIColor.clear
         viewModel.view = self
+        fetchVideosFromDataManager()
     }
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -53,6 +54,7 @@ class YoutubeTimelineContainerCollectionViewCell: UICollectionViewCell, YoutubeT
         }
         flowLayout.invalidateLayout()
     }
+    func fetchVideosFromDataManager() { }
     //MARK:-YoutubeTimelineViewControllerInput
     func didFinishUpdates() {
         collectionView.reloadData()

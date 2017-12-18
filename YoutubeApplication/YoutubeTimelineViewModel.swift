@@ -8,7 +8,10 @@
 
 import Foundation
 protocol YoutubeViewModelOutput: YoutubeDataManagerInput {
-   func queryVideosFromDataManager()
+    func queryHomeVideosFromDataManager()
+    func queryTrendingVideosFromDataManager()
+    func querySubscriptionsVideosFromDataManager()
+    func queryAccountVideosFromDataManager()
 }
 class YoutubeTimelineViewModel: YoutubeViewModelOutput {
     fileprivate var videos = [YoutubeVideoItem]()
@@ -16,12 +19,26 @@ class YoutubeTimelineViewModel: YoutubeViewModelOutput {
     weak var view: YoutubeTimelineViewControllerInput?
     init() {
         dataManager.managerInput = self
-        queryVideosFromDataManager()
     }
     //MARK:-YoutubeViewModelOutput
-    func queryVideosFromDataManager() {
+    func queryHomeVideosFromDataManager() {
         DispatchQueue.global(qos: .userInteractive).async {
-            self.dataManager.fetchFeedVideosFromAPI()
+            self.dataManager.fetchHomeVideosFromDataManager()
+        }
+    }
+    func queryTrendingVideosFromDataManager() {
+        DispatchQueue.global(qos: .userInteractive).async {
+            self.dataManager.fetchTrendingVideosFromDataManager()
+        }
+    }
+    func querySubscriptionsVideosFromDataManager() {
+        DispatchQueue.global(qos: .userInteractive).async {
+            self.dataManager.fetchSubscriptionsVideosFromDataManager()
+        }
+    }
+    func queryAccountVideosFromDataManager() {
+        DispatchQueue.global(qos: .userInteractive).async {
+            self.dataManager.fetchAccountVideosFromDataManager()
         }
     }
     //MARK:-YoutubeDataManagerInput

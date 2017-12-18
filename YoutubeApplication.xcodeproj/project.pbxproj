@@ -29,6 +29,10 @@
 		8A9E0FEF1FDEAEBA0065108D /* YoutubeMenuBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9E0FEE1FDEAEBA0065108D /* YoutubeMenuBar.swift */; };
 		8A9E0FF11FDEB0A70065108D /* YoutubeSettingsMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9E0FF01FDEB0A70065108D /* YoutubeSettingsMenu.swift */; };
 		8A9E0FF51FDEB5EF0065108D /* YoutubeSettingsMenuCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9E0FF41FDEB5EF0065108D /* YoutubeSettingsMenuCollectionViewCell.swift */; };
+		8ADA6C6E1FE7C71D00B06843 /* YoutubeTimelineHomeCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADA6C6D1FE7C71C00B06843 /* YoutubeTimelineHomeCollectionViewCell.swift */; };
+		8ADA6C701FE7C77200B06843 /* YoutubeTimelineTrendingCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADA6C6F1FE7C77200B06843 /* YoutubeTimelineTrendingCollectionViewCell.swift */; };
+		8ADA6C721FE7C93400B06843 /* YoutubeTimelineSubscriptionsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADA6C711FE7C93400B06843 /* YoutubeTimelineSubscriptionsCollectionViewCell.swift */; };
+		8ADA6C741FE7C95500B06843 /* YoutubeTimelineAccountCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADA6C731FE7C95500B06843 /* YoutubeTimelineAccountCollectionViewCell.swift */; };
 		A99C80DC384595F6665190E0 /* Pods_YoutubeApplication.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46B9F88867E3F501E11D73EA /* Pods_YoutubeApplication.framework */; };
 /* End PBXBuildFile section */
 
@@ -60,6 +64,10 @@
 		8A9E0FEE1FDEAEBA0065108D /* YoutubeMenuBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YoutubeMenuBar.swift; sourceTree = "<group>"; };
 		8A9E0FF01FDEB0A70065108D /* YoutubeSettingsMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YoutubeSettingsMenu.swift; sourceTree = "<group>"; };
 		8A9E0FF41FDEB5EF0065108D /* YoutubeSettingsMenuCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YoutubeSettingsMenuCollectionViewCell.swift; sourceTree = "<group>"; };
+		8ADA6C6D1FE7C71C00B06843 /* YoutubeTimelineHomeCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YoutubeTimelineHomeCollectionViewCell.swift; sourceTree = "<group>"; };
+		8ADA6C6F1FE7C77200B06843 /* YoutubeTimelineTrendingCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YoutubeTimelineTrendingCollectionViewCell.swift; sourceTree = "<group>"; };
+		8ADA6C711FE7C93400B06843 /* YoutubeTimelineSubscriptionsCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YoutubeTimelineSubscriptionsCollectionViewCell.swift; sourceTree = "<group>"; };
+		8ADA6C731FE7C95500B06843 /* YoutubeTimelineAccountCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YoutubeTimelineAccountCollectionViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -193,6 +201,10 @@
 			isa = PBXGroup;
 			children = (
 				8A4915BF1FE3C62700A187CD /* YoutubeTimelineContainerCollectionViewCell.swift */,
+				8ADA6C6D1FE7C71C00B06843 /* YoutubeTimelineHomeCollectionViewCell.swift */,
+				8ADA6C6F1FE7C77200B06843 /* YoutubeTimelineTrendingCollectionViewCell.swift */,
+				8ADA6C711FE7C93400B06843 /* YoutubeTimelineSubscriptionsCollectionViewCell.swift */,
+				8ADA6C731FE7C95500B06843 /* YoutubeTimelineAccountCollectionViewCell.swift */,
 				8A7B032D1FD6B0510028BB9B /* YoutubeTimelineCollectionViewCell.swift */,
 				8A8906B31FD86DD600D303E6 /* YoutubeMenuBarCollectionViewCell.swift */,
 				8A9E0FF41FDEB5EF0065108D /* YoutubeSettingsMenuCollectionViewCell.swift */,
@@ -353,6 +365,8 @@
 			files = (
 				8A9E0FDE1FD96D8C0065108D /* YoutubeMenuBarViewModel.swift in Sources */,
 				8A7B030C1FD6A76F0028BB9B /* AppDelegate.swift in Sources */,
+				8ADA6C6E1FE7C71D00B06843 /* YoutubeTimelineHomeCollectionViewCell.swift in Sources */,
+				8ADA6C741FE7C95500B06843 /* YoutubeTimelineAccountCollectionViewCell.swift in Sources */,
 				8A8906B01FD81B0D00D303E6 /* YoutubeNavigationBarTitleView.swift in Sources */,
 				8A9E0FE01FD97A150065108D /* YoutubeVideo.swift in Sources */,
 				8A9E0FF11FDEB0A70065108D /* YoutubeSettingsMenu.swift in Sources */,
@@ -368,7 +382,9 @@
 				8A9E0FEB1FDEAD720065108D /* YoutubeSettingsMenuViewModel.swift in Sources */,
 				8A7B03261FD6A93D0028BB9B /* YoutubeTimelineViewController.swift in Sources */,
 				8A9E0FE21FD984030065108D /* YoutubeHelpedMethods.swift in Sources */,
+				8ADA6C721FE7C93400B06843 /* YoutubeTimelineSubscriptionsCollectionViewCell.swift in Sources */,
 				8A9E0FE91FDEAB510065108D /* YoutubeSettingsMenuView.swift in Sources */,
+				8ADA6C701FE7C77200B06843 /* YoutubeTimelineTrendingCollectionViewCell.swift in Sources */,
 				8A8906B41FD86DD600D303E6 /* YoutubeMenuBarCollectionViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
