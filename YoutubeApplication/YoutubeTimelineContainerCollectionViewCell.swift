@@ -25,7 +25,7 @@ class YoutubeTimelineContainerCollectionViewCell: UICollectionViewCell, YoutubeT
     }
     fileprivate var collectionViewitemSizeToLandscape: CGSize {
         get {
-            let width: CGFloat = ((self.frame.width / 2) - (cellOffset * 2))
+            let width: CGFloat = self.frame.width / 2.2
             let height: CGFloat = (width / 1.5) * (4 / 3)
             return CGSize(width: width, height: height)
         }
@@ -84,10 +84,10 @@ class YoutubeTimelineContainerCollectionViewCell: UICollectionViewCell, YoutubeT
         addConstraintsToCollectionView()
     }
     private func addConstraintsToCollectionView() {
-        collectionView.leftAnchor.constraint(lessThanOrEqualTo: self.leftAnchor).isActive = true
-        collectionView.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
-        collectionView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
-        collectionView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
+        collectionView.centerXAnchor.constraint(lessThanOrEqualTo: self.centerXAnchor).isActive = true
+        collectionView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        collectionView.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
+        collectionView.heightAnchor.constraint(equalTo: self.heightAnchor).isActive = true
     }
 }
 extension YoutubeTimelineContainerCollectionViewCell: UICollectionViewDataSource {

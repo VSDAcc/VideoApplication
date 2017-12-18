@@ -38,11 +38,9 @@ class YoutubeDataManager: YoutubeDataManagerOutput {
                 }
             }else if let data = data, let response = response as? HTTPURLResponse, response.statusCode == 200 {
                 let jsonObject = JSON(data).arrayValue
-                var videoArray = [YoutubeVideoItem]()
-                for value in jsonObject {
-                    let videos = YoutubeVideo(response: value, channel: YoutubeVideoChannel(response: value))
-                    videoArray.append(videos)
-                }
+                let videoArray = jsonObject.map({
+                    return YoutubeVideo(response: $0, channel: YoutubeVideoChannel(response: $0))
+                })
                 DispatchQueue.main.async {
                     self?.managerInput?.didFetchFeedVideosFromAPI(videoArray)
                 }
@@ -60,11 +58,9 @@ class YoutubeDataManager: YoutubeDataManagerOutput {
                 }
             }else if let data = data, let response = response as? HTTPURLResponse, response.statusCode == 200 {
                 let jsonObject = JSON(data).arrayValue
-                var videoArray = [YoutubeVideoItem]()
-                for value in jsonObject {
-                    let videos = YoutubeVideo(response: value, channel: YoutubeVideoChannel(response: value))
-                    videoArray.append(videos)
-                }
+                let videoArray = jsonObject.map({
+                    return YoutubeVideo(response: $0, channel: YoutubeVideoChannel(response: $0))
+                })
                 DispatchQueue.main.async {
                     self?.managerInput?.didFetchFeedVideosFromAPI(videoArray)
                 }
@@ -82,11 +78,9 @@ class YoutubeDataManager: YoutubeDataManagerOutput {
                 }
             }else if let data = data, let response = response as? HTTPURLResponse, response.statusCode == 200 {
                 let jsonObject = JSON(data).arrayValue
-                var videoArray = [YoutubeVideoItem]()
-                for value in jsonObject {
-                    let videos = YoutubeVideo(response: value, channel: YoutubeVideoChannel(response: value))
-                    videoArray.append(videos)
-                }
+                let videoArray = jsonObject.map({
+                    return YoutubeVideo(response: $0, channel: YoutubeVideoChannel(response: $0))
+                })
                 DispatchQueue.main.async {
                     self?.managerInput?.didFetchFeedVideosFromAPI(videoArray)
                 }
@@ -104,11 +98,9 @@ class YoutubeDataManager: YoutubeDataManagerOutput {
                 }
             }else if let data = data, let response = response as? HTTPURLResponse, response.statusCode == 200 {
                 let jsonObject = JSON(data).arrayValue
-                var videoArray = [YoutubeVideoItem]()
-                for value in jsonObject {
-                    let videos = YoutubeVideo(response: value, channel: YoutubeVideoChannel(response: value))
-                    videoArray.append(videos)
-                }
+                let videoArray = jsonObject.map({
+                    return YoutubeVideo(response: $0, channel: YoutubeVideoChannel(response: $0))
+                })
                 DispatchQueue.main.async {
                     self?.managerInput?.didFetchFeedVideosFromAPI(videoArray)
                 }

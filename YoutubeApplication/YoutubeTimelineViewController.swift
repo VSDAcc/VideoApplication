@@ -33,7 +33,7 @@ class YoutubeTimelineViewController: UICollectionViewController, UICollectionVie
     fileprivate lazy var backgroundImageView: UIImageView = self.createBackgroundImageView()
     fileprivate lazy var menuBar: YoutubeMenuBarView = self.createYoutubeMenuBar()
     fileprivate lazy var settingsMenuView: YoutubeSettingsMenuView = self.createYoutubeSettingsMenuView()
-    private var menuBarHeight: CGFloat  = 55.0
+    private var menuBarHeight: CGFloat  = 50.0
     fileprivate var collectionViewItemSizeToPortrait: CGSize {
         get {
             let width: CGFloat = view.frame.width
@@ -60,10 +60,12 @@ class YoutubeTimelineViewController: UICollectionViewController, UICollectionVie
         return .lightContent
     }
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
         guard let flowLayout = collectionView?.collectionViewLayout as? UICollectionViewFlowLayout else {
             return
         }
         flowLayout.invalidateLayout()
+        collectionView?.reloadData()
     }
     //MARK:-ConfigureMethods
     fileprivate lazy var navigationTitleView: YoutubeNavigationBarTitleView = {
@@ -79,7 +81,7 @@ class YoutubeTimelineViewController: UICollectionViewController, UICollectionVie
         flowLayout.scrollDirection = .horizontal
         flowLayout.sectionHeadersPinToVisibleBounds = true
         flowLayout.minimumInteritemSpacing = 0
-        flowLayout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0)
+        flowLayout.sectionInset = UIEdgeInsetsMake(0, 0 , 0, 0)
         flowLayout.minimumLineSpacing = 0
     }
     private func configureNavigationBar() {
@@ -167,35 +169,22 @@ class YoutubeTimelineViewController: UICollectionViewController, UICollectionVie
         return 4
     }
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        var identifire: String
         if indexPath.row == TimelineMenu.home.rawValue {
-            let timelineCell = collectionView.dequeueReusableCell(withReuseIdentifier: CellID.youtubeTimelineHomeCellID, for: indexPath) as! YoutubeTimelineHomeCollectionViewCell
-            DispatchQueue.main.async {
-                timelineCell.setNeedsLayout()
-                timelineCell.layoutIfNeeded()
-            }
-            return timelineCell
+            identifire = CellID.youtubeTimelineHomeCellID
         }else if indexPath.row == TimelineMenu.trending.rawValue {
-            let timelineCell = collectionView.dequeueReusableCell(withReuseIdentifier: CellID.youtubeTimelineTrendingCellID, for: indexPath) as! YoutubeTimelineTrendingCollectionViewCell
-            DispatchQueue.main.async {
-                timelineCell.setNeedsLayout()
-                timelineCell.layoutIfNeeded()
-            }
-            return timelineCell
+            identifire = CellID.youtubeTimelineTrendingCellID
         }else if indexPath.row == TimelineMenu.subscriptions.rawValue {
-            let timelineCell = collectionView.dequeueReusableCell(withReuseIdentifier: CellID.youtubeTimelineSubscriptionsCellID, for: indexPath) as! YoutubeTimelineSubscriptionsCollectionViewCell
-            DispatchQueue.main.async {
-                timelineCell.setNeedsLayout()
-                timelineCell.layoutIfNeeded()
-            }
-            return timelineCell
+            identifire = CellID.youtubeTimelineSubscriptionsCellID
         }else {
-            let timelineCell = collectionView.dequeueReusableCell(withReuseIdentifier: CellID.youtubeTimelineAccountCellID, for: indexPath) as! YoutubeTimelineAccountCollectionViewCell
-            DispatchQueue.main.async {
-                timelineCell.setNeedsLayout()
-                timelineCell.layoutIfNeeded()
-            }
-            return timelineCell
+            identifire = CellID.youtubeTimelineAccountCellID
         }
+        let timelineCell = collectionView.dequeueReusableCell(withReuseIdentifier: identifire, for: indexPath)
+        DispatchQueue.main.async {
+            timelineCell.setNeedsLayout()
+            timelineCell.layoutIfNeeded()
+        }
+        return timelineCell
     }
     //MARK:-ScrollViewDelegate
     override func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {

@@ -32,12 +32,16 @@ class YoutubeTimelineCollectionViewCell: UICollectionViewCell {
         self.thumbnailImageView.downloadImageUsingCache(stringURL: self.youtubeVideo.thumbnailImage)
         if let channel = self.youtubeVideo.channel {
             self.videoAuthorImageView.downloadImageUsingCache(stringURL: channel.channelProfileImageLink)
-            self.videoSubtitleDescriptionLabel.text = channel.channelName
+            self.videoSubtitleDescriptionLabel.text = channel.channelName + " ● \(youtubeHelpedMethods.formateNumberToStringInDecimalFormat(NSNumber(value: youtubeVideo.videoNumberOfViews))) views"
         }
         self.videoSubtitleLabel.text = self.youtubeVideo.videoTitle
         self.videoSubtitleLabelHeightAnchor?.constant = self.youtubeHelpedMethods.configureEstimatedHeightForText(self.youtubeVideo.videoTitle).height + 20.0
     }
     //MARK:-Loading
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        self.translatesAutoresizingMaskIntoConstraints = false
+    }
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.contentView.backgroundColor = UIColor.clear
