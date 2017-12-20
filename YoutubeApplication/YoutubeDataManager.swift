@@ -20,6 +20,7 @@ protocol YoutubeDataManagerInput: class {
     func didHandleErrorFromFetchingRequest(_ error: String)
 }
 class YoutubeDataManager: YoutubeDataManagerOutput {
+    
     weak var managerInput: YoutubeDataManagerInput?
     private let defaultSession = URLSession(configuration: .default)
     private var dataTask: URLSessionDataTask?

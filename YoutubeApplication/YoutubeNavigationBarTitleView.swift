@@ -10,6 +10,7 @@ import UIKit
 
 class YoutubeNavigationBarTitleView: UIView {
     lazy var titleLabel: UILabel = self.createTitleLabel()
+    
     //MARK:-Loading
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -29,7 +30,7 @@ class YoutubeNavigationBarTitleView: UIView {
         addSubview(nameLabel)
         return nameLabel
     }
-     //MARK:-AddConstraints
+    //MARK:-AddConstraints
     private func addAllConstraintsToViews() {
         addConstraintsToTitleLabel()
     }

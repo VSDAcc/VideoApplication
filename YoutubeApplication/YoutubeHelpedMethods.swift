@@ -9,6 +9,7 @@
 import UIKit
 import SDWebImage
 struct YoutubeHelpedMethods {
+    
     func formateNumberToStringInDecimalFormat(_ number: NSNumber) -> String {
         let formatter = NumberFormatter()
         formatter.numberStyle = .decimal

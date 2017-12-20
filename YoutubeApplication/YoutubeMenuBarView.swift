@@ -9,6 +9,7 @@
 import UIKit
 
 class YoutubeMenuBarView: UIView {
+    
     fileprivate struct CellID {
         static let youtubeMenuBarCellID = "youtubeMenuBarCell"
     }
@@ -26,16 +27,23 @@ class YoutubeMenuBarView: UIView {
         collection.dataSource = self
         collection.backgroundColor = UIColor.clear
         collection.isScrollEnabled = false
-        collection.selectItem(at: self.menuSelectedItem, animated: true, scrollPosition: .bottom)
+        collection.selectItem(at: self.menuSelectedItem, animated: true, scrollPosition: .right)
         return collection
     }()
     private lazy var underlineView: UIView = self.createMenuBarUnderlineView()
-    fileprivate var underlineViewLeadingConstraint: NSLayoutConstraint?
+    private var underlineViewLeadingConstraint: NSLayoutConstraint?
     weak var menuBarDidSelectItemAtInexPath: YoutubeMenuBarDidSelectItemAtInexPath?
     var menuSelectedItem: IndexPath = IndexPath(item: 0, section: 0) {
         didSet {
-            actionPushUnderlineViewLeadingConstraint(item: menuSelectedItem.item)
+            collectionView.selectItem(at: menuSelectedItem, animated: true, scrollPosition: .right)
             menuBarDidSelectItemAtInexPath?.didSelectYoutubeMenuItem(viewModel.selectedItemAt(indexPath: menuSelectedItem))
+        }
+    }
+    var underlineConstraintConstant: CGFloat {
+        get {
+           return (underlineViewLeadingConstraint?.constant)!
+        } set {
+            underlineViewLeadingConstraint?.constant = newValue
         }
     }
     fileprivate var collectionViewItemSizeToPortrait: CGSize {
@@ -69,17 +77,9 @@ class YoutubeMenuBarView: UIView {
             return
         }
         DispatchQueue.main.async {
-            self.actionPushUnderlineViewLeadingConstraint(item: self.menuSelectedItem.item)
+            self.menuBarDidSelectItemAtInexPath?.didSelectMenuBarItemAtIndexPath(self.menuSelectedItem)
         }
         flowLayout.invalidateLayout()
-    }
-    //MARK:-Actions
-    fileprivate func actionPushUnderlineViewLeadingConstraint(item: Int) {
-        let leading = CGFloat(item) * self.frame.width / 4.0
-        self.underlineViewLeadingConstraint?.constant = leading
-        UIView.animate(withDuration: 0.3, delay: 0, options: [.curveEaseOut], animations: {
-            self.layoutIfNeeded()
-        }, completion: { (finished) in })
     }
     //MARK:-SetupViews
     private func createMenuBarUnderlineView() -> UIView {

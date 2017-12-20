@@ -9,6 +9,7 @@
 import UIKit
 
 class YoutubeTimelineSubscriptionsCollectionViewCell: YoutubeTimelineContainerCollectionViewCell {
+    
     override func fetchVideosFromDataManager() {
         viewModel.querySubscriptionsVideosFromDataManager()
     }

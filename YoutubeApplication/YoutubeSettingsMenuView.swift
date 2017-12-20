@@ -9,6 +9,7 @@
 import UIKit
 
 class YoutubeSettingsMenuView: UIView {
+    
     fileprivate struct CellID {
         static let youtubeSettingsMenuCellID = "youtubeSettingsMenuCell"
     }
@@ -42,6 +43,7 @@ class YoutubeSettingsMenuView: UIView {
         }
     }
     var viewModel = YoutubeSettingsMenuViewModel()
+    
     //MARK:-Loading
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -89,10 +91,10 @@ class YoutubeSettingsMenuView: UIView {
                 self.backgroundSettingsMenuViewHeightConstaint?.constant = 0
                 UIView.animate(withDuration: 0.3, delay: 0, options: [.curveEaseIn], animations: {
                     self.layoutIfNeeded()
-                }, completion: { (finished) in
-                    self.collectionView.isHidden = true
-                    self.backgroundSettingsMenuView.isHidden = true
-                    self.isHidden = true
+                }, completion: { [weak self] (finished) in
+                    self?.collectionView.isHidden = true
+                    self?.backgroundSettingsMenuView.isHidden = true
+                    self?.isHidden = true
                     onSuccess()
                 })
             }
@@ -111,7 +113,7 @@ class YoutubeSettingsMenuView: UIView {
             }
         }
     }
-    //MARK:-CreateConstraints
+    //MARK:-CreateViews
     private func createCollectionView() -> UICollectionView {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.scrollDirection = .vertical

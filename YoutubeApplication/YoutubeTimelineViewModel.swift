@@ -14,6 +14,7 @@ protocol YoutubeViewModelOutput: YoutubeDataManagerInput {
     func queryAccountVideosFromDataManager()
 }
 class YoutubeTimelineViewModel: YoutubeViewModelOutput {
+    
     fileprivate var videos = [YoutubeVideoItem]()
     var dataManager = YoutubeDataManager()
     weak var view: YoutubeTimelineViewControllerInput?

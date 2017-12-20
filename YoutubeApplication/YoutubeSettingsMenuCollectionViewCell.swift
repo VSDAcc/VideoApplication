@@ -9,6 +9,7 @@
 import UIKit
 
 class YoutubeSettingsMenuCollectionViewCell: UICollectionViewCell {
+    
     lazy var settingsTitleLabel: UILabel = self.createTitleLabel()
     lazy var menuImageView: UIImageView = self.createmMenuImageView()
     private var unhiglitedTextColor: UIColor {
@@ -17,6 +18,7 @@ class YoutubeSettingsMenuCollectionViewCell: UICollectionViewCell {
     private var unhiglitedImageColor: UIColor {
         return UIColor.darkGray
     }
+    
     //MARK:-Loading
     override init(frame: CGRect) {
         super.init(frame: frame)

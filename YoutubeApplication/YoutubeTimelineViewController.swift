@@ -19,6 +19,9 @@ protocol YoutubeMenuBarDidSelectItemAtInexPath: class {
     func didSelectMenuBarItemAtIndexPath(_ indexPath: IndexPath)
     func didSelectYoutubeMenuItem(_ item: YoutubeMenuBarItem)
 }
+protocol YoutubeTimelineContainerViewCellHandler: class {
+    func didSelectTimelineYoutubeVideoItem(_ video: YoutubeVideoItem)
+}
 class YoutubeTimelineViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout, PresenterAlertHandler {
     
     fileprivate struct CellID {
@@ -179,7 +182,8 @@ class YoutubeTimelineViewController: UICollectionViewController, UICollectionVie
         }else {
             identifire = CellID.youtubeTimelineAccountCellID
         }
-        let timelineCell = collectionView.dequeueReusableCell(withReuseIdentifier: identifire, for: indexPath)
+        let timelineCell = collectionView.dequeueReusableCell(withReuseIdentifier: identifire, for: indexPath) as! YoutubeTimelineContainerCollectionViewCell
+        timelineCell.youtubeTimelineContainerViewCellHandler = self
         DispatchQueue.main.async {
             timelineCell.setNeedsLayout()
             timelineCell.layoutIfNeeded()
@@ -187,11 +191,14 @@ class YoutubeTimelineViewController: UICollectionViewController, UICollectionVie
         return timelineCell
     }
     //MARK:-ScrollViewDelegate
+    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let offset = scrollView.contentOffset.x / 4
+        menuBar.underlineConstraintConstant = offset
+    }
     override func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         let index = targetContentOffset.pointee.x / view.frame.width
         let indexPath = IndexPath(item: Int(index), section: 0)
         menuBar.menuSelectedItem = indexPath
-        menuBar.collectionView.selectItem(at: indexPath, animated: true, scrollPosition: .right)
     }
     //MARK:-UICollectionViewFlowLayout
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -230,7 +237,12 @@ extension YoutubeTimelineViewController: YoutubeMenuBarDidSelectItemAtInexPath {
         self.navigationTitleView.titleLabel.text = item.itemTitleName.description
     }
 }
-
+extension YoutubeTimelineViewController: YoutubeTimelineContainerViewCellHandler {
+    func didSelectTimelineYoutubeVideoItem(_ video: YoutubeVideoItem) {
+        let detailVideo = YoutubeDetailVideoViewController(viewModel: YoutubeDetailVideoViewModel(videoItem: video))
+        present(detailVideo, animated: true)
+    }
+}
 
 
 

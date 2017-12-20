@@ -9,6 +9,7 @@
 import UIKit
 
 class YoutubeTimelineAccountCollectionViewCell: YoutubeTimelineContainerCollectionViewCell {
+
     override func fetchVideosFromDataManager() {
         viewModel.queryHomeVideosFromDataManager()
     }

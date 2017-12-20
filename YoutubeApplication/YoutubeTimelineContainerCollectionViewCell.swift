@@ -12,6 +12,7 @@ protocol YoutubeTimelineViewControllerInput: class {
     func didHandleError(_ error: String)
 }
 class YoutubeTimelineContainerCollectionViewCell: UICollectionViewCell, YoutubeTimelineViewControllerInput {
+    
     fileprivate struct CellID {
         static let youtubeTimelineCellID = "youtubeTimelineCell"
     }
@@ -32,6 +33,8 @@ class YoutubeTimelineContainerCollectionViewCell: UICollectionViewCell, YoutubeT
     }
     lazy var collectionView: UICollectionView = self.createCollectionView()
     var viewModel = YoutubeTimelineViewModel()
+    weak var youtubeTimelineContainerViewCellHandler: YoutubeTimelineContainerViewCellHandler?
+    
     //MARK:-Loading
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -106,6 +109,10 @@ extension YoutubeTimelineContainerCollectionViewCell: UICollectionViewDataSource
     }
 }
 extension YoutubeTimelineContainerCollectionViewCell: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let video = viewModel.selectedItemAt(indexPath: indexPath)
+        youtubeTimelineContainerViewCellHandler?.didSelectTimelineYoutubeVideoItem(video)
+    }
 }
 extension YoutubeTimelineContainerCollectionViewCell: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

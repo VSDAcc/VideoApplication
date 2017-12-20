@@ -9,6 +9,7 @@
 import UIKit
 
 class YoutubeTimelineTrendingCollectionViewCell: YoutubeTimelineContainerCollectionViewCell {
+    
     override func fetchVideosFromDataManager() {
         viewModel.queryTrendingVideosFromDataManager()
     }
