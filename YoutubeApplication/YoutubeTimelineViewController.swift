@@ -68,7 +68,9 @@ class YoutubeTimelineViewController: UICollectionViewController, UICollectionVie
             return
         }
         flowLayout.invalidateLayout()
-        collectionView?.reloadData()
+        DispatchQueue.main.async {
+          self.collectionView?.reloadData()
+        }
     }
     //MARK:-ConfigureMethods
     fileprivate lazy var navigationTitleView: YoutubeNavigationBarTitleView = {

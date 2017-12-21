@@ -12,7 +12,6 @@ class YoutubeDetailVideoViewController: UIViewController {
 
     lazy var videoPlayerView: YoutubeVideoPlayerView = self.createVideoPlayerView()
     lazy var videoPlayerHideButton: UIButton = self.createVideoPlayerHideButton()
-    weak var videoPlayerManager: YoutubeVideoPlayerManager?
     fileprivate var viewModel: YoutubeDetailVideoViewModel?
     
     //MARK:-Loading
@@ -32,12 +31,12 @@ class YoutubeDetailVideoViewController: UIViewController {
     //MARK:-YoutubeVideoPlayerLauncherItem
     func actionPrepareVideoForPlaying() {
         viewModel?.videoURL.bind(listener: { [weak self] (videoURL) in
-            self?.videoPlayerManager?.actionPrepareVideoForPlayingWith(videoURL!)
+            self?.videoPlayerView.actionPrepareVideoForPlayingWith(videoURL!)
         })
         actionIsStatusBarHidden(true)
     }
     func actionHideVideoPlayer(_ sender: UIButton) {
-        videoPlayerManager?.actionStopPlayingVideo()
+        videoPlayerView.actionStopPlayingVideo()
         presentingViewController?.dismiss(animated: true, completion: nil)
         actionIsStatusBarHidden(false)
     }
@@ -50,7 +49,6 @@ class YoutubeDetailVideoViewController: UIViewController {
     private func createVideoPlayerView() -> YoutubeVideoPlayerView {
         let videoView = YoutubeVideoPlayerView()
         videoView.translatesAutoresizingMaskIntoConstraints = false
-        videoPlayerManager = videoView
         view.addSubview(videoView)
         return videoView
     }

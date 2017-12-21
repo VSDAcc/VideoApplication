@@ -7,7 +7,11 @@
 //
 
 import UIKit
-class ProgressHudView: UIVisualEffectView {
+protocol ProgressHudManager {
+    func show()
+    func hide()
+}
+class ProgressHudView: UIVisualEffectView, ProgressHudManager {
     private var text: String? {
         didSet {
             label.text = text
@@ -44,6 +48,7 @@ class ProgressHudView: UIVisualEffectView {
         label.textAlignment = .center
         label.textColor = UIColor.white
         label.numberOfLines = 1
+        label.adjustsFontSizeToFitWidth = true
         label.text = self.text
         contentView.addSubview(label)
         return label
