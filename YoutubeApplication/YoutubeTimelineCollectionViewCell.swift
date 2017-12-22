@@ -18,7 +18,7 @@ class YoutubeTimelineCollectionViewCell: UICollectionViewCell {
     lazy var thumbnailImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.contentMode = .scaleAspectFill
+        imageView.contentMode = .scaleToFill
         return imageView
     }()
     private var videoSubtitleLabelHeightAnchor: NSLayoutConstraint?

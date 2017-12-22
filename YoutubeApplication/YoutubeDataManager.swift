@@ -24,10 +24,10 @@ class YoutubeDataManager: YoutubeDataManagerOutput {
     weak var managerInput: YoutubeDataManagerInput?
     private let defaultSession = URLSession(configuration: .default)
     private var dataTask: URLSessionDataTask?
-    private var homeURL: URL = URL(string: "https://s3-us-west-2.amazonaws.com/youtubeassets/home.json")!
-    private var trendingURL: URL = URL(string: "https://s3-us-west-2.amazonaws.com/youtubeassets/trending.json")!
-    private var subscriptionsURL: URL = URL(string: "https://s3-us-west-2.amazonaws.com/youtubeassets/subscriptions.json")!
-    private var accountURL: URL = URL(string: "https://s3-us-west-2.amazonaws.com/youtubeassets/account.json")!
+    private let homeURL: URL = URL(string: "https://s3-us-west-2.amazonaws.com/youtubeassets/home.json")!
+    private let trendingURL: URL = URL(string: "https://s3-us-west-2.amazonaws.com/youtubeassets/trending.json")!
+    private let subscriptionsURL: URL = URL(string: "https://s3-us-west-2.amazonaws.com/youtubeassets/subscriptions.json")!
+    private let accountURL: URL = URL(string: "https://s3-us-west-2.amazonaws.com/youtubeassets/account.json")!
     
     func fetchHomeVideosFromDataManager() {
         dataTask?.cancel()

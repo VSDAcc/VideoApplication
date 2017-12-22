@@ -56,7 +56,7 @@ struct YoutubeVideo: YoutubeVideoItem {
         if let duration = response["duration"].int {
             self.videoDuration = duration
         }
-        videoLinkUrl = "https://firebasestorage.googleapis.com/v0/b/gameofchats-762ca.appspot.com/o/message_movies%2F12323439-9729-4941-BA07-2BAE970967C7.mov?alt=media&token=3e37a093-3bc8-410f-84d3-38332af9c726"
+        videoLinkUrl = "https://firebasestorage.googleapis.com/v0/b/photocardtest-bf9cd.appspot.com/o/Video_Storage%2F7sGBzgqoXhY9UGkEjCoBQKn66gy18A5E6C02-8F96-4089-A91D-063816CDCB84.jpg)?alt=media&token=bfc4b11c-abf2-4932-be79-6d172bb8dfbd"
     }
     init(response: JSON, channel: YoutubeVideoChannelItem) {
         self.init(response: response)

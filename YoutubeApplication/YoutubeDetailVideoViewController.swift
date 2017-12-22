@@ -73,9 +73,9 @@ class YoutubeDetailVideoViewController: UIViewController {
         addConstraintsToVideoPlayerHideButton()
     }
     private func addConstraintsToVideoPlayerView() {
-        videoPlayerView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-        videoPlayerView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        videoPlayerView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 1/3).isActive = true
+        videoPlayerView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        videoPlayerView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        videoPlayerView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 1).isActive = true
         videoPlayerView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
     }
     private func addConstraintsToVideoPlayerHideButton() {
