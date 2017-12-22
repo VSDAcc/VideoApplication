@@ -22,14 +22,20 @@ class YoutubeDetailVideoViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         addAllConstraintsToViews()
+        addVideoThumbnailImage()
         self.view.backgroundColor = UIColor.white
     }
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        actionPrepareVideoForPlaying()
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.prepareVideoForPlaying()
     }
     //MARK:-YoutubeVideoPlayerLauncherItem
-    func actionPrepareVideoForPlaying() {
+    func addVideoThumbnailImage() {
+        viewModel?.thumbnailImage.bind(listener: { [weak self] (image) in
+            self?.videoPlayerView.addThumbnailVideoImageWith(image!)
+        })
+    }
+    func prepareVideoForPlaying() {
         viewModel?.videoURL.bind(listener: { [weak self] (videoURL) in
             self?.videoPlayerView.actionPrepareVideoForPlayingWith(videoURL!)
         })

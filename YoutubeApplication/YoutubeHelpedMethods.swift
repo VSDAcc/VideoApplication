@@ -30,6 +30,16 @@ struct YoutubeHelpedMethods {
         textTime = "\(textMinutes):\(textSeconds)"
         return textTime
     }
+    func thumbnailImageFromVideoURL(_ url: URL) -> UIImage? {
+        let asset = AVAsset(url: url)
+        let imageGenerator = AVAssetImageGenerator(asset: asset)
+        do {
+            let thumbnailCGImage = try imageGenerator.copyCGImage(at: CMTimeMake(1, 60), actualTime: nil)
+            return UIImage(cgImage: thumbnailCGImage)
+        } catch {
+            return nil
+        }
+    }
     func downloadImageUsingCacheWithComplitionBlock(stringURL: String, onSuccess: @escaping(_ image: UIImage) -> (), onFailure: @escaping() -> ()) {
         let imageManager = SDWebImageManager.shared()
         if let image = imageManager.imageCache?.imageFromCache(forKey: stringURL) {
