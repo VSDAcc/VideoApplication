@@ -19,6 +19,9 @@ class YoutubeNavigationBarTitleView: UIView {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    override var intrinsicContentSize: CGSize {
+        return UILayoutFittingExpandedSize
+    }
     //MAKR:-SetupViews
     private func createTitleLabel() -> UILabel {
         let nameLabel = UILabel()

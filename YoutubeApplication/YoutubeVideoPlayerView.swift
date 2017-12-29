@@ -85,7 +85,7 @@ class YoutubeVideoPlayerView: UIView, YoutubeVideoPlayerManager {
         progressHUD.show()
         player = AVPlayer(url: url)
         playerLayer = AVPlayerLayer(player: player)
-        playerLayer?.videoGravity = AVLayerVideoGravityResizeAspectFill
+        playerLayer?.videoGravity = AVLayerVideoGravity.resizeAspectFill
         playerLayer?.frame = self.bounds
         layer.addSublayer(playerLayer!)
         bringSubview(toFront: controlsContainerView)

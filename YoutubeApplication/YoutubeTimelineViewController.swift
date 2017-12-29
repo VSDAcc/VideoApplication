@@ -242,7 +242,7 @@ extension YoutubeTimelineViewController: YoutubeMenuBarDidSelectItemAtInexPath {
 extension YoutubeTimelineViewController: YoutubeTimelineContainerViewCellHandler {
     func didSelectTimelineYoutubeVideoItem(_ video: YoutubeVideoItem) {
         let detailVideo = YoutubeDetailVideoViewController(viewModel: YoutubeDetailVideoViewModel(videoItem: video))
-        present(detailVideo, animated: true)
+        self.showDetailViewController(detailVideo, sender: self)
     }
 }
 

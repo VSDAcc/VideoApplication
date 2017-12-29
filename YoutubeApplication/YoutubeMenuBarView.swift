@@ -64,7 +64,7 @@ class YoutubeMenuBarView: UIView {
     //MARK:-Loading
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.backgroundColor = UIColor.red
+        self.backgroundColor = UIColor(r: 230, g: 32, b: 31, alpha: 1)
         addSubview(collectionView)
         addAllConstraintsToViews()
     }
