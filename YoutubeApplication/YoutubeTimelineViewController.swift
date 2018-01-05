@@ -37,6 +37,7 @@ class YoutubeTimelineViewController: UICollectionViewController, UICollectionVie
     fileprivate lazy var menuBar: YoutubeMenuBarView = self.createYoutubeMenuBar()
     fileprivate lazy var settingsMenuView: YoutubeSettingsMenuView = self.createYoutubeSettingsMenuView()
     private var menuBarHeight: CGFloat  = 50.0
+    private var itemInsets: CGFloat = 50.0
     fileprivate var collectionViewItemSizeToPortrait: CGSize {
         get {
             let width: CGFloat = view.frame.width
@@ -64,7 +65,7 @@ class YoutubeTimelineViewController: UICollectionViewController, UICollectionVie
     }
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
-        guard let flowLayout = collectionView?.collectionViewLayout as? UICollectionViewFlowLayout else {
+        guard let flowLayout = collectionView?.collectionViewLayout as? YoutubeCollectionViewFlowLayout else {
             return
         }
         flowLayout.invalidateLayout()
@@ -80,13 +81,13 @@ class YoutubeTimelineViewController: UICollectionViewController, UICollectionVie
         return titleView
     }()
     private func configureCollectionViewLayout() {
-        guard let flowLayout = collectionView?.collectionViewLayout as? UICollectionViewFlowLayout else {
+        guard let flowLayout = collectionView?.collectionViewLayout as? YoutubeCollectionViewFlowLayout else {
             return
         }
         flowLayout.scrollDirection = .horizontal
         flowLayout.sectionHeadersPinToVisibleBounds = true
         flowLayout.minimumInteritemSpacing = 0
-        flowLayout.sectionInset = UIEdgeInsetsMake(0, 0 , 0, 0)
+        flowLayout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0)
         flowLayout.minimumLineSpacing = 0
     }
     private func configureNavigationBar() {
@@ -101,7 +102,7 @@ class YoutubeTimelineViewController: UICollectionViewController, UICollectionVie
         self.collectionView?.backgroundColor = UIColor.white
         self.collectionView?.contentInset = UIEdgeInsetsMake(menuBarHeight, 0, 0, 0)
         self.collectionView?.scrollIndicatorInsets = UIEdgeInsetsMake(menuBarHeight, 0, 0, 0)
-        self.collectionView?.isPagingEnabled = true
+        self.collectionView?.isPagingEnabled = false
         self.collectionView?.showsHorizontalScrollIndicator = false
         self.collectionView?.register(YoutubeTimelineHomeCollectionViewCell.self, forCellWithReuseIdentifier: CellID.youtubeTimelineHomeCellID)
         self.collectionView?.register(YoutubeTimelineTrendingCollectionViewCell.self, forCellWithReuseIdentifier: CellID.youtubeTimelineTrendingCellID)
@@ -163,7 +164,7 @@ class YoutubeTimelineViewController: UICollectionViewController, UICollectionVie
     private func addConstraintsToYoutubeSettingsMenuView() {
         settingsMenuView.leftAnchor.constraint(lessThanOrEqualTo: self.view.leftAnchor).isActive = true
         settingsMenuView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        settingsMenuView.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor).isActive = true
+        settingsMenuView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor).isActive = true
         settingsMenuView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
     }
     //MARK:-CollectionViewDataSource
@@ -171,7 +172,7 @@ class YoutubeTimelineViewController: UICollectionViewController, UICollectionVie
         return 1
     }
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 4
+        return menuBar.viewModel.numerOfItemsInSection()
     }
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         var identifire: String

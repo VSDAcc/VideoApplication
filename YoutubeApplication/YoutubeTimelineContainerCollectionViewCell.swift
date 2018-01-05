@@ -79,6 +79,7 @@ class YoutubeTimelineContainerCollectionViewCell: UICollectionViewCell, YoutubeT
         collection.delegate = self
         collection.dataSource = self
         collection.backgroundColor = UIColor.white
+        collection.showsVerticalScrollIndicator = false
         addSubview(collection)
         return collection
     }

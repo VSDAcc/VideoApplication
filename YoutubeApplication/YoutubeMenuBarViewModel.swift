@@ -19,7 +19,7 @@ extension YoutubeMenuBarViewModel {
     func selectedItemAt(indexPath: IndexPath) -> YoutubeMenuBarItem {
         return menuBarArray[indexPath.item]
     }
-    func numerOfItemsInSection(section: Int) -> Int {
+    func numerOfItemsInSection(section: Int? = nil) -> Int {
         return menuBarArray.count
     }
 }

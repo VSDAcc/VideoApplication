@@ -55,7 +55,7 @@ extension YoutubeTimelineViewModel {
     func selectedItemAt(indexPath: IndexPath) -> YoutubeVideoItem {
         return videos[indexPath.item]
     }
-    func numerOfItemsInSection(section: Int) -> Int {
+    func numerOfItemsInSection(section: Int? = nil) -> Int {
         return videos.count
     }
 }

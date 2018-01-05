@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7F3DC95D1FFD30FB00116B94 /* YoutubeCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F3DC95C1FFD30FB00116B94 /* YoutubeCollectionViewFlowLayout.swift */; };
 		8A1202BC1FE912C500A27C09 /* YoutubeVideoPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1202BB1FE912C500A27C09 /* YoutubeVideoPlayerView.swift */; };
 		8A4915C01FE3C62700A187CD /* YoutubeTimelineContainerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4915BF1FE3C62700A187CD /* YoutubeTimelineContainerCollectionViewCell.swift */; };
 		8A7B030C1FD6A76F0028BB9B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7B030B1FD6A76F0028BB9B /* AppDelegate.swift */; };
@@ -44,6 +45,7 @@
 		181FD587350F5FC5526A520C /* Pods-YoutubeApplication.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YoutubeApplication.release.xcconfig"; path = "Pods/Target Support Files/Pods-YoutubeApplication/Pods-YoutubeApplication.release.xcconfig"; sourceTree = "<group>"; };
 		46B9F88867E3F501E11D73EA /* Pods_YoutubeApplication.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_YoutubeApplication.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5C1120AABFD1715058793DF6 /* Pods-YoutubeApplication.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YoutubeApplication.debug.xcconfig"; path = "Pods/Target Support Files/Pods-YoutubeApplication/Pods-YoutubeApplication.debug.xcconfig"; sourceTree = "<group>"; };
+		7F3DC95C1FFD30FB00116B94 /* YoutubeCollectionViewFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YoutubeCollectionViewFlowLayout.swift; sourceTree = "<group>"; };
 		8A1202BB1FE912C500A27C09 /* YoutubeVideoPlayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YoutubeVideoPlayerView.swift; sourceTree = "<group>"; };
 		8A4915BF1FE3C62700A187CD /* YoutubeTimelineContainerCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YoutubeTimelineContainerCollectionViewCell.swift; sourceTree = "<group>"; };
 		8A7B03081FD6A76E0028BB9B /* YoutubeApplication.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YoutubeApplication.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -227,6 +229,7 @@
 			children = (
 				8A7B03301FD6D3250028BB9B /* YoutubeExtensions.swift */,
 				8A9E0FE11FD984030065108D /* YoutubeHelpedMethods.swift */,
+				7F3DC95C1FFD30FB00116B94 /* YoutubeCollectionViewFlowLayout.swift */,
 			);
 			name = HelpedMethods;
 			sourceTree = "<group>";
@@ -402,6 +405,7 @@
 				8A9E0FE91FDEAB510065108D /* YoutubeSettingsMenuView.swift in Sources */,
 				8ADA6C701FE7C77200B06843 /* YoutubeTimelineTrendingCollectionViewCell.swift in Sources */,
 				8A8906B41FD86DD600D303E6 /* YoutubeMenuBarCollectionViewCell.swift in Sources */,
+				7F3DC95D1FFD30FB00116B94 /* YoutubeCollectionViewFlowLayout.swift in Sources */,
 				8ABD0F6B1FEA528700C8D254 /* YoutubeDetailVideoViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -540,10 +544,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = ZS4WE4E828;
 				INFOPLIST_FILE = YoutubeApplication/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = VS.YoutubeApplication;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
@@ -555,10 +560,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = ZS4WE4E828;
 				INFOPLIST_FILE = YoutubeApplication/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = VS.YoutubeApplication;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
 			};
 			name = Release;
