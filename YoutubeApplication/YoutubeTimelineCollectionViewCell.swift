@@ -23,19 +23,19 @@ class YoutubeTimelineCollectionViewCell: UICollectionViewCell {
     }()
     private var videoSubtitleLabelHeightAnchor: NSLayoutConstraint?
     var youtubeHelpedMethods = YoutubeHelpedMethods()
-    var youtubeVideo: YoutubeVideoItem! {
+    var youtubeVideo: YoutubeVideoModel! {
         didSet {
             updateUI()
         }
     }
     private func updateUI() {
-        self.thumbnailImageView.downloadImageUsingCache(stringURL: self.youtubeVideo.thumbnailImage)
+        self.thumbnailImageView.downloadImageUsingCache(stringURL: self.youtubeVideo.videoThumbnailImage!)
         if let channel = self.youtubeVideo.channel {
-            self.videoAuthorImageView.downloadImageUsingCache(stringURL: channel.channelProfileImageLink)
-            self.videoSubtitleDescriptionLabel.text = channel.channelName + " ● \(youtubeHelpedMethods.formateNumberToStringInDecimalFormat(NSNumber(value: youtubeVideo.videoNumberOfViews))) views"
+            self.videoAuthorImageView.downloadImageUsingCache(stringURL: channel.channelProfileImageLink!)
+            self.videoSubtitleDescriptionLabel.text = channel.channelName! + " ● \(youtubeHelpedMethods.formateNumberToStringInDecimalFormat(NSNumber(value: youtubeVideo.videoNumberOfViews))) views"
         }
         self.videoSubtitleLabel.text = self.youtubeVideo.videoTitle
-        self.videoSubtitleLabelHeightAnchor?.constant = self.youtubeHelpedMethods.configureEstimatedHeightForText(self.youtubeVideo.videoTitle).height + 20.0
+        self.videoSubtitleLabelHeightAnchor?.constant = self.youtubeHelpedMethods.configureEstimatedHeightForText(self.youtubeVideo.videoTitle!).height + 20.0
     }
     //MARK:-Loading
     override func awakeFromNib() {

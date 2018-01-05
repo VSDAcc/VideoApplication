@@ -15,7 +15,7 @@ protocol YoutubeViewModelOutput: YoutubeDataManagerInput {
 }
 class YoutubeTimelineViewModel: YoutubeViewModelOutput {
     
-    fileprivate var videos = [YoutubeVideoItem]()
+    fileprivate var youtubeVideos = [YoutubeVideoModel]()
     var dataManager = YoutubeDataManager()
     weak var view: YoutubeTimelineViewControllerInput?
     init() {
@@ -46,17 +46,17 @@ class YoutubeTimelineViewModel: YoutubeViewModelOutput {
     func didHandleErrorFromFetchingRequest(_ error: String) {
         self.view?.didHandleError(error)
     }
-    func didFetchFeedVideosFromAPI(_ videos: [YoutubeVideoItem]) {
-        self.videos = videos
+    func didHandleFetchRequestWith(_ videos: [YoutubeVideoModel]) {
+        self.youtubeVideos = videos
         self.view?.didFinishUpdates()
     }
 }
 extension YoutubeTimelineViewModel {
-    func selectedItemAt(indexPath: IndexPath) -> YoutubeVideoItem {
-        return videos[indexPath.item]
+    func selectedItemAt(indexPath: IndexPath) -> YoutubeVideoModel {
+        return youtubeVideos[indexPath.item]
     }
     func numerOfItemsInSection(section: Int? = nil) -> Int {
-        return videos.count
+        return youtubeVideos.count
     }
 }
 

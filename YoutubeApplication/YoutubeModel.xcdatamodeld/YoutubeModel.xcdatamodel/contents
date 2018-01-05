@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="13772" systemVersion="17C88" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="YoutubeModel">
+    <entity name="YoutubeVideoChannelModel" representedClassName=".YoutubeVideoChannelModel" syncable="YES" codeGenerationType="category">
+        <attribute name="channelName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="channelProfileImageLink" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="videos" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="YoutubeVideoModel" inverseName="channel" inverseEntity="YoutubeVideoModel" syncable="YES"/>
+    </entity>
+    <entity name="YoutubeVideoModel" representedClassName=".YoutubeVideoModel" syncable="YES" codeGenerationType="category">
+        <attribute name="videoDuration" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="videoLinkURL" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="videoNumberOfViews" optional="YES" attributeType="Integer 64" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="videoThumbnailImage" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="videoTitle" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="channel" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="YoutubeVideoChannelModel" inverseName="videos" inverseEntity="YoutubeVideoChannelModel" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="YoutubeVideoChannelModel" positionX="-4707" positionY="-4662" width="243" height="88"/>
+        <element name="YoutubeVideoModel" positionX="-4401" positionY="-4669" width="243" height="133"/>
+    </elements>
+</model>

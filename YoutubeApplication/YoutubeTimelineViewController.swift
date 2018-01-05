@@ -20,7 +20,7 @@ protocol YoutubeMenuBarDidSelectItemAtInexPath: class {
     func didSelectYoutubeMenuItem(_ item: YoutubeMenuBarItem)
 }
 protocol YoutubeTimelineContainerViewCellHandler: class {
-    func didSelectTimelineYoutubeVideoItem(_ video: YoutubeVideoItem)
+    func didSelectTimelineYoutubeVideoItem(_ video: YoutubeVideoModel)
 }
 class YoutubeTimelineViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout, PresenterAlertHandler {
     
@@ -241,7 +241,7 @@ extension YoutubeTimelineViewController: YoutubeMenuBarDidSelectItemAtInexPath {
     }
 }
 extension YoutubeTimelineViewController: YoutubeTimelineContainerViewCellHandler {
-    func didSelectTimelineYoutubeVideoItem(_ video: YoutubeVideoItem) {
+    func didSelectTimelineYoutubeVideoItem(_ video: YoutubeVideoModel) {
         let detailVideo = YoutubeDetailVideoViewController(viewModel: YoutubeDetailVideoViewModel(videoItem: video))
         self.showDetailViewController(detailVideo, sender: self)
     }

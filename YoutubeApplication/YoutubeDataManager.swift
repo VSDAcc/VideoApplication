@@ -8,7 +8,7 @@
 
 import UIKit
 import SwiftyJSON
-
+import CoreData
 protocol YoutubeDataManagerOutput {
     func fetchHomeVideosFromDataManager()
     func fetchTrendingVideosFromDataManager()
@@ -16,11 +16,12 @@ protocol YoutubeDataManagerOutput {
     func fetchAccountVideosFromDataManager()
 }
 protocol YoutubeDataManagerInput: class {
-    func didFetchFeedVideosFromAPI(_ videos: [YoutubeVideoItem])
     func didHandleErrorFromFetchingRequest(_ error: String)
+    func didHandleFetchRequestWith(_ videos: [YoutubeVideoModel])
 }
 class YoutubeDataManager: YoutubeDataManagerOutput {
     
+    var container: NSPersistentContainer? = CoreDataManager.sharedInstance.persistentContainer
     weak var managerInput: YoutubeDataManagerInput?
     private let defaultSession = URLSession(configuration: .default)
     private var dataTask: URLSessionDataTask?
@@ -29,6 +30,25 @@ class YoutubeDataManager: YoutubeDataManagerOutput {
     private let subscriptionsURL: URL = URL(string: "https://s3-us-west-2.amazonaws.com/youtubeassets/subscriptions.json")!
     private let accountURL: URL = URL(string: "https://s3-us-west-2.amazonaws.com/youtubeassets/account.json")!
     
+    private func updateYoutubeVideoCoreDataModel(youtubeVideos: [YoutubeVideoItem]) {
+        container?.performBackgroundTask({ [weak self] (context) in
+            for videoInfo in youtubeVideos {
+               let _ = try? YoutubeVideoModel.findOrCreateYoutubeVideo(matching: videoInfo, in: context)
+            }
+            try? context.save()
+            self?.printDatabaseStatistic()
+        })
+    }
+    private func printDatabaseStatistic() {
+        if let context = container?.viewContext { // should be main thread
+            context.perform { [weak self] in // safe main thread
+                let videoFetchRequest: NSFetchRequest<YoutubeVideoModel> = YoutubeVideoModel.fetchRequest()
+                if let videoModel = try? context.fetch(videoFetchRequest) {
+                    self?.managerInput?.didHandleFetchRequestWith(videoModel)
+                }
+            }
+        }
+    }
     func fetchHomeVideosFromDataManager() {
         dataTask?.cancel()
         dataTask = defaultSession.dataTask(with: homeURL, completionHandler: { [weak self] (data, response, error) in
@@ -42,9 +62,7 @@ class YoutubeDataManager: YoutubeDataManagerOutput {
                 let videoArray = jsonObject.map({
                     return YoutubeVideo(response: $0, channel: YoutubeVideoChannel(response: $0))
                 })
-                DispatchQueue.main.async {
-                    self?.managerInput?.didFetchFeedVideosFromAPI(videoArray)
-                }
+                self?.updateYoutubeVideoCoreDataModel(youtubeVideos: videoArray)
             }
         })
         dataTask?.resume()
@@ -62,9 +80,7 @@ class YoutubeDataManager: YoutubeDataManagerOutput {
                 let videoArray = jsonObject.map({
                     return YoutubeVideo(response: $0, channel: YoutubeVideoChannel(response: $0))
                 })
-                DispatchQueue.main.async {
-                    self?.managerInput?.didFetchFeedVideosFromAPI(videoArray)
-                }
+                self?.updateYoutubeVideoCoreDataModel(youtubeVideos: videoArray)
             }
         })
         dataTask?.resume()
@@ -82,9 +98,7 @@ class YoutubeDataManager: YoutubeDataManagerOutput {
                 let videoArray = jsonObject.map({
                     return YoutubeVideo(response: $0, channel: YoutubeVideoChannel(response: $0))
                 })
-                DispatchQueue.main.async {
-                    self?.managerInput?.didFetchFeedVideosFromAPI(videoArray)
-                }
+                self?.updateYoutubeVideoCoreDataModel(youtubeVideos: videoArray)
             }
         })
         dataTask?.resume()
@@ -102,9 +116,7 @@ class YoutubeDataManager: YoutubeDataManagerOutput {
                 let videoArray = jsonObject.map({
                     return YoutubeVideo(response: $0, channel: YoutubeVideoChannel(response: $0))
                 })
-                DispatchQueue.main.async {
-                    self?.managerInput?.didFetchFeedVideosFromAPI(videoArray)
-                }
+                self?.updateYoutubeVideoCoreDataModel(youtubeVideos: videoArray)
             }
         })
         dataTask?.resume()
