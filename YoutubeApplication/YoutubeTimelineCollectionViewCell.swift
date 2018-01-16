@@ -30,6 +30,7 @@ class YoutubeTimelineCollectionViewCell: UICollectionViewCell {
     }
     private func updateUI() {
         DispatchQueue.main.async {
+<<<<<<< HEAD
             self.thumbnailImageView.downloadImageUsingCache(stringURL: self.youtubeVideo.videoThumbnailImage!)
             if let channel = self.youtubeVideo.channel {
                 self.videoAuthorImageView.downloadImageUsingCache(stringURL: channel.channelProfileImageLink!)
@@ -37,6 +38,15 @@ class YoutubeTimelineCollectionViewCell: UICollectionViewCell {
             }
             self.videoSubtitleLabel.text = self.youtubeVideo.videoTitle
             self.videoSubtitleLabelHeightAnchor?.constant = self.youtubeHelpedMethods.configureEstimatedHeightForText(self.youtubeVideo.videoTitle!).height + 20.0
+=======
+            self.thumbnailImageView.downloadImageUsingCache(stringURL: self.youtubeVideo.thumbnailImage)
+            if let channel = self.youtubeVideo.channel {
+                self.videoAuthorImageView.downloadImageUsingCache(stringURL: channel.channelProfileImageLink)
+                self.videoSubtitleDescriptionLabel.text = channel.channelName + " ● \(self.youtubeHelpedMethods.formateNumberToStringInDecimalFormat(NSNumber(value: self.youtubeVideo.videoNumberOfViews))) views"
+            }
+            self.videoSubtitleLabel.text = self.youtubeVideo.videoTitle
+            self.videoSubtitleLabelHeightAnchor?.constant = self.youtubeHelpedMethods.configureEstimatedHeightForText(self.youtubeVideo.videoTitle).height + 20.0
+>>>>>>> master
         }
     }
     //MARK:-Loading
