@@ -102,7 +102,6 @@ class YoutubeTimelineViewController: UICollectionViewController, UICollectionVie
         self.collectionView?.backgroundColor = UIColor.white
         self.collectionView?.contentInset = UIEdgeInsetsMake(menuBarHeight, 0, 0, 0)
         self.collectionView?.scrollIndicatorInsets = UIEdgeInsetsMake(menuBarHeight, 0, 0, 0)
-        self.collectionView?.isPagingEnabled = false
         self.collectionView?.showsHorizontalScrollIndicator = false
         self.collectionView?.register(YoutubeTimelineHomeCollectionViewCell.self, forCellWithReuseIdentifier: CellID.youtubeTimelineHomeCellID)
         self.collectionView?.register(YoutubeTimelineTrendingCollectionViewCell.self, forCellWithReuseIdentifier: CellID.youtubeTimelineTrendingCellID)
