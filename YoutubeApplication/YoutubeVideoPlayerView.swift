@@ -27,7 +27,7 @@ class YoutubeVideoPlayerView: UIView, YoutubeVideoPlayerManager {
     private lazy var videoCurrentTimeLabel: UILabel = self.createVideoDurationLabel()
     private lazy var videoPlayerSlider: UISlider = self.createVideoPlayerSlider()
     private lazy var gradientLayer: CAGradientLayer = self.createGradientLayer()
-    private lazy var thumbnailVideoImageView: UIImageView  = self.createThumbnailVideoImageView()
+    lazy var thumbnailVideoImageView: UIImageView  = self.createThumbnailVideoImageView()
     private var isPlayerPlay: Bool = false
     private lazy var controlsContainerView: UIView = {
         let container = UIView()

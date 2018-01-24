@@ -13,7 +13,7 @@ class YoutubeDetailVideoViewController: UIViewController {
     lazy var videoPlayerView: YoutubeVideoPlayerView = self.createVideoPlayerView()
     lazy var videoPlayerHideButton: UIButton = self.createVideoPlayerHideButton()
     fileprivate var viewModel: YoutubeDetailVideoViewModel?
-    
+    var animatableYoutubeCells: [UICollectionViewCell]?
     //MARK:-Loading
     convenience init(viewModel: YoutubeDetailVideoViewModel) {
         self.init()
@@ -27,6 +27,7 @@ class YoutubeDetailVideoViewController: UIViewController {
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        self.navigationController?.setNavigationBarHidden(true, animated: false)
         self.prepareVideoForPlaying()
     }
     //MARK:-YoutubeVideoPlayerLauncherItem
@@ -43,7 +44,7 @@ class YoutubeDetailVideoViewController: UIViewController {
     }
     @objc func actionHideVideoPlayer(_ sender: UIButton) {
         videoPlayerView.actionStopPlayingVideo()
-        presentingViewController?.dismiss(animated: true, completion: nil)
+        navigationController?.popViewController(animated: true)
         actionIsStatusBarHidden(false)
     }
     private func actionIsStatusBarHidden(_ hidden: Bool) {
@@ -85,3 +86,24 @@ class YoutubeDetailVideoViewController: UIViewController {
         videoPlayerHideButton.widthAnchor.constraint(equalToConstant: 35.0).isActive = true
     }
 }
+extension YoutubeDetailVideoViewController: ListToDetailAnimatable {
+    
+    var morphViews: [UIView] {
+        return [videoPlayerView.thumbnailVideoImageView]
+    }
+    var animatableCells: [UICollectionViewCell] {
+        return animatableYoutubeCells!
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
