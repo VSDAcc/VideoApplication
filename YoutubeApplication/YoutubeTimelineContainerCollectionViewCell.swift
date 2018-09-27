@@ -34,6 +34,7 @@ class YoutubeTimelineContainerCollectionViewCell: UICollectionViewCell, YoutubeT
     lazy var collectionView: UICollectionView = self.createCollectionView()
     var viewModel = YoutubeTimelineViewModel()
     weak var youtubeTimelineContainerViewCellHandler: YoutubeTimelineContainerViewCellHandler?
+    fileprivate var youtubeRefreshControl: YoutubeRefreshControl!
     
     //MARK:-Loading
     override func awakeFromNib() {
@@ -46,6 +47,7 @@ class YoutubeTimelineContainerCollectionViewCell: UICollectionViewCell, YoutubeT
         self.contentView.backgroundColor = UIColor.clear
         viewModel.view = self
         fetchVideosFromDataManager()
+        configureRefreshControl()
     }
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -56,6 +58,19 @@ class YoutubeTimelineContainerCollectionViewCell: UICollectionViewCell, YoutubeT
             return
         }
         flowLayout.invalidateLayout()
+    }
+    //MARK:-ConfigureMethods
+    fileprivate func configureRefreshControl() {
+        let refreshControl = YoutubeRefreshControl()
+        refreshControl.addTarget(self, action: #selector(actionRefreshControlDidPull(_:)), for: .valueChanged)
+        collectionView.addSubview(refreshControl)
+        youtubeRefreshControl = refreshControl
+    }
+    //MARK:-Actions
+    @objc func actionRefreshControlDidPull(_ sender: UIRefreshControl) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            self.youtubeRefreshControl.endRefreshing()
+        }
     }
     func fetchVideosFromDataManager() { }
     //MARK:-YoutubeTimelineViewControllerInput
@@ -112,7 +127,8 @@ extension YoutubeTimelineContainerCollectionViewCell: UICollectionViewDataSource
 extension YoutubeTimelineContainerCollectionViewCell: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let video = viewModel.selectedItemAt(indexPath: indexPath)
-        youtubeTimelineContainerViewCellHandler?.didSelectTimelineYoutubeVideoItem(video)
+        let selectedCell = collectionView.cellForItem(at: indexPath) as! YoutubeTimelineCollectionViewCell
+        youtubeTimelineContainerViewCellHandler?.didSelectTimelineYoutubeVideoItem(video, selectedCell)
     }
 }
 extension YoutubeTimelineContainerCollectionViewCell: UICollectionViewDelegateFlowLayout {
@@ -124,6 +140,29 @@ extension YoutubeTimelineContainerCollectionViewCell: UICollectionViewDelegateFl
         }
     }
 }
+extension YoutubeTimelineContainerCollectionViewCell: UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        youtubeRefreshControl.containingScrollViewDidScroll(scrollView: scrollView)
+    }
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        youtubeRefreshControl.containingScrollViewDidEndDragging(scrollView: scrollView, willDecelerate: decelerate)
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

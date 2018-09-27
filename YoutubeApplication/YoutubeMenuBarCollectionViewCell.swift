@@ -14,7 +14,6 @@ class YoutubeMenuBarCollectionViewCell: UICollectionViewCell {
     private var unhiglitedColor: UIColor {
         return UIColor(r: 91, g: 14, b: 13, alpha: 1)
     }
-    
     //MARK:-Loading
     override init(frame: CGRect) {
         super.init(frame: frame)

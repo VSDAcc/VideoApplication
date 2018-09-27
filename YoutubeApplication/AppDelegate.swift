@@ -17,7 +17,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.makeKeyAndVisible()
-        window?.rootViewController = UINavigationController(rootViewController: YoutubeTimelineViewController(collectionViewLayout: YoutubeCollectionViewFlowLayout()))
+        let timelineVC = YoutubeTimelineViewController(viewModel: YoutubeMainTimelineViewModel(router: YoutubeTimelineRouter()), collectionViewLayout: YoutubeCollectionViewFlowLayout())
+        let navigationController = UINavigationController(rootViewController: timelineVC)
+        navigationController.delegate = self
+        window?.rootViewController = navigationController
         UIApplication.shared.statusBarStyle = .lightContent
         return true
     }
@@ -43,7 +46,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
-
-
 }
+extension AppDelegate: UINavigationControllerDelegate {
+    func navigationController(_ navigationController: UINavigationController, animationControllerFor operation: UINavigationControllerOperation, from fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return ListToDetailAnimator()
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

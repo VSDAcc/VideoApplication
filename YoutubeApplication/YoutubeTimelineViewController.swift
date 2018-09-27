@@ -20,7 +20,7 @@ protocol YoutubeMenuBarDidSelectItemAtInexPath: class {
     func didSelectYoutubeMenuItem(_ item: YoutubeMenuBarItem)
 }
 protocol YoutubeTimelineContainerViewCellHandler: class {
-    func didSelectTimelineYoutubeVideoItem(_ video: YoutubeVideoModel)
+    func didSelectTimelineYoutubeVideoItem(_ video: YoutubeVideoModel, _ selectedCell: YoutubeTimelineCollectionViewCell)
 }
 class YoutubeTimelineViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout, PresenterAlertHandler {
     
@@ -36,6 +36,7 @@ class YoutubeTimelineViewController: UICollectionViewController, UICollectionVie
     fileprivate lazy var backgroundImageView: UIImageView = self.createBackgroundImageView()
     fileprivate lazy var menuBar: YoutubeMenuBarView = self.createYoutubeMenuBar()
     fileprivate lazy var settingsMenuView: YoutubeSettingsMenuView = self.createYoutubeSettingsMenuView()
+    private var selectedYoutubeCell: YoutubeTimelineCollectionViewCell?
     private var menuBarHeight: CGFloat  = 50.0
     private var itemInsets: CGFloat = 50.0
     fileprivate var collectionViewItemSizeToPortrait: CGSize {
@@ -52,13 +53,25 @@ class YoutubeTimelineViewController: UICollectionViewController, UICollectionVie
             return CGSize(width: width, height: height)
         }
     }
+    fileprivate let viewModel: YoutubeMainTimelineViewModel
     //MARK-Loading
+    init(viewModel: YoutubeMainTimelineViewModel, collectionViewLayout layout: UICollectionViewLayout) {
+        self.viewModel = viewModel
+        super.init(collectionViewLayout: layout)
+    }
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         configureCollectionViewLayout()
         configureNavigationBar()
         addAllConstraintsToViews()
         configureTimelineCollectionView()
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.setNavigationBarHidden(false, animated: false)
     }
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
@@ -102,7 +115,6 @@ class YoutubeTimelineViewController: UICollectionViewController, UICollectionVie
         self.collectionView?.backgroundColor = UIColor.white
         self.collectionView?.contentInset = UIEdgeInsetsMake(menuBarHeight, 0, 0, 0)
         self.collectionView?.scrollIndicatorInsets = UIEdgeInsetsMake(menuBarHeight, 0, 0, 0)
-        self.collectionView?.isPagingEnabled = false
         self.collectionView?.showsHorizontalScrollIndicator = false
         self.collectionView?.register(YoutubeTimelineHomeCollectionViewCell.self, forCellWithReuseIdentifier: CellID.youtubeTimelineHomeCellID)
         self.collectionView?.register(YoutubeTimelineTrendingCollectionViewCell.self, forCellWithReuseIdentifier: CellID.youtubeTimelineTrendingCellID)
@@ -164,7 +176,7 @@ class YoutubeTimelineViewController: UICollectionViewController, UICollectionVie
     private func addConstraintsToYoutubeSettingsMenuView() {
         settingsMenuView.leftAnchor.constraint(lessThanOrEqualTo: self.view.leftAnchor).isActive = true
         settingsMenuView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        settingsMenuView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor).isActive = true
+        settingsMenuView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
         settingsMenuView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
     }
     //MARK:-CollectionViewDataSource
@@ -241,12 +253,24 @@ extension YoutubeTimelineViewController: YoutubeMenuBarDidSelectItemAtInexPath {
     }
 }
 extension YoutubeTimelineViewController: YoutubeTimelineContainerViewCellHandler {
-    func didSelectTimelineYoutubeVideoItem(_ video: YoutubeVideoModel) {
-        let detailVideo = YoutubeDetailVideoViewController(viewModel: YoutubeDetailVideoViewModel(videoItem: video))
-        self.showDetailViewController(detailVideo, sender: self)
+    func didSelectTimelineYoutubeVideoItem(_ video: YoutubeVideoModel, _ selectedCell: YoutubeTimelineCollectionViewCell) {
+        selectedYoutubeCell = selectedCell
+        let detailViewModel = YoutubeDetailVideoViewModel(videoItem: video)
+        let deitalVC = YoutubeDetailVideoViewController(viewModel: detailViewModel)
+        deitalVC.animatableYoutubeCells = (collectionView?.visibleCells.filter({$0 != selectedYoutubeCell}))!
+        self.navigationController?.pushViewController(deitalVC, animated: true)
+//        viewModel.openDetailYoutubeViewController(youtubeVideoItem: video, animatableCells: (collectionView?.visibleCells.filter({$0 != selectedYoutubeCell}))!)
     }
 }
+extension YoutubeTimelineViewController: ListToDetailAnimatable {
 
+    var morphViews: [UIView] {
+        return [selectedYoutubeCell!.thumbnailImageView]
+    }
+    var animatableCells: [UICollectionViewCell] {
+        return (collectionView?.visibleCells.filter({$0 != selectedYoutubeCell}))!
+    }
+}
 
 
 

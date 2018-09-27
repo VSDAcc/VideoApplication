@@ -73,3 +73,32 @@ extension UIImageView {
         }
     }
 }
+extension UIView {
+    func snapshotView(view: UIView, afterUpdates: Bool) -> UIView {
+        let snapshot = view.snapshotView(afterScreenUpdates: afterUpdates)!
+        self.addSubview(snapshot)
+        snapshot.frame = convert(view.bounds, from: view)
+        return snapshot
+    }
+    func snapshotViews(views: [UIView], afterUpdates: Bool) -> [UIView] {
+        return views.map({snapshotView(view: $0, afterUpdates: afterUpdates)})
+    }
+    func scaleSnapshotToView(toView: UIView) -> CGAffineTransform {
+        return CGAffineTransform(scaleX: bounds.width / toView.bounds.width,
+                                 y: bounds.height / toView.bounds.height)
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
