@@ -87,7 +87,7 @@ class YoutubeDetailVideoViewController: UIViewController {
     }
 }
 extension YoutubeDetailVideoViewController: ListToDetailAnimatable {
-    
+
     var morphViews: [UIView] {
         return [videoPlayerView.thumbnailVideoImageView]
     }
