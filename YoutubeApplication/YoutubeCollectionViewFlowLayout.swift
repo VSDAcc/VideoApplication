@@ -19,7 +19,7 @@ class YoutubeCollectionViewFlowLayout: UICollectionViewFlowLayout {
             if let attributesForVisibleCells = self.layoutAttributesForElements(in: cvBounds) {
                 var candidateAttributes : UICollectionViewLayoutAttributes?
                 for attributes in attributesForVisibleCells {
-                    if attributes.representedElementCategory != UICollectionElementCategory.cell {
+                    if attributes.representedElementCategory != UICollectionView.ElementCategory.cell {
                         continue
                     }
                     if let candAttrs = candidateAttributes {

@@ -133,7 +133,7 @@ extension YoutubeTimelineContainerCollectionViewCell: UICollectionViewDelegate {
 }
 extension YoutubeTimelineContainerCollectionViewCell: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        if UIInterfaceOrientationIsLandscape(UIApplication.shared.statusBarOrientation) {
+        if UIApplication.shared.statusBarOrientation.isLandscape {
             return collectionViewitemSizeToLandscape
         }else {
             return collectionViewItemSizeToPortrait
