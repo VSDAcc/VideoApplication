@@ -9,6 +9,13 @@
 import Foundation
 import UIKit
 
-class YoutubeMainTimelineViewModel {
+protocol YoutubeMainTimelineViewModelCoordinatorDelegate: class {
+    func showYoutubeDetailViewController(_ viewModel: YoutubeDetailVideoViewModelInput)
+}
+protocol YoutubeMainTimelineViewModelInput {
+    var coordinator: YoutubeMainTimelineViewModelCoordinatorDelegate? {get set}
+}
+class YoutubeMainTimelineViewModel: YoutubeMainTimelineViewModelInput {
     
+    weak var coordinator: YoutubeMainTimelineViewModelCoordinatorDelegate?
 }

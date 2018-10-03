@@ -12,15 +12,14 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
+    var appCoordinator: AppCoordinator?
+    
+    class var shared: AppDelegate {
+        return UIApplication.shared.delegate as! AppDelegate
+    }
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        window = UIWindow(frame: UIScreen.main.bounds)
-        window?.makeKeyAndVisible()
-        let timelineVC = YoutubeTimelineViewController(viewModel: YoutubeMainTimelineViewModel(), collectionViewLayout: YoutubeCollectionViewFlowLayout())
-        let navigationController = UINavigationController(rootViewController: timelineVC)
-        navigationController.delegate = self
-        window?.rootViewController = navigationController
+        startAppCoordinator()
         return true
     }
 
@@ -45,10 +44,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
-}
-extension AppDelegate: UINavigationControllerDelegate {
     
-    func navigationController(_ navigationController: UINavigationController, animationControllerFor operation: UINavigationController.Operation, from fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        return ListToDetailAnimator()
+    private func startAppCoordinator() {
+        window = UIWindow(frame: UIScreen.main.bounds)
+        window?.backgroundColor = UIColor.white
+        window?.rootViewController = UINavigationController()
+        appCoordinator = AppCoordinator(navigationController: window?.rootViewController as! UINavigationController)
+        appCoordinator?.start()
+        window?.makeKeyAndVisible()
     }
 }

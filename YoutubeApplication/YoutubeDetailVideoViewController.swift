@@ -12,14 +12,18 @@ class YoutubeDetailVideoViewController: UIViewController {
 
     lazy var videoPlayerView: YoutubeVideoPlayerView = self.createVideoPlayerView()
     lazy var videoPlayerHideButton: UIButton = self.createVideoPlayerHideButton()
-    fileprivate var viewModel: YoutubeDetailVideoViewModel?
     var animatableYoutubeCells: [UICollectionViewCell]?
     private var isStatusBarHidden: Bool = false
     
+    fileprivate let viewModel: YoutubeDetailVideoViewModelInput
     //MARK:-Loading
-    convenience init(viewModel: YoutubeDetailVideoViewModel) {
-        self.init()
+    init(viewModel: YoutubeDetailVideoViewModelInput) {
         self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     override func viewDidLoad() {
@@ -45,13 +49,13 @@ class YoutubeDetailVideoViewController: UIViewController {
     }
     //MARK:-YoutubeVideoPlayerLauncherItem
     func addVideoThumbnailImage() {
-        viewModel?.thumbnailImage.bind(listener: { [weak self] (image) in
+        viewModel.thumbnailImage.bind(listener: { [weak self] (image) in
             self?.videoPlayerView.addThumbnailVideoImageWith(image!)
         })
     }
     
     func prepareVideoForPlaying() {
-        viewModel?.videoURL.bind(listener: { [weak self] (videoURL) in
+        viewModel.videoURL.bind(listener: { [weak self] (videoURL) in
             self?.videoPlayerView.actionPrepareVideoForPlayingWith(videoURL!)
         })
         actionIsStatusBarHidden(true)
@@ -59,8 +63,8 @@ class YoutubeDetailVideoViewController: UIViewController {
     
     @objc func actionHideVideoPlayer(_ sender: UIButton) {
         videoPlayerView.actionStopPlayingVideo()
-        navigationController?.popViewController(animated: true)
         actionIsStatusBarHidden(false)
+        viewModel.coordinator?.backToYoutubeTimelineViewController(animated: true)
     }
     
     private func actionIsStatusBarHidden(_ hidden: Bool) {
