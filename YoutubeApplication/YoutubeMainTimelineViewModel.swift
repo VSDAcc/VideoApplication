@@ -11,13 +11,4 @@ import UIKit
 
 class YoutubeMainTimelineViewModel {
     
-    fileprivate var router: YoutubeTimelineRouter.Routes?
-    convenience init(router: YoutubeTimelineRouter.Routes) {
-        self.init()
-        self.router = router
-    }
-    
-    func openDetailYoutubeViewController(youtubeVideoItem video: YoutubeVideoModel, animatableCells: [UICollectionViewCell]) {
-        router?.openDetail(for: video, animatableYoutubeCells: animatableCells)
-    }
 }

@@ -19,14 +19,7 @@ class YoutubeDetailVideoViewModel {
             videoDuration.value = video?.videoDuration
         }
     }
-    fileprivate var router: YoutubeDetailRouter.Routes?
     //MARK:-Loading
-    convenience init(videoItem: YoutubeVideoModel, router: YoutubeDetailRouter.Routes) {
-        self.init()
-        self.router = router
-        self.video = videoItem
-    }
-    
     convenience init(videoItem: YoutubeVideoModel) {
         self.init()
         self.video = videoItem

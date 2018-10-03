@@ -17,7 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.makeKeyAndVisible()
-        let timelineVC = YoutubeTimelineViewController(viewModel: YoutubeMainTimelineViewModel(router: YoutubeTimelineRouter()), collectionViewLayout: YoutubeCollectionViewFlowLayout())
+        let timelineVC = YoutubeTimelineViewController(viewModel: YoutubeMainTimelineViewModel(), collectionViewLayout: YoutubeCollectionViewFlowLayout())
         let navigationController = UINavigationController(rootViewController: timelineVC)
         navigationController.delegate = self
         window?.rootViewController = navigationController
@@ -47,6 +47,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 }
 extension AppDelegate: UINavigationControllerDelegate {
+    
     func navigationController(_ navigationController: UINavigationController, animationControllerFor operation: UINavigationController.Operation, from fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return ListToDetailAnimator()
     }
