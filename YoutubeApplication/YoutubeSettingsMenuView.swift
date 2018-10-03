@@ -141,7 +141,7 @@ class YoutubeSettingsMenuView: UIView {
         background.backgroundColor = UIColor.black
         background.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(actionBackgroundSettingsDidPressed(_ :))))
         addSubview(background)
-        bringSubview(toFront: background)
+        bringSubviewToFront(background)
         return background
     }
     //MARK:-SetupConstraints
@@ -186,7 +186,7 @@ extension YoutubeSettingsMenuView: UICollectionViewDelegate {
 }
 extension YoutubeSettingsMenuView: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        if UIInterfaceOrientationIsLandscape(UIApplication.shared.statusBarOrientation) {
+        if UIApplication.shared.statusBarOrientation.isLandscape {
             return collectionViewitemSizeToLandscape
         }else {
             return collectionViewItemSizeToPortrait

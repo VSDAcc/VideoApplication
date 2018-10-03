@@ -87,7 +87,7 @@ class YoutubeVideoPlayerView: UIView, YoutubeVideoPlayerManager {
         playerLayer?.videoGravity = AVLayerVideoGravity.resizeAspectFill
         playerLayer?.frame = self.bounds
         layer.addSublayer(playerLayer!)
-        bringSubview(toFront: controlsContainerView)
+        bringSubviewToFront(controlsContainerView)
         actionStartPlayingVideo()
         addLoadedTimeRangeObserverToPlayer()
         addTimeObserverTokenToPlayer()

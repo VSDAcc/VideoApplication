@@ -36,7 +36,7 @@ class ProgressHudView: UIVisualEffectView, ProgressHudManager {
     }
     //MAKR:-SetupViews
     private func createActivityIndicatorView() -> UIActivityIndicatorView {
-        let indicator = UIActivityIndicatorView(activityIndicatorStyle: .white)
+        let indicator = UIActivityIndicatorView(style: .white)
         indicator.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(indicator)
         return indicator

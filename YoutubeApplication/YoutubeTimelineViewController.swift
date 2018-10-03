@@ -100,7 +100,7 @@ class YoutubeTimelineViewController: UICollectionViewController, UICollectionVie
         flowLayout.scrollDirection = .horizontal
         flowLayout.sectionHeadersPinToVisibleBounds = true
         flowLayout.minimumInteritemSpacing = 0
-        flowLayout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0)
+        flowLayout.sectionInset = UIEdgeInsets.init(top: 0, left: 0, bottom: 0, right: 0)
         flowLayout.minimumLineSpacing = 0
     }
     private func configureNavigationBar() {
@@ -113,8 +113,8 @@ class YoutubeTimelineViewController: UICollectionViewController, UICollectionVie
     }
     private func configureTimelineCollectionView() {
         self.collectionView?.backgroundColor = UIColor.white
-        self.collectionView?.contentInset = UIEdgeInsetsMake(menuBarHeight, 0, 0, 0)
-        self.collectionView?.scrollIndicatorInsets = UIEdgeInsetsMake(menuBarHeight, 0, 0, 0)
+        self.collectionView?.contentInset = UIEdgeInsets.init(top: menuBarHeight, left: 0, bottom: 0, right: 0)
+        self.collectionView?.scrollIndicatorInsets = UIEdgeInsets.init(top: menuBarHeight, left: 0, bottom: 0, right: 0)
         self.collectionView?.showsHorizontalScrollIndicator = false
         self.collectionView?.register(YoutubeTimelineHomeCollectionViewCell.self, forCellWithReuseIdentifier: CellID.youtubeTimelineHomeCellID)
         self.collectionView?.register(YoutubeTimelineTrendingCollectionViewCell.self, forCellWithReuseIdentifier: CellID.youtubeTimelineTrendingCellID)
@@ -217,7 +217,7 @@ class YoutubeTimelineViewController: UICollectionViewController, UICollectionVie
     }
     //MARK:-UICollectionViewFlowLayout
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        if UIInterfaceOrientationIsLandscape(UIApplication.shared.statusBarOrientation) {
+        if UIApplication.shared.statusBarOrientation.isLandscape {
             return collectionViewitemSizeToLandscape
         }else {
             return collectionViewItemSizeToPortrait
