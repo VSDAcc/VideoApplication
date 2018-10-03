@@ -7,6 +7,7 @@
 //
 
 import Foundation
+
 protocol YoutubeViewModelOutput: YoutubeDataManagerInput {
     func queryHomeVideosFromDataManager()
     func queryTrendingVideosFromDataManager()
@@ -18,6 +19,8 @@ class YoutubeTimelineViewModel: YoutubeViewModelOutput {
     fileprivate var youtubeVideos = [YoutubeVideoModel]()
     var dataManager = YoutubeDataManager()
     weak var view: YoutubeTimelineViewControllerInput?
+    
+    //MARK:-Loading
     init() {
         dataManager.managerInput = self
     }
@@ -27,16 +30,19 @@ class YoutubeTimelineViewModel: YoutubeViewModelOutput {
             self.dataManager.fetchHomeVideosFromDataManager()
         }
     }
+    
     func queryTrendingVideosFromDataManager() {
         DispatchQueue.global(qos: .userInteractive).async {
             self.dataManager.fetchTrendingVideosFromDataManager()
         }
     }
+    
     func querySubscriptionsVideosFromDataManager() {
         DispatchQueue.global(qos: .userInteractive).async {
             self.dataManager.fetchSubscriptionsVideosFromDataManager()
         }
     }
+    
     func queryAccountVideosFromDataManager() {
         DispatchQueue.global(qos: .userInteractive).async {
             self.dataManager.fetchAccountVideosFromDataManager()
@@ -46,28 +52,19 @@ class YoutubeTimelineViewModel: YoutubeViewModelOutput {
     func didHandleErrorFromFetchingRequest(_ error: String) {
         self.view?.didHandleError(error)
     }
+    
     func didHandleFetchRequestWith(_ videos: [YoutubeVideoModel]) {
         self.youtubeVideos = videos
         self.view?.didFinishUpdates()
     }
 }
 extension YoutubeTimelineViewModel {
+    
     func selectedItemAt(indexPath: IndexPath) -> YoutubeVideoModel {
         return youtubeVideos[indexPath.item]
     }
+    
     func numerOfItemsInSection(section: Int? = nil) -> Int {
         return youtubeVideos.count
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-

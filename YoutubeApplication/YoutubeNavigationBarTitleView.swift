@@ -16,9 +16,11 @@ class YoutubeNavigationBarTitleView: UIView {
         super.init(frame: frame)
         addAllConstraintsToViews()
     }
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
     override var intrinsicContentSize: CGSize {
         return UIView.layoutFittingExpandedSize
     }
@@ -37,14 +39,9 @@ class YoutubeNavigationBarTitleView: UIView {
     private func addAllConstraintsToViews() {
         addConstraintsToTitleLabel()
     }
+    
     private func addConstraintsToTitleLabel() {
         titleLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 10.0).isActive = true
         titleLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
     }
 }
-
-
-
-
-
-

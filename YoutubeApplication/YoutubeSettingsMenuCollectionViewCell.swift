@@ -18,21 +18,23 @@ class YoutubeSettingsMenuCollectionViewCell: UICollectionViewCell {
     private var unhiglitedImageColor: UIColor {
         return UIColor.darkGray
     }
-    
     //MARK:-Loading
     override init(frame: CGRect) {
         super.init(frame: frame)
         addAllConstraintsToViews()
         self.contentView.backgroundColor = UIColor.clear
     }
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
     override func layoutSubviews() {
         super.layoutSubviews()
         self.layer.cornerRadius = 16.0
         self.layer.masksToBounds = true
     }
+    
     override var isHighlighted: Bool {
         didSet {
             DispatchQueue.main.async {
@@ -42,11 +44,13 @@ class YoutubeSettingsMenuCollectionViewCell: UICollectionViewCell {
             }
         }
     }
+    
     var settingsMenu: YoutubeSettingsMenuItem! {
         didSet {
             updateUI()
         }
     }
+    
     private func updateUI() {
         DispatchQueue.main.async {
             self.menuImageView.image = UIImage(named: self.settingsMenu.settingsImageName.description)?.withRenderingMode(.alwaysTemplate)
@@ -64,6 +68,7 @@ class YoutubeSettingsMenuCollectionViewCell: UICollectionViewCell {
         addSubview(nameLabel)
         return nameLabel
     }
+    
     private func createmMenuImageView() -> UIImageView {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -77,26 +82,17 @@ class YoutubeSettingsMenuCollectionViewCell: UICollectionViewCell {
         addConstraintsToMenuImageView()
         addConstraintsToTitleLabel()
     }
+    
     private func addConstraintsToMenuImageView() {
         menuImageView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 10.0).isActive = true
         menuImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
         menuImageView.widthAnchor.constraint(equalToConstant: 28.0).isActive = true
         menuImageView.heightAnchor.constraint(equalToConstant: 28.0).isActive = true
     }
+    
     private func addConstraintsToTitleLabel() {
         settingsTitleLabel.leftAnchor.constraint(equalTo: menuImageView.rightAnchor, constant: 10.0).isActive = true
         settingsTitleLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
         settingsTitleLabel.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -10.0).isActive = true
     }
 }
-
-
-
-
-
-
-
-
-
-
-

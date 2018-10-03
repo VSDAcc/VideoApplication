@@ -7,6 +7,7 @@
 //
 
 import UIKit
+
 protocol YoutubeSettingsMenuHandler: class {
     func didPressedSettingsMenu(settings: YoutubeSettingsMenuItem)
     func didPressedTermsAndPrivacyMenu(settings: YoutubeSettingsMenuItem)
@@ -36,9 +37,11 @@ class YoutubeTimelineViewController: UICollectionViewController, UICollectionVie
     fileprivate lazy var backgroundImageView: UIImageView = self.createBackgroundImageView()
     fileprivate lazy var menuBar: YoutubeMenuBarView = self.createYoutubeMenuBar()
     fileprivate lazy var settingsMenuView: YoutubeSettingsMenuView = self.createYoutubeSettingsMenuView()
+    
     private var selectedYoutubeCell: YoutubeTimelineCollectionViewCell?
     private var menuBarHeight: CGFloat  = 50.0
     private var itemInsets: CGFloat = 50.0
+    
     fileprivate var collectionViewItemSizeToPortrait: CGSize {
         get {
             let width: CGFloat = view.frame.width
@@ -59,23 +62,29 @@ class YoutubeTimelineViewController: UICollectionViewController, UICollectionVie
         self.viewModel = viewModel
         super.init(collectionViewLayout: layout)
     }
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         configureCollectionViewLayout()
         configureNavigationBar()
         addAllConstraintsToViews()
         configureTimelineCollectionView()
+        setNeedsStatusBarAppearanceUpdate()
     }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.setNavigationBarHidden(false, animated: false)
     }
+    
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
+    
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         guard let flowLayout = collectionView?.collectionViewLayout as? YoutubeCollectionViewFlowLayout else {
@@ -93,6 +102,7 @@ class YoutubeTimelineViewController: UICollectionViewController, UICollectionVie
         titleView.titleLabel.text = "Home"
         return titleView
     }()
+    
     private func configureCollectionViewLayout() {
         guard let flowLayout = collectionView?.collectionViewLayout as? YoutubeCollectionViewFlowLayout else {
             return
@@ -103,6 +113,7 @@ class YoutubeTimelineViewController: UICollectionViewController, UICollectionVie
         flowLayout.sectionInset = UIEdgeInsets.init(top: 0, left: 0, bottom: 0, right: 0)
         flowLayout.minimumLineSpacing = 0
     }
+    
     private func configureNavigationBar() {
         navigationController?.navigationBar.barTintColor = UIColor(r: 230, g: 32, b: 31, alpha: 1)
         navigationController?.navigationBar.isTranslucent = false
@@ -111,6 +122,7 @@ class YoutubeTimelineViewController: UICollectionViewController, UICollectionVie
         navigationItem.titleView = navigationTitleView
         navigationItem.rightBarButtonItems = [setupMoreBarButtonItem(),setupSeratchBarButtonItem()]
     }
+    
     private func configureTimelineCollectionView() {
         self.collectionView?.backgroundColor = UIColor.white
         self.collectionView?.contentInset = UIEdgeInsets.init(top: menuBarHeight, left: 0, bottom: 0, right: 0)
@@ -127,6 +139,7 @@ class YoutubeTimelineViewController: UICollectionViewController, UICollectionVie
         let barButton = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(actionSearchButtonDidPressed(_ :)))
         return barButton
     }
+    
     @objc private func actionSearchButtonDidPressed(_ sender: UIBarButtonItem) {
         print("Hello")
     }
@@ -135,6 +148,7 @@ class YoutubeTimelineViewController: UICollectionViewController, UICollectionVie
         let barButton = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(actionMoreButtonDidPressed(_ :)))
         return barButton
     }
+    
     @objc private func actionMoreButtonDidPressed(_ sender: UIBarButtonItem) {
         settingsMenuView.showSettingsMenu()
     }
@@ -146,6 +160,7 @@ class YoutubeTimelineViewController: UICollectionViewController, UICollectionVie
         imgeView.contentMode = .scaleAspectFill
         return imgeView
     }
+    
     private func createYoutubeMenuBar() -> YoutubeMenuBarView {
         let menu = YoutubeMenuBarView()
         menu.translatesAutoresizingMaskIntoConstraints = false
@@ -153,6 +168,7 @@ class YoutubeTimelineViewController: UICollectionViewController, UICollectionVie
         self.view.addSubview(menu)
         return menu
     }
+    
     private func createYoutubeSettingsMenuView() -> YoutubeSettingsMenuView {
         let menu = YoutubeSettingsMenuView()
         menu.translatesAutoresizingMaskIntoConstraints = false
@@ -167,12 +183,14 @@ class YoutubeTimelineViewController: UICollectionViewController, UICollectionVie
         addConstraintsToMenuBarView()
         addConstraintsToYoutubeSettingsMenuView()
     }
+    
     private func addConstraintsToMenuBarView() {
         menuBar.leftAnchor.constraint(lessThanOrEqualTo: self.view.leftAnchor).isActive = true
         menuBar.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
         menuBar.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
         menuBar.heightAnchor.constraint(equalToConstant: menuBarHeight).isActive = true
     }
+    
     private func addConstraintsToYoutubeSettingsMenuView() {
         settingsMenuView.leftAnchor.constraint(lessThanOrEqualTo: self.view.leftAnchor).isActive = true
         settingsMenuView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
@@ -183,18 +201,20 @@ class YoutubeTimelineViewController: UICollectionViewController, UICollectionVie
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
+    
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return menuBar.viewModel.numerOfItemsInSection()
     }
+    
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         var identifire: String
         if indexPath.row == TimelineMenu.home.rawValue {
             identifire = CellID.youtubeTimelineHomeCellID
-        }else if indexPath.row == TimelineMenu.trending.rawValue {
+        } else if indexPath.row == TimelineMenu.trending.rawValue {
             identifire = CellID.youtubeTimelineTrendingCellID
-        }else if indexPath.row == TimelineMenu.subscriptions.rawValue {
+        } else if indexPath.row == TimelineMenu.subscriptions.rawValue {
             identifire = CellID.youtubeTimelineSubscriptionsCellID
-        }else {
+        } else {
             identifire = CellID.youtubeTimelineAccountCellID
         }
         let timelineCell = collectionView.dequeueReusableCell(withReuseIdentifier: identifire, for: indexPath) as! YoutubeTimelineContainerCollectionViewCell
@@ -210,6 +230,7 @@ class YoutubeTimelineViewController: UICollectionViewController, UICollectionVie
         let offset = scrollView.contentOffset.x / 4
         menuBar.underlineConstraintConstant = offset
     }
+    
     override func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         let index = targetContentOffset.pointee.x / view.frame.width
         let indexPath = IndexPath(item: Int(index), section: 0)
@@ -226,40 +247,48 @@ class YoutubeTimelineViewController: UICollectionViewController, UICollectionVie
 }
 extension YoutubeTimelineViewController: YoutubeSettingsMenuHandler {
     func didPressedSettingsMenu(settings: YoutubeSettingsMenuItem) {
+        
         print(settings.settingsTitle)
     }
+    
     func didPressedTermsAndPrivacyMenu(settings: YoutubeSettingsMenuItem) {
         print(settings.settingsTitle)
     }
+    
     func didPressedSendFeedbackMenu(settings: YoutubeSettingsMenuItem) {
         print(settings.settingsTitle)
     }
+    
     func didPressedHelpMenu(settings: YoutubeSettingsMenuItem) {
         print(settings.settingsTitle)
     }
+    
     func didPressedSwitchAccountMenu(settings: YoutubeSettingsMenuItem) {
         print(settings.settingsTitle)
     }
+    
     func didPressedCancelMenu(settings: YoutubeSettingsMenuItem) {
         print(settings.settingsTitle)
     }
 }
 extension YoutubeTimelineViewController: YoutubeMenuBarDidSelectItemAtInexPath {
+    
     func didSelectMenuBarItemAtIndexPath(_ indexPath: IndexPath) {
         self.collectionView?.scrollToItem(at: indexPath, at: .right, animated: true)
     }
+    
     func didSelectYoutubeMenuItem(_ item: YoutubeMenuBarItem) {
         self.navigationTitleView.titleLabel.text = item.itemTitleName.description
     }
 }
 extension YoutubeTimelineViewController: YoutubeTimelineContainerViewCellHandler {
+    
     func didSelectTimelineYoutubeVideoItem(_ video: YoutubeVideoModel, _ selectedCell: YoutubeTimelineCollectionViewCell) {
         selectedYoutubeCell = selectedCell
         let detailViewModel = YoutubeDetailVideoViewModel(videoItem: video)
         let deitalVC = YoutubeDetailVideoViewController(viewModel: detailViewModel)
         deitalVC.animatableYoutubeCells = (collectionView?.visibleCells.filter({$0 != selectedYoutubeCell}))!
         self.navigationController?.pushViewController(deitalVC, animated: true)
-//        viewModel.openDetailYoutubeViewController(youtubeVideoItem: video, animatableCells: (collectionView?.visibleCells.filter({$0 != selectedYoutubeCell}))!)
     }
 }
 extension YoutubeTimelineViewController: ListToDetailAnimatable {
@@ -267,18 +296,8 @@ extension YoutubeTimelineViewController: ListToDetailAnimatable {
     var morphViews: [UIView] {
         return [selectedYoutubeCell!.thumbnailImageView]
     }
+    
     var animatableCells: [UICollectionViewCell] {
         return (collectionView?.visibleCells.filter({$0 != selectedYoutubeCell}))!
     }
 }
-
-
-
-
-
-
-
-
-
-
-

@@ -20,12 +20,15 @@ class YoutubeMenuBarCollectionViewCell: UICollectionViewCell {
         addAllConstraintsToViews()
         self.contentView.backgroundColor = UIColor.clear
     }
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
     override func layoutSubviews() {
         super.layoutSubviews()
     }
+    
     override var isHighlighted: Bool {
         didSet {
             DispatchQueue.main.async {
@@ -33,6 +36,7 @@ class YoutubeMenuBarCollectionViewCell: UICollectionViewCell {
             }
         }
     }
+    
     override var isSelected: Bool {
         didSet {
             DispatchQueue.main.async {
@@ -40,11 +44,13 @@ class YoutubeMenuBarCollectionViewCell: UICollectionViewCell {
             }
         }
     }
+    
     var menuBar: YoutubeMenuBarItem! {
         didSet {
             updateUI()
         }
     }
+    
     private func updateUI() {
         DispatchQueue.main.async {
             self.menuImageView.image = UIImage(named: self.menuBar.itemImageName.description)?.withRenderingMode(.alwaysTemplate)
@@ -63,6 +69,7 @@ class YoutubeMenuBarCollectionViewCell: UICollectionViewCell {
     private func addAllConstraintsToViews() {
         addConstraintsToMenuImageView()
     }
+    
     private func addConstraintsToMenuImageView() {
         menuImageView.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
         menuImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true

@@ -27,6 +27,7 @@ class YoutubeRefreshControl: UIControl {
         center = CGPoint(x: scrollView.bounds.midX, y: -bounds.height / 2)
         addSubview(heartImageView)
     }
+    
     func containingScrollViewDidScroll(scrollView: UIScrollView) {
         if refreshing { return }
         let offset = -(scrollView.contentOffset.y + scrollView.contentInset.top)
@@ -36,12 +37,14 @@ class YoutubeRefreshControl: UIControl {
         heartImageView.isHidden = false
         hasReachedThreshold = offset > maxOffset
     }
+    
     func containingScrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate: Bool) {
         if hasReachedThreshold {
             sendActions(for: .valueChanged)
             beginRefreshing()
         }
     }
+    
     func beginRefreshing() {
         if refreshing { return }
         refreshing = true
@@ -54,6 +57,7 @@ class YoutubeRefreshControl: UIControl {
             self.heartImageView.transform = CGAffineTransform(scaleX: 0.75, y: 0.75)
         }, completion: nil)
     }
+    
     func endRefreshing() {
         if !refreshing { return }
         UIView.animate(withDuration: 0.25, animations: {
@@ -65,19 +69,3 @@ class YoutubeRefreshControl: UIControl {
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

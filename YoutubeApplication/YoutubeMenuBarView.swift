@@ -13,6 +13,7 @@ class YoutubeMenuBarView: UIView {
     fileprivate struct CellID {
         static let youtubeMenuBarCellID = "youtubeMenuBarCell"
     }
+    
     lazy var collectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.scrollDirection = .horizontal
@@ -30,9 +31,11 @@ class YoutubeMenuBarView: UIView {
         collection.selectItem(at: self.menuSelectedItem, animated: true, scrollPosition: .right)
         return collection
     }()
+    
     private lazy var underlineView: UIView = self.createMenuBarUnderlineView()
     private var underlineViewLeadingConstraint: NSLayoutConstraint?
     weak var menuBarDidSelectItemAtInexPath: YoutubeMenuBarDidSelectItemAtInexPath?
+    
     var menuSelectedItem: IndexPath = IndexPath(item: 0, section: 0) {
         didSet {
             collectionView.selectItem(at: menuSelectedItem, animated: true, scrollPosition: .right)
@@ -68,9 +71,11 @@ class YoutubeMenuBarView: UIView {
         addSubview(collectionView)
         addAllConstraintsToViews()
     }
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         guard let flowLayout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout else {
@@ -97,12 +102,14 @@ class YoutubeMenuBarView: UIView {
         addConstraintsToCollectionView()
         addConstraintsToUnderlineView()
     }
+    
     private func addConstraintsToCollectionView() {
         collectionView.centerXAnchor.constraint(lessThanOrEqualTo: self.centerXAnchor).isActive = true
         collectionView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
         collectionView.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
         collectionView.heightAnchor.constraint(equalTo: self.heightAnchor).isActive = true
     }
+    
     private func addConstraintsToUnderlineView() {
         underlineViewLeadingConstraint = underlineView.leftAnchor.constraint(lessThanOrEqualTo: self.leftAnchor)
         underlineViewLeadingConstraint?.isActive = true
@@ -112,12 +119,15 @@ class YoutubeMenuBarView: UIView {
     }
 }
 extension YoutubeMenuBarView: UICollectionViewDataSource {
+    
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return viewModel.numerOfItemsInSection(section: section)
     }
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let timelineCell = collectionView.dequeueReusableCell(withReuseIdentifier: CellID.youtubeMenuBarCellID, for: indexPath) as! YoutubeMenuBarCollectionViewCell
         let menuBar = viewModel.selectedItemAt(indexPath: indexPath)
@@ -127,12 +137,14 @@ extension YoutubeMenuBarView: UICollectionViewDataSource {
     }
 }
 extension YoutubeMenuBarView: UICollectionViewDelegate {
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         menuSelectedItem = indexPath
         menuBarDidSelectItemAtInexPath?.didSelectMenuBarItemAtIndexPath(indexPath)
     }
 }
 extension YoutubeMenuBarView: UICollectionViewDelegateFlowLayout {
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if UIApplication.shared.statusBarOrientation.isLandscape {
             return collectionViewitemSizeToLandscape

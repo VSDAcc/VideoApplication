@@ -7,6 +7,7 @@
 //
 
 import CoreData
+
 class CoreDataManager {
     
     static let sharedInstance = CoreDataManager()

@@ -12,7 +12,7 @@ protocol Animator: UIViewControllerAnimatedTransitioning {
     var isPresenting: Bool {get set}
 }
 protocol Transition: class {
-    weak var viewController: UIViewController? {get set}
+    var viewController: UIViewController? {get set}
     
     func open(_ viewController: UIViewController)
     func close(_ viewController: UIViewController)
@@ -53,6 +53,7 @@ extension ModalTransition: Transition {
     }
 }
 extension ModalTransition: UIViewControllerTransitioningDelegate {
+    
     func animationController(forPresented presented: UIViewController,
                              presenting: UIViewController,
                              source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
@@ -61,6 +62,7 @@ extension ModalTransition: UIViewControllerTransitioningDelegate {
         }
         animator.isPresenting = true
         return animator
+        
     }
     func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         guard let animator = animator else {
@@ -88,6 +90,7 @@ extension PushTransition: Transition {
         self.viewController?.navigationController?.delegate = self
         self.viewController?.navigationController?.pushViewController(viewController, animated: isAnimated)
     }
+    
     func close(_ viewController: UIViewController) {
         self.viewController?.navigationController?.popViewController(animated: isAnimated)
     }
@@ -97,6 +100,7 @@ extension PushTransition: UINavigationControllerDelegate {
     func navigationController(_ navigationController: UINavigationController, didShow viewController: UIViewController, animated: Bool) {
         completionHandler?()
     }
+    
     func navigationController(_ navigationController: UINavigationController,
                               animationControllerFor operation: UINavigationController.Operation,
                               from fromVC: UIViewController,
@@ -119,7 +123,7 @@ protocol Closable: class {
 }
 protocol RouterProtocol: class {
     associatedtype V: UIViewController
-    weak var viewController: V? {get}
+    var viewController: V? {get}
     func open(_ viewController: UIViewController, transition: Transition)
 }
 class Router<U>: RouterProtocol, Closable where U: UIViewController {
@@ -132,6 +136,7 @@ class Router<U>: RouterProtocol, Closable where U: UIViewController {
         transition.viewController = self.viewController
         transition.open(viewController)
     }
+    
     func close() {
         guard let openTransition = openTransition else {
             assertionFailure("You should soecify an open transition in order to close a module")

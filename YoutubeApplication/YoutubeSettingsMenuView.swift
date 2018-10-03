@@ -14,6 +14,7 @@ class YoutubeSettingsMenuView: UIView {
         static let youtubeSettingsMenuCellID = "youtubeSettingsMenuCell"
     }
     weak var settingsMenuHandler: YoutubeSettingsMenuHandler?
+    
     private lazy var backgroundSettingsMenuView: UIView = self.createYoutubeBlackBackgroundSettingsMenuView()
     private var collectionViewHeightConstaint: NSLayoutConstraint?
     private var backgroundSettingsMenuViewHeightConstaint: NSLayoutConstraint?
@@ -43,19 +44,21 @@ class YoutubeSettingsMenuView: UIView {
         }
     }
     var viewModel = YoutubeSettingsMenuViewModel()
-    
     //MARK:-Loading
     override init(frame: CGRect) {
         super.init(frame: frame)
         addAllConstraintsToViews()
     }
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         hideSettingsMenu() {}
     }
+    
     override func layoutSubviews() {
         super.layoutSubviews()
         guard let flowLayout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout else {
@@ -68,6 +71,7 @@ class YoutubeSettingsMenuView: UIView {
         sender.numberOfTapsRequired = 1
         hideSettingsMenu() {}
     }
+    
     public func showSettingsMenu() {
         if collectionView.isHidden && backgroundSettingsMenuView.isHidden && self.isHidden {
             DispatchQueue.main.async {
@@ -84,6 +88,7 @@ class YoutubeSettingsMenuView: UIView {
             hideSettingsMenu() {}
         }
     }
+    
     public func hideSettingsMenu(onSuccess: @escaping() -> Void) {
         if !self.collectionView.isHidden && !self.backgroundSettingsMenuView.isHidden && !self.isHidden  {
             DispatchQueue.main.async {
@@ -133,6 +138,7 @@ class YoutubeSettingsMenuView: UIView {
         addSubview(collection)
         return collection
     }
+    
     private func createYoutubeBlackBackgroundSettingsMenuView() -> UIView {
         let background = UIView()
         background.translatesAutoresizingMaskIntoConstraints = false
@@ -149,6 +155,7 @@ class YoutubeSettingsMenuView: UIView {
         addConstraintsToCollectionView()
         addConstraintsToBackgroundSettingsMenuView()
     }
+    
     private func addConstraintsToCollectionView() {
         collectionView.leftAnchor.constraint(lessThanOrEqualTo: self.leftAnchor).isActive = true
         collectionView.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
@@ -156,6 +163,7 @@ class YoutubeSettingsMenuView: UIView {
         collectionViewHeightConstaint = collectionView.heightAnchor.constraint(equalToConstant: 0)
         collectionViewHeightConstaint?.isActive = true
     }
+    
     private func addConstraintsToBackgroundSettingsMenuView() {
         backgroundSettingsMenuView.leftAnchor.constraint(lessThanOrEqualTo: self.leftAnchor).isActive = true
         backgroundSettingsMenuView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
@@ -165,12 +173,15 @@ class YoutubeSettingsMenuView: UIView {
     }
 }
 extension YoutubeSettingsMenuView: UICollectionViewDataSource {
+    
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return viewModel.numerOfItemsInSection(section: section)
     }
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let settingsCell = collectionView.dequeueReusableCell(withReuseIdentifier: CellID.youtubeSettingsMenuCellID, for: indexPath) as! YoutubeSettingsMenuCollectionViewCell
         let settingsMenu = viewModel.selectedItemAt(indexPath: indexPath)
@@ -179,12 +190,14 @@ extension YoutubeSettingsMenuView: UICollectionViewDataSource {
     }
 }
 extension YoutubeSettingsMenuView: UICollectionViewDelegate {
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let settingsMenu = viewModel.selectedItemAt(indexPath: indexPath)
         self.actionSettingsMenuDidPressed(settings: settingsMenu)
     }
 }
 extension YoutubeSettingsMenuView: UICollectionViewDelegateFlowLayout {
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if UIApplication.shared.statusBarOrientation.isLandscape {
             return collectionViewitemSizeToLandscape

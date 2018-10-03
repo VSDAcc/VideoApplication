@@ -14,21 +14,34 @@ class YoutubeDetailVideoViewController: UIViewController {
     lazy var videoPlayerHideButton: UIButton = self.createVideoPlayerHideButton()
     fileprivate var viewModel: YoutubeDetailVideoViewModel?
     var animatableYoutubeCells: [UICollectionViewCell]?
+    private var isStatusBarHidden: Bool = false
+    
     //MARK:-Loading
     convenience init(viewModel: YoutubeDetailVideoViewModel) {
         self.init()
         self.viewModel = viewModel
     }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         addAllConstraintsToViews()
         addVideoThumbnailImage()
         self.view.backgroundColor = UIColor.white
+        setNeedsStatusBarAppearanceUpdate()
     }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.setNavigationBarHidden(true, animated: false)
         self.prepareVideoForPlaying()
+    }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+    
+    override var prefersStatusBarHidden: Bool {
+        return isStatusBarHidden
     }
     //MARK:-YoutubeVideoPlayerLauncherItem
     func addVideoThumbnailImage() {
@@ -36,20 +49,24 @@ class YoutubeDetailVideoViewController: UIViewController {
             self?.videoPlayerView.addThumbnailVideoImageWith(image!)
         })
     }
+    
     func prepareVideoForPlaying() {
         viewModel?.videoURL.bind(listener: { [weak self] (videoURL) in
             self?.videoPlayerView.actionPrepareVideoForPlayingWith(videoURL!)
         })
         actionIsStatusBarHidden(true)
     }
+    
     @objc func actionHideVideoPlayer(_ sender: UIButton) {
         videoPlayerView.actionStopPlayingVideo()
         navigationController?.popViewController(animated: true)
         actionIsStatusBarHidden(false)
     }
+    
     private func actionIsStatusBarHidden(_ hidden: Bool) {
         UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: [.curveEaseInOut], animations: {
-            UIApplication.shared.isStatusBarHidden = hidden
+            self.isStatusBarHidden = hidden
+            self.setNeedsStatusBarAppearanceUpdate()
         }, completion: { (completion) in })
     }
     //MAKR:-SetupViews
@@ -59,6 +76,7 @@ class YoutubeDetailVideoViewController: UIViewController {
         view.addSubview(videoView)
         return videoView
     }
+    
     private func createVideoPlayerHideButton() -> UIButton {
         let button = UIButton(type: .system)
         button.setTitle("Hide", for: .normal)
@@ -73,12 +91,14 @@ class YoutubeDetailVideoViewController: UIViewController {
         addConstraintsToVideoPlayerView()
         addConstraintsToVideoPlayerHideButton()
     }
+    
     private func addConstraintsToVideoPlayerView() {
         videoPlayerView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         videoPlayerView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
         videoPlayerView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 1).isActive = true
         videoPlayerView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
     }
+    
     private func addConstraintsToVideoPlayerHideButton() {
         videoPlayerHideButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 10.0).isActive = true
         videoPlayerHideButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 10.0).isActive = true
@@ -91,19 +111,8 @@ extension YoutubeDetailVideoViewController: ListToDetailAnimatable {
     var morphViews: [UIView] {
         return [videoPlayerView.thumbnailVideoImageView]
     }
+    
     var animatableCells: [UICollectionViewCell] {
         return animatableYoutubeCells!
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-

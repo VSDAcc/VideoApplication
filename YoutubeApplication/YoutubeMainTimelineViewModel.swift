@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+
 class YoutubeMainTimelineViewModel {
     
     fileprivate var router: YoutubeTimelineRouter.Routes?
@@ -15,6 +16,7 @@ class YoutubeMainTimelineViewModel {
         self.init()
         self.router = router
     }
+    
     func openDetailYoutubeViewController(youtubeVideoItem video: YoutubeVideoModel, animatableCells: [UICollectionViewCell]) {
         router?.openDetail(for: video, animatableYoutubeCells: animatableCells)
     }

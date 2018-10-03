@@ -7,7 +7,9 @@
 //
 
 import Foundation
+
 class YoutubeMenuBarViewModel {
+    
     fileprivate var menuBarArray = [
         YoutubeMenuBar(itemImageName: .home, itemTitleName: .home),
         YoutubeMenuBar(itemImageName: .trending, itemTitleName: .trending),
@@ -16,9 +18,11 @@ class YoutubeMenuBarViewModel {
     ]
 }
 extension YoutubeMenuBarViewModel {
+    
     func selectedItemAt(indexPath: IndexPath) -> YoutubeMenuBarItem {
         return menuBarArray[indexPath.item]
     }
+    
     func numerOfItemsInSection(section: Int? = nil) -> Int {
         return menuBarArray.count
     }

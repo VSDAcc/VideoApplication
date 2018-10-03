@@ -21,7 +21,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let navigationController = UINavigationController(rootViewController: timelineVC)
         navigationController.delegate = self
         window?.rootViewController = navigationController
-        UIApplication.shared.statusBarStyle = .lightContent
         return true
     }
 
@@ -52,20 +51,3 @@ extension AppDelegate: UINavigationControllerDelegate {
         return ListToDetailAnimator()
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+
 protocol YoutubeDetailRoute {
     var youtubeDetailTransition: Transition {get}
     func openDetail(for youtubeDetailModel: YoutubeVideoModel, animatableYoutubeCells: [UICollectionViewCell])
@@ -34,22 +35,3 @@ final class YoutubeTimelineRouter: Router<YoutubeTimelineViewController>, Youtub
 final class YoutubeDetailRouter: Router<YoutubeDetailVideoViewController> {
     typealias Routes = Closable
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

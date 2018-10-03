@@ -14,6 +14,7 @@ import AVFoundation
 protocol PresenterAlertHandler {
     func presentAlertWith(title: String, massage: String)
 }
+
 extension PresenterAlertHandler where Self: UIViewController {
     func presentAlertWith(title: String, massage: String) {
         let alert = UIAlertController(title: title, message: massage, preferredStyle: .alert)
@@ -22,9 +23,11 @@ extension PresenterAlertHandler where Self: UIViewController {
         present(alert, animated: true, completion: nil)
     }
 }
+
 protocol PresenterVideoHandler {
     func presentVideoWith(url: URL)
 }
+
 extension PresenterVideoHandler where Self: UIViewController {
     func presentVideoWith(url: URL) {
         let playerController = AVPlayerViewController()
@@ -33,6 +36,7 @@ extension PresenterVideoHandler where Self: UIViewController {
         present(playerController, animated: true, completion: nil)
     }
 }
+
 extension UIFont {
     var avenirNextRegularTitleFont: UIFont! {
         return UIFont(name: "AvenirNext-Regular", size: 18.0)
@@ -44,11 +48,13 @@ extension UIFont {
         return UIFont(name: "AvenirNext-Regular", size: 16.0)
     }
 }
+
 extension UIColor {
     convenience init(r: CGFloat, g: CGFloat, b: CGFloat, alpha: CGFloat) {
         self.init(red: r / 255, green: g / 255, blue: b / 255, alpha: alpha)
     }
 }
+
 extension UIImageView {
     func downloadImageUsingCache(stringURL: String) {
         DispatchQueue.global(qos: .userInteractive).async {
@@ -73,6 +79,7 @@ extension UIImageView {
         }
     }
 }
+
 extension UIView {
     func snapshotView(view: UIView, afterUpdates: Bool) -> UIView {
         let snapshot = view.snapshotView(afterScreenUpdates: afterUpdates)!
@@ -89,16 +96,9 @@ extension UIView {
     }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+extension UINavigationController {
+    
+    open override var preferredStatusBarStyle: UIStatusBarStyle {
+        return topViewController?.preferredStatusBarStyle ?? .default
+    }
+}

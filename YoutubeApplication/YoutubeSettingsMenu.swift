@@ -7,6 +7,7 @@
 //
 
 import Foundation
+
 enum YoutubeSettingsMenuTitleNameItem: String, CustomStringConvertible {
     case settings = "Settings"
     case termsPrivacy = "Terms & Privacy policy"
@@ -18,7 +19,7 @@ enum YoutubeSettingsMenuTitleNameItem: String, CustomStringConvertible {
         return self.rawValue
     }
 }
-enum YoutubeSettingsMenuImageNameItem: String, CustomStringConvertible{
+enum YoutubeSettingsMenuImageNameItem: String, CustomStringConvertible {
     case settings = "settings"
     case termsPrivacy = "privacy"
     case sendFeedback = "feedback"

@@ -7,7 +7,9 @@
 //
 
 import Foundation
+
 class YoutubeSettingsMenuViewModel {
+    
     fileprivate var menuSettingsArray = [
         YoutubeSettingsMenu(settingsTitle: .settings, settingsImageName: .settings),
         YoutubeSettingsMenu(settingsTitle: .termsPrivacy, settingsImageName: .termsPrivacy),
@@ -18,9 +20,11 @@ class YoutubeSettingsMenuViewModel {
     ]
 }
 extension YoutubeSettingsMenuViewModel {
+    
     func selectedItemAt(indexPath: IndexPath) -> YoutubeSettingsMenuItem {
         return menuSettingsArray[indexPath.item]
     }
+    
     func numerOfItemsInSection(section: Int) -> Int {
         return menuSettingsArray.count
     }

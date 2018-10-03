@@ -8,6 +8,7 @@
 
 import CoreData
 import UIKit
+
 class YoutubeVideoChannelModel: NSManagedObject {
     
     class func findOrCreateYoutubeVideoChannel(matching videoChannelInfo: YoutubeVideoChannelItem, in context: NSManagedObjectContext) throws -> YoutubeVideoChannelModel {
@@ -31,10 +32,3 @@ class YoutubeVideoChannelModel: NSManagedObject {
         return videoChannelModel
     }
 }
-
-
-
-
-
-
-

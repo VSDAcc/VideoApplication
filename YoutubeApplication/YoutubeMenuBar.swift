@@ -7,6 +7,7 @@
 //
 
 import Foundation
+
 enum YoutubeMenuBarImageNameItem: String, CustomStringConvertible {
     case home = "home"
     case trending = "trending"

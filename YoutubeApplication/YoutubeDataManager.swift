@@ -9,6 +9,7 @@
 import UIKit
 import SwiftyJSON
 import CoreData
+
 protocol YoutubeDataManagerOutput {
     func fetchHomeVideosFromDataManager()
     func fetchTrendingVideosFromDataManager()
@@ -39,6 +40,7 @@ class YoutubeDataManager: YoutubeDataManagerOutput {
             self?.printDatabaseStatistic()
         })
     }
+    
     private func printDatabaseStatistic() {
         if let context = container?.viewContext { // should be main thread
             context.perform { [weak self] in // safe main thread
@@ -49,6 +51,7 @@ class YoutubeDataManager: YoutubeDataManagerOutput {
             }
         }
     }
+    
     func fetchHomeVideosFromDataManager() {
         dataTask?.cancel()
         dataTask = defaultSession.dataTask(with: homeURL, completionHandler: { [weak self] (data, response, error) in
@@ -67,6 +70,7 @@ class YoutubeDataManager: YoutubeDataManagerOutput {
         })
         dataTask?.resume()
     }
+    
     func fetchTrendingVideosFromDataManager() {
         dataTask?.cancel()
         dataTask = defaultSession.dataTask(with: trendingURL, completionHandler: { [weak self] (data, response, error) in
@@ -85,6 +89,7 @@ class YoutubeDataManager: YoutubeDataManagerOutput {
         })
         dataTask?.resume()
     }
+    
     func fetchSubscriptionsVideosFromDataManager() {
         dataTask?.cancel()
         dataTask = defaultSession.dataTask(with: subscriptionsURL, completionHandler: { [weak self] (data, response, error) in
@@ -103,6 +108,7 @@ class YoutubeDataManager: YoutubeDataManagerOutput {
         })
         dataTask?.resume()
     }
+    
     func fetchAccountVideosFromDataManager() {
         dataTask?.cancel()
         dataTask = defaultSession.dataTask(with: accountURL, completionHandler: { [weak self] (data, response, error) in

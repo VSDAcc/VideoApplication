@@ -7,6 +7,7 @@
 //
 
 import UIKit
+
 protocol YoutubeTimelineViewControllerInput: class {
     func didFinishUpdates()
     func didHandleError(_ error: String)
@@ -35,12 +36,12 @@ class YoutubeTimelineContainerCollectionViewCell: UICollectionViewCell, YoutubeT
     var viewModel = YoutubeTimelineViewModel()
     weak var youtubeTimelineContainerViewCellHandler: YoutubeTimelineContainerViewCellHandler?
     fileprivate var youtubeRefreshControl: YoutubeRefreshControl!
-    
     //MARK:-Loading
     override func awakeFromNib() {
         super.awakeFromNib()
         self.translatesAutoresizingMaskIntoConstraints = false
     }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         addAllConstraintsToViews()
@@ -49,9 +50,11 @@ class YoutubeTimelineContainerCollectionViewCell: UICollectionViewCell, YoutubeT
         fetchVideosFromDataManager()
         configureRefreshControl()
     }
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
     override func layoutSubviews() {
         super.layoutSubviews()
         guard let flowLayout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout else {
@@ -72,11 +75,13 @@ class YoutubeTimelineContainerCollectionViewCell: UICollectionViewCell, YoutubeT
             self.youtubeRefreshControl.endRefreshing()
         }
     }
+    
     func fetchVideosFromDataManager() { }
     //MARK:-YoutubeTimelineViewControllerInput
     func didFinishUpdates() {
         collectionView.reloadData()
     }
+    
     func didHandleError(_ error: String) {
         //presentAlertWith(title: "Data Error", massage: error)
     }
@@ -102,6 +107,7 @@ class YoutubeTimelineContainerCollectionViewCell: UICollectionViewCell, YoutubeT
     private func addAllConstraintsToViews() {
         addConstraintsToCollectionView()
     }
+    
     private func addConstraintsToCollectionView() {
         collectionView.centerXAnchor.constraint(lessThanOrEqualTo: self.centerXAnchor).isActive = true
         collectionView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
@@ -110,12 +116,15 @@ class YoutubeTimelineContainerCollectionViewCell: UICollectionViewCell, YoutubeT
     }
 }
 extension YoutubeTimelineContainerCollectionViewCell: UICollectionViewDataSource {
+    
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return viewModel.numerOfItemsInSection(section: section)
     }
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let timelineCell = collectionView.dequeueReusableCell(withReuseIdentifier: CellID.youtubeTimelineCellID, for: indexPath) as! YoutubeTimelineCollectionViewCell
         let video = viewModel.selectedItemAt(indexPath: indexPath)
@@ -125,6 +134,7 @@ extension YoutubeTimelineContainerCollectionViewCell: UICollectionViewDataSource
     }
 }
 extension YoutubeTimelineContainerCollectionViewCell: UICollectionViewDelegate {
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let video = viewModel.selectedItemAt(indexPath: indexPath)
         let selectedCell = collectionView.cellForItem(at: indexPath) as! YoutubeTimelineCollectionViewCell
@@ -132,6 +142,7 @@ extension YoutubeTimelineContainerCollectionViewCell: UICollectionViewDelegate {
     }
 }
 extension YoutubeTimelineContainerCollectionViewCell: UICollectionViewDelegateFlowLayout {
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if UIApplication.shared.statusBarOrientation.isLandscape {
             return collectionViewitemSizeToLandscape
@@ -141,28 +152,12 @@ extension YoutubeTimelineContainerCollectionViewCell: UICollectionViewDelegateFl
     }
 }
 extension YoutubeTimelineContainerCollectionViewCell: UIScrollViewDelegate {
+    
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         youtubeRefreshControl.containingScrollViewDidScroll(scrollView: scrollView)
     }
+    
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         youtubeRefreshControl.containingScrollViewDidEndDragging(scrollView: scrollView, willDecelerate: decelerate)
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

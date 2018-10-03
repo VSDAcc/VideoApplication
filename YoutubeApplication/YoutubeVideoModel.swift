@@ -8,7 +8,9 @@
 
 import UIKit
 import CoreData
+
 class YoutubeVideoModel: NSManagedObject {
+    
     class func findOrCreateYoutubeVideo(matching videoInfo: YoutubeVideoItem, in context: NSManagedObjectContext) throws -> YoutubeVideoModel {
         
         let fetchRequest: NSFetchRequest<YoutubeVideoModel> = YoutubeVideoModel.fetchRequest()
@@ -34,18 +36,3 @@ class YoutubeVideoModel: NSManagedObject {
         return videoModel
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -8,6 +8,7 @@
 
 import UIKit
 import AVFoundation
+
 protocol YoutubeVideoPlayerManager {
     func actionStopPlayingVideo()
     func actionPrepareVideoForPlayingWith(_ url: String)
@@ -15,6 +16,7 @@ protocol YoutubeVideoPlayerManager {
     func actionStartPlayingVideo()
 }
 class YoutubeVideoPlayerView: UIView, YoutubeVideoPlayerManager {
+    
     struct VideoPlayerObserverConstants {
         static let loadedTimeRanges: String = "currentItem.loadedTimeRanges"
     }
@@ -44,14 +46,17 @@ class YoutubeVideoPlayerView: UIView, YoutubeVideoPlayerManager {
         addSubview(controlsContainerView)
         addAllConstraintsToViews()
     }
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
     override func layoutSublayers(of layer: CALayer) {
         super.layoutSublayers(of: layer)
         playerLayer?.frame = self.bounds
         gradientLayer.frame = controlsContainerView.bounds
     }
+    
     deinit {
         player?.removeObserver(self, forKeyPath: VideoPlayerObserverConstants.loadedTimeRanges)
         player?.removeTimeObserver(self.timeObserverToken ?? "")
@@ -62,23 +67,27 @@ class YoutubeVideoPlayerView: UIView, YoutubeVideoPlayerManager {
             self.thumbnailVideoImageView.downloadImageUsingCache(stringURL: url)
         }
     }
+    
     func actionPrepareVideoForPlayingWith(_ url: String) {
         if let videoURL = URL(string: url) {
             setupVideoPlayerWith(url: videoURL)
         }
     }
+    
     func actionStopPlayingVideo() {
         DispatchQueue.main.async {
             self.player?.pause()
             self.isPlayerPlay = false
         }
     }
+    
     func actionStartPlayingVideo() {
         DispatchQueue.main.async {
             self.player?.play()
             self.isPlayerPlay = true
         }
     }
+    
     private var timeObserverToken: Any?
     private func setupVideoPlayerWith(url: URL) {
         progressHUD.show()
@@ -92,9 +101,11 @@ class YoutubeVideoPlayerView: UIView, YoutubeVideoPlayerManager {
         addLoadedTimeRangeObserverToPlayer()
         addTimeObserverTokenToPlayer()
     }
+    
     private func addLoadedTimeRangeObserverToPlayer() {
         player?.addObserver(self, forKeyPath: VideoPlayerObserverConstants.loadedTimeRanges, options: .new, context: nil)
     }
+    
     private func addTimeObserverTokenToPlayer() {
         self.timeObserverToken = player?.addPeriodicTimeObserver(forInterval: CMTime(value: 1, timescale: 2), queue: .main, using: { [weak self] (progressTime) in
             self?.videoCurrentTimeLabel.text = self?.helpedMethods.formateCMTimeToString(time: progressTime)
@@ -113,6 +124,7 @@ class YoutubeVideoPlayerView: UIView, YoutubeVideoPlayerManager {
             }
         }
     }
+    
     private func showControlsContainerView() {
         UIView.animate(withDuration:0.3, animations: { [weak self] in
             self?.thumbnailVideoImageView.isHidden = true
@@ -131,6 +143,7 @@ class YoutubeVideoPlayerView: UIView, YoutubeVideoPlayerManager {
             playButton.setImage(UIImage(named: "pause"), for: .normal)
         }
     }
+    
     @objc private func actionSliderValueDidChange(_ sender: UISlider) {
         if let totalSeconds = actionGetCurrentPlayerSecondsDuration() {
             let value = Float64(sender.value) * totalSeconds
@@ -138,6 +151,7 @@ class YoutubeVideoPlayerView: UIView, YoutubeVideoPlayerManager {
             player?.seek(to: seekTime, completionHandler: { (finished) in })
         }
     }
+    
     private func actionGetCurrentPlayerSecondsDuration() -> Float64? {
         if let duration = player?.currentItem?.duration{
             return CMTimeGetSeconds(duration)
@@ -151,6 +165,7 @@ class YoutubeVideoPlayerView: UIView, YoutubeVideoPlayerManager {
         addSubview(hud)
         return hud
     }
+    
     private func createPlayerPlayButton() -> UIButton {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -159,6 +174,7 @@ class YoutubeVideoPlayerView: UIView, YoutubeVideoPlayerManager {
         controlsContainerView.addSubview(button)
         return button
     }
+    
     private func createVideoDurationLabel() -> UILabel {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -172,6 +188,7 @@ class YoutubeVideoPlayerView: UIView, YoutubeVideoPlayerManager {
         controlsContainerView.addSubview(label)
         return label
     }
+    
     private func createVideoPlayerSlider() -> UISlider {
         let slider = UISlider()
         slider.translatesAutoresizingMaskIntoConstraints = false
@@ -182,6 +199,7 @@ class YoutubeVideoPlayerView: UIView, YoutubeVideoPlayerManager {
         controlsContainerView.addSubview(slider)
         return slider
     }
+    
     private func createGradientLayer() -> CAGradientLayer {
         let gradient = CAGradientLayer()
         gradient.frame = controlsContainerView.bounds
@@ -190,6 +208,7 @@ class YoutubeVideoPlayerView: UIView, YoutubeVideoPlayerManager {
         controlsContainerView.layer.addSublayer(gradient)
         return gradient
     }
+    
     private func createThumbnailVideoImageView() -> UIImageView {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -207,42 +226,49 @@ class YoutubeVideoPlayerView: UIView, YoutubeVideoPlayerManager {
         addConstraintsToVideoPlayerSlider()
         addConstraintsToVideoCurrentTimeLabel()
     }
+    
     private func addConstraintsToControlsContainerView() {
         controlsContainerView.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         controlsContainerView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         controlsContainerView.widthAnchor.constraint(equalTo: widthAnchor).isActive = true
         controlsContainerView.heightAnchor.constraint(equalTo: heightAnchor).isActive = true
     }
+    
     private func addConstraintsToThumbnailVideoImageView() {
         thumbnailVideoImageView.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         thumbnailVideoImageView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         thumbnailVideoImageView.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 1).isActive = true
         thumbnailVideoImageView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 1).isActive = true
     }
+    
     private func addConstraintsToProgressHUDView() {
         progressHUD.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         progressHUD.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         progressHUD.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 1/3)
         progressHUD.heightAnchor.constraint(equalToConstant: 45.0).isActive = true
     }
+    
     private func addConstraintsToPlayerPlayButton() {
         playButton.centerXAnchor.constraint(equalTo: controlsContainerView.centerXAnchor).isActive = true
         playButton.centerYAnchor.constraint(equalTo: controlsContainerView.centerYAnchor).isActive = true
         playButton.widthAnchor.constraint(equalTo: controlsContainerView.widthAnchor, multiplier: 1/5).isActive = true
         playButton.heightAnchor.constraint(equalTo: playButton.widthAnchor).isActive = true
     }
+    
     private func addConstraintsToVideoCurrentTimeLabel() {
         videoCurrentTimeLabel.leftAnchor.constraint(equalTo: controlsContainerView.leftAnchor, constant: 5).isActive = true
         videoCurrentTimeLabel.bottomAnchor.constraint(equalTo: videoPlayerSlider.bottomAnchor).isActive = true
         videoCurrentTimeLabel.rightAnchor.constraint(equalTo: videoPlayerSlider.leftAnchor, constant: -5).isActive = true
         videoCurrentTimeLabel.heightAnchor.constraint(equalTo: videoPlayerSlider.heightAnchor).isActive = true
     }
+    
     private func addConstraintsToVideoPlayerSlider() {
         videoPlayerSlider.centerXAnchor.constraint(equalTo: controlsContainerView.centerXAnchor).isActive = true
         videoPlayerSlider.widthAnchor.constraint(equalTo: controlsContainerView.widthAnchor, multiplier: 5/8).isActive = true
         videoPlayerSlider.bottomAnchor.constraint(equalTo: controlsContainerView.bottomAnchor, constant: -7).isActive = true
         videoPlayerSlider.heightAnchor.constraint(equalToConstant: 30.0).isActive = true
     }
+    
     private func addConstraintsToVideoDurationLabel() {
         videoDurationLabel.rightAnchor.constraint(equalTo: controlsContainerView.rightAnchor, constant: -5).isActive = true
         videoDurationLabel.leftAnchor.constraint(equalTo: videoPlayerSlider.rightAnchor, constant: 5).isActive = true
@@ -250,12 +276,3 @@ class YoutubeVideoPlayerView: UIView, YoutubeVideoPlayerManager {
         videoDurationLabel.heightAnchor.constraint(equalTo: videoPlayerSlider.heightAnchor).isActive = true
     }
 }
-
-
-
-
-
-
-
-
-

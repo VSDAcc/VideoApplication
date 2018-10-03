@@ -7,7 +7,9 @@
 //
 
 import Foundation
+
 class YoutubeDetailVideoViewModel {
+    
     fileprivate var video: YoutubeVideoModel? {
         didSet {
             videoURL.value = video?.videoLinkURL
@@ -18,15 +20,18 @@ class YoutubeDetailVideoViewModel {
         }
     }
     fileprivate var router: YoutubeDetailRouter.Routes?
+    //MARK:-Loading
     convenience init(videoItem: YoutubeVideoModel, router: YoutubeDetailRouter.Routes) {
         self.init()
         self.router = router
         self.video = videoItem
     }
+    
     convenience init(videoItem: YoutubeVideoModel) {
         self.init()
         self.video = videoItem
     }
+    
     var videoURL: Box<String?> {
         return Box(video?.videoLinkURL)
     }

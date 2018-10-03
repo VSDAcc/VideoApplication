@@ -7,6 +7,7 @@
 //
 
 import UIKit
+
 protocol ListToDetailAnimatable {
     var morphViews: [UIView] { get }
     var animatableCells: [UICollectionViewCell] { get }
@@ -60,6 +61,7 @@ class ListToDetailAnimator: NSObject, UIViewControllerAnimatedTransitioning {
         })
         animateMorphViews(views: Array(zip(fromAnimatable.morphViews, toAnimatable.morphViews)), canvas: canvas)
     }
+    
     func animateMorhpFromView(view: UIView, toView: UIView, canvas: UIView) {
         let fromView = canvas.snapshotView(view: view, afterUpdates: false)
         let toView = canvas.snapshotView(view: toView, afterUpdates: true)
@@ -79,20 +81,8 @@ class ListToDetailAnimator: NSObject, UIViewControllerAnimatedTransitioning {
             toView.center = targetCenter
         }
     }
+    
     func animateMorphViews(views: [(fromView: UIView, toView: UIView)], canvas: UIView) {
         views.forEach({animateMorhpFromView(view: $0.fromView, toView: $0.toView, canvas: canvas)})
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

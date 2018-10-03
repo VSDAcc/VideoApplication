@@ -9,6 +9,7 @@
 import UIKit
 import SDWebImage
 import AVFoundation
+
 struct YoutubeHelpedMethods {
     
     func formateNumberToStringInDecimalFormat(_ number: NSNumber) -> String {
@@ -17,11 +18,13 @@ struct YoutubeHelpedMethods {
         formatter.alwaysShowsDecimalSeparator = true
         return formatter.string(from: number)!
     }
+    
     func configureEstimatedHeightForText(_ text: String) -> CGRect {
         let size = CGSize(width: 200.0, height: 1000.0)
         let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
         return NSString(string: text).boundingRect(with: size, options: options, attributes: [:], context: nil)
     }
+    
     func formateCMTimeToString(time: CMTime) -> String {
         var textTime = "00:00"
         let seconds = CMTimeGetSeconds(time)
@@ -30,6 +33,7 @@ struct YoutubeHelpedMethods {
         textTime = "\(textMinutes):\(textSeconds)"
         return textTime
     }
+    
     func thumbnailImageFromVideoURL(_ url: URL) -> UIImage? {
         let asset = AVAsset(url: url)
         let imageGenerator = AVAssetImageGenerator(asset: asset)
@@ -40,6 +44,7 @@ struct YoutubeHelpedMethods {
             return nil
         }
     }
+    
     func downloadImageUsingCacheWithComplitionBlock(stringURL: String, onSuccess: @escaping(_ image: UIImage) -> (), onFailure: @escaping() -> ()) {
         DispatchQueue.global(qos: .userInteractive).async {
             let imageManager = SDWebImageManager.shared()

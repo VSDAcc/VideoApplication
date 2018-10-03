@@ -8,6 +8,7 @@
 
 import UIKit
 import SwiftyJSON
+
 protocol YoutubeVideoChannelItem {
     var channelName: String! {get set}
     var channelProfileImageLink: String! {get set}
@@ -35,12 +36,14 @@ protocol YoutubeVideoItem {
     var videoDuration: Int! {get set}
 }
 struct YoutubeVideo: YoutubeVideoItem {
+    
     var channel: YoutubeVideoChannelItem?
     var videoTitle: String!
     var thumbnailImage: String!
     var videoLinkUrl: String!
     var videoNumberOfViews: Int!
     var videoDuration: Int!
+    
     init(response: JSON) {
         if let title = response["title"].string {
             self.videoTitle = title
@@ -58,19 +61,9 @@ struct YoutubeVideo: YoutubeVideoItem {
         }
         videoLinkUrl = "https://firebasestorage.googleapis.com/v0/b/photocardtest-bf9cd.appspot.com/o/Video_Storage%2F7sGBzgqoXhY9UGkEjCoBQKn66gy18A5E6C02-8F96-4089-A91D-063816CDCB84.jpg)?alt=media&token=bfc4b11c-abf2-4932-be79-6d172bb8dfbd"
     }
+    
     init(response: JSON, channel: YoutubeVideoChannelItem) {
         self.init(response: response)
         self.channel = channel
     }
 }
-
-
-
-
-
-
-
-
-
-
-

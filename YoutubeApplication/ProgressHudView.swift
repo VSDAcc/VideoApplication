@@ -7,11 +7,13 @@
 //
 
 import UIKit
+
 protocol ProgressHudManager {
     func show()
     func hide()
 }
 class ProgressHudView: UIVisualEffectView, ProgressHudManager {
+    
     private var text: String? {
         didSet {
             label.text = text
@@ -29,6 +31,7 @@ class ProgressHudView: UIVisualEffectView, ProgressHudManager {
         self.layer.cornerRadius = 8.0
         self.clipsToBounds = true
     }
+    
     required init?(coder aDecoder: NSCoder) {
         self.text = ""
         super.init(coder: aDecoder)
@@ -41,6 +44,7 @@ class ProgressHudView: UIVisualEffectView, ProgressHudManager {
         contentView.addSubview(indicator)
         return indicator
     }
+    
     private func createTextLabel() -> UILabel {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -53,51 +57,49 @@ class ProgressHudView: UIVisualEffectView, ProgressHudManager {
         contentView.addSubview(label)
         return label
     }
+    
     private func createVibrancyViewWith(effect: UIVibrancyEffect) -> UIVisualEffectView {
         let vibrancyView: UIVisualEffectView = UIVisualEffectView(effect: effect)
         vibrancyView.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(vibrancyView)
         return vibrancyView
     }
+    
     //MARK:-AddConstraints
     private func addAllConstraintsToViews() {
         addConstraintsToVibrancyView()
         addConstraintsToTextLabel()
         addConstraintsToActivityIndicatorView()
     }
+    
     private func addConstraintsToVibrancyView() {
         vibrancyView.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         vibrancyView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         vibrancyView.widthAnchor.constraint(equalTo: widthAnchor).isActive = true
         vibrancyView.heightAnchor.constraint(equalTo: heightAnchor).isActive = true
     }
+    
     private func addConstraintsToTextLabel() {
         label.leftAnchor.constraint(equalTo: leftAnchor, constant: 10).isActive = true
         label.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         label.rightAnchor.constraint(equalTo: activityIndictor.leftAnchor, constant: -5).isActive = true
         label.heightAnchor.constraint(equalTo: heightAnchor).isActive = true
     }
+    
     private func addConstraintsToActivityIndicatorView() {
         activityIndictor.rightAnchor.constraint(equalTo: rightAnchor, constant: -5).isActive = true
         activityIndictor.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         activityIndictor.widthAnchor.constraint(equalToConstant: 40.0).isActive = true
         activityIndictor.heightAnchor.constraint(equalToConstant: 40.0).isActive = true
     }
+    
     public func show() {
         self.isHidden = false
         activityIndictor.startAnimating()
     }
+    
     public func hide() {
         self.isHidden = true
         activityIndictor.stopAnimating()
     }
 }
-
-
-
-
-
-
-
-
-
