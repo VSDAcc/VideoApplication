@@ -8,10 +8,15 @@ DEPENDENCIES:
   - SDWebImage
   - SwiftyJSON
 
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - SDWebImage
+    - SwiftyJSON
+
 SPEC CHECKSUMS:
   SDWebImage: 89a9d32cd520bbb46eb14e541d5109b3564af198
   SwiftyJSON: 070dabdcb1beb81b247c65ffa3a79dbbfb3b48aa
 
 PODFILE CHECKSUM: 29a5030a58bb41b6e0c1f1faf3861b9ace17ac5b
 
-COCOAPODS: 1.3.1
+COCOAPODS: 1.5.3

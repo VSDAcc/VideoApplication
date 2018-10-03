@@ -374,7 +374,6 @@
 				8A7B03051FD6A76E0028BB9B /* Frameworks */,
 				8A7B03061FD6A76E0028BB9B /* Resources */,
 				EA152A0D9464F7D79E69F8BB /* [CP] Embed Pods Frameworks */,
-				F83ADD03893785D3B9D1402B /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -471,21 +470,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-YoutubeApplication/Pods-YoutubeApplication-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		F83ADD03893785D3B9D1402B /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-YoutubeApplication/Pods-YoutubeApplication-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
