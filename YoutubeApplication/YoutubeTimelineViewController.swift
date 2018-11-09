@@ -40,18 +40,19 @@ class YoutubeTimelineViewController: UICollectionViewController, UICollectionVie
     private var menuBarHeight: CGFloat  = 50.0
     private var itemInsets: CGFloat = 50.0
     var selectedYoutubeCell: YoutubeTimelineCollectionViewCell?
+    fileprivate var cellOffset: CGFloat = 20.0
     
     fileprivate var collectionViewItemSizeToPortrait: CGSize {
         get {
             let width: CGFloat = view.frame.width
-            let height: CGFloat = view.frame.height - menuBarHeight * 2
+            let height: CGFloat = view.frame.height - (menuBarHeight + cellOffset)
             return CGSize(width: width, height: height)
         }
     }
     fileprivate var collectionViewitemSizeToLandscape: CGSize {
         get {
             let width: CGFloat = view.frame.width
-            let height: CGFloat = view.frame.height - menuBarHeight * 2
+            let height: CGFloat = view.frame.height - (menuBarHeight + cellOffset)
             return CGSize(width: width, height: height)
         }
     }
@@ -112,6 +113,8 @@ class YoutubeTimelineViewController: UICollectionViewController, UICollectionVie
         flowLayout.minimumInteritemSpacing = 0
         flowLayout.sectionInset = UIEdgeInsets.init(top: 0, left: 0, bottom: 0, right: 0)
         flowLayout.minimumLineSpacing = 0
+        flowLayout.headerReferenceSize = CGSize(width: 0, height: 0)
+        flowLayout.footerReferenceSize = CGSize(width: 0, height: 0)
     }
     
     private func configureNavigationBar() {
@@ -121,7 +124,7 @@ class YoutubeTimelineViewController: UICollectionViewController, UICollectionVie
     
     private func configureTimelineCollectionView() {
         self.collectionView?.backgroundColor = UIColor.white
-        self.collectionView?.contentInset = UIEdgeInsets.init(top: 0, left: 0, bottom: 0, right: 0)
+        self.collectionView?.contentInset = UIEdgeInsets.init(top: menuBarHeight, left: 0, bottom: 0, right: 0)
         self.collectionView?.scrollIndicatorInsets = UIEdgeInsets.init(top: menuBarHeight, left: 0, bottom: 0, right: 0)
         self.collectionView?.showsHorizontalScrollIndicator = false
         self.collectionView?.register(YoutubeTimelineHomeCollectionViewCell.self, forCellWithReuseIdentifier: CellID.youtubeTimelineHomeCellID)

@@ -92,7 +92,7 @@ class YoutubeTimelineContainerCollectionViewCell: UICollectionViewCell, YoutubeT
         flowLayout.sectionHeadersPinToVisibleBounds = true
         flowLayout.minimumInteritemSpacing = 1
         flowLayout.minimumLineSpacing = 10
-        flowLayout.sectionInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        flowLayout.sectionInset = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
         let collection = UICollectionView(frame: self.frame, collectionViewLayout: flowLayout)
         collection.translatesAutoresizingMaskIntoConstraints = false
         collection.register(YoutubeTimelineCollectionViewCell.self, forCellWithReuseIdentifier: CellID.youtubeTimelineCellID)
