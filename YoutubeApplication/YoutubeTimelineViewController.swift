@@ -44,14 +44,14 @@ class YoutubeTimelineViewController: UICollectionViewController, UICollectionVie
     fileprivate var collectionViewItemSizeToPortrait: CGSize {
         get {
             let width: CGFloat = view.frame.width
-            let height: CGFloat = view.frame.height - menuBarHeight
+            let height: CGFloat = view.frame.height - menuBarHeight * 2
             return CGSize(width: width, height: height)
         }
     }
     fileprivate var collectionViewitemSizeToLandscape: CGSize {
         get {
             let width: CGFloat = view.frame.width
-            let height: CGFloat = view.frame.height - menuBarHeight
+            let height: CGFloat = view.frame.height - menuBarHeight * 2
             return CGSize(width: width, height: height)
         }
     }
@@ -121,7 +121,7 @@ class YoutubeTimelineViewController: UICollectionViewController, UICollectionVie
     
     private func configureTimelineCollectionView() {
         self.collectionView?.backgroundColor = UIColor.white
-        self.collectionView?.contentInset = UIEdgeInsets.init(top: menuBarHeight, left: 0, bottom: 0, right: 0)
+        self.collectionView?.contentInset = UIEdgeInsets.init(top: 0, left: 0, bottom: 0, right: 0)
         self.collectionView?.scrollIndicatorInsets = UIEdgeInsets.init(top: menuBarHeight, left: 0, bottom: 0, right: 0)
         self.collectionView?.showsHorizontalScrollIndicator = false
         self.collectionView?.register(YoutubeTimelineHomeCollectionViewCell.self, forCellWithReuseIdentifier: CellID.youtubeTimelineHomeCellID)

@@ -281,8 +281,8 @@
 			isa = PBXGroup;
 			children = (
 				7F2D2E2A202DD2E000DC8741 /* YoutubeMainTimelineViewModel.swift */,
-				8A7B03291FD6AEA20028BB9B /* YoutubeTimelineViewModel.swift */,
 				8ABD0F6C1FEA84C500C8D254 /* YoutubeDetailVideoViewModel.swift */,
+				8A7B03291FD6AEA20028BB9B /* YoutubeTimelineViewModel.swift */,
 				8A9E0FDD1FD96D8C0065108D /* YoutubeMenuBarViewModel.swift */,
 				8A9E0FEA1FDEAD720065108D /* YoutubeSettingsMenuViewModel.swift */,
 				8A9E0FE61FDE801F0065108D /* Box.swift */,
