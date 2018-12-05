@@ -1,22 +1,32 @@
 PODS:
-  - SDWebImage (4.2.2):
-    - SDWebImage/Core (= 4.2.2)
-  - SDWebImage/Core (4.2.2)
-  - SwiftyJSON (4.0.0)
+  - Alamofire (4.8.0)
+  - Moya (12.0.1):
+    - Moya/Core (= 12.0.1)
+  - Moya/Core (12.0.1):
+    - Alamofire (~> 4.1)
+    - Result (~> 4.0)
+  - Result (4.0.0)
+  - SDWebImage (4.4.2):
+    - SDWebImage/Core (= 4.4.2)
+  - SDWebImage/Core (4.4.2)
 
 DEPENDENCIES:
+  - Moya
   - SDWebImage
-  - SwiftyJSON
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
+    - Alamofire
+    - Moya
+    - Result
     - SDWebImage
-    - SwiftyJSON
 
 SPEC CHECKSUMS:
-  SDWebImage: 89a9d32cd520bbb46eb14e541d5109b3564af198
-  SwiftyJSON: 070dabdcb1beb81b247c65ffa3a79dbbfb3b48aa
+  Alamofire: 3ec537f71edc9804815215393ae2b1a8ea33a844
+  Moya: cf730b3cd9e005401ef37a85143aa141a12fd38f
+  Result: 7645bb3f50c2ce726dd0ff2fa7b6f42bbe6c3713
+  SDWebImage: 624d6e296c69b244bcede364c72ae0430ac14681
 
-PODFILE CHECKSUM: 29a5030a58bb41b6e0c1f1faf3861b9ace17ac5b
+PODFILE CHECKSUM: 5a430828900d9dbb08706cc97616d2c7ae8bce6f
 
 COCOAPODS: 1.5.3

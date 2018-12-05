@@ -7,5 +7,5 @@ target 'YoutubeApplication' do
 
   # Pods for YoutubeApplication
   pod 'SDWebImage'
-  pod 'SwiftyJSON'
+  pod 'Moya'
 end

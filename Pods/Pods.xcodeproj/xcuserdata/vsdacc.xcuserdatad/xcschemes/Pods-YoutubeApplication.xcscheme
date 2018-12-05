@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1000"
+   LastUpgradeVersion = "1010"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "A19CC3D782DB2390E37E065D1097EDCD"
+               BlueprintIdentifier = "FC1C0BC475CF6B880B22E8BE5DF1E171"
                BuildableName = "Pods_YoutubeApplication.framework"
                BlueprintName = "Pods-YoutubeApplication"
                ReferencedContainer = "container:Pods.xcodeproj">
@@ -45,7 +45,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "A19CC3D782DB2390E37E065D1097EDCD"
+            BlueprintIdentifier = "FC1C0BC475CF6B880B22E8BE5DF1E171"
             BuildableName = "Pods_YoutubeApplication.framework"
             BlueprintName = "Pods-YoutubeApplication"
             ReferencedContainer = "container:Pods.xcodeproj">
