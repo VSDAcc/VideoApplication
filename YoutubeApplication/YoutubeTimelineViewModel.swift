@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol YoutubeViewModelOutput: YoutubeDataManagerInput {
+protocol YoutubeViewModelOutput: YoutubeDataManagerOutput {
     func queryHomeVideosFromDataManager()
     func queryTrendingVideosFromDataManager()
     func querySubscriptionsVideosFromDataManager()
@@ -17,12 +17,12 @@ protocol YoutubeViewModelOutput: YoutubeDataManagerInput {
 class YoutubeTimelineViewModel: YoutubeViewModelOutput {
     
     fileprivate var youtubeVideos = [YoutubeVideoModel]()
-    var dataManager = YoutubeDataManager()
+    fileprivate var dataManager = YoutubeDataManager()
     weak var view: YoutubeTimelineViewControllerInput?
     
     //MARK:-Loading
     init() {
-        dataManager.managerInput = self
+        dataManager.managerOutput = self
     }
     //MARK:-YoutubeViewModelOutput
     func queryHomeVideosFromDataManager() {

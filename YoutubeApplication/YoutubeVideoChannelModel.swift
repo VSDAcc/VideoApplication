@@ -11,7 +11,7 @@ import UIKit
 
 class YoutubeVideoChannelModel: NSManagedObject {
     
-    class func findOrCreateYoutubeVideoChannel(matching videoChannelInfo: YoutubeVideoChannelItem, in context: NSManagedObjectContext) throws -> YoutubeVideoChannelModel {
+    class func findOrCreateYoutubeVideoChannel(matching videoChannelInfo: YoutubeVideoChannel, in context: NSManagedObjectContext) throws -> YoutubeVideoChannelModel {
         
         let fetchRequest: NSFetchRequest<YoutubeVideoChannelModel> = YoutubeVideoChannelModel.fetchRequest()
         let predicate = NSPredicate(format: "channelName = %@", videoChannelInfo.channelName)
@@ -27,7 +27,7 @@ class YoutubeVideoChannelModel: NSManagedObject {
         }
         let videoChannelModel = YoutubeVideoChannelModel(context: context)
         videoChannelModel.channelName = videoChannelInfo.channelName
-        videoChannelModel.channelProfileImageLink = videoChannelInfo.channelProfileImageLink
+        videoChannelModel.channelProfileImageLink = videoChannelInfo.channelImageURL
         
         return videoChannelModel
     }

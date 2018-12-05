@@ -11,7 +11,7 @@ import CoreData
 
 class YoutubeVideoModel: NSManagedObject {
     
-    class func findOrCreateYoutubeVideo(matching videoInfo: YoutubeVideoItem, in context: NSManagedObjectContext) throws -> YoutubeVideoModel {
+    class func findOrCreateYoutubeVideo(matching videoInfo: YoutubeVideo, in context: NSManagedObjectContext) throws -> YoutubeVideoModel {
         
         let fetchRequest: NSFetchRequest<YoutubeVideoModel> = YoutubeVideoModel.fetchRequest()
         let predicate = NSPredicate(format: "videoTitle = %@", videoInfo.videoTitle)

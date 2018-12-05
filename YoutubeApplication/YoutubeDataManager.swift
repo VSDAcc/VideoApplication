@@ -7,23 +7,24 @@
 //
 
 import UIKit
-import SwiftyJSON
 import CoreData
 
-protocol YoutubeDataManagerOutput {
+protocol YoutubeDataManagerInput {
     func fetchHomeVideosFromDataManager()
     func fetchTrendingVideosFromDataManager()
     func fetchSubscriptionsVideosFromDataManager()
     func fetchAccountVideosFromDataManager()
 }
-protocol YoutubeDataManagerInput: class {
+protocol YoutubeDataManagerOutput: class {
     func didHandleErrorFromFetchingRequest(_ error: String)
     func didHandleFetchRequestWith(_ videos: [YoutubeVideoModel])
 }
-class YoutubeDataManager: YoutubeDataManagerOutput {
+class YoutubeDataManager: YoutubeDataManagerInput {
     
-    var container: NSPersistentContainer? = CoreDataManager.sharedInstance.persistentContainer
-    weak var managerInput: YoutubeDataManagerInput?
+    fileprivate var container: NSPersistentContainer? = CoreDataManager.sharedInstance.persistentContainer
+    
+    weak var managerOutput: YoutubeDataManagerOutput?
+    
     private let defaultSession = URLSession(configuration: .default)
     private var dataTask: URLSessionDataTask?
     private let homeURL: URL = URL(string: "https://s3-us-west-2.amazonaws.com/youtubeassets/home.json")!
@@ -31,7 +32,7 @@ class YoutubeDataManager: YoutubeDataManagerOutput {
     private let subscriptionsURL: URL = URL(string: "https://s3-us-west-2.amazonaws.com/youtubeassets/subscriptions.json")!
     private let accountURL: URL = URL(string: "https://s3-us-west-2.amazonaws.com/youtubeassets/account.json")!
     
-    private func updateYoutubeVideoCoreDataModel(youtubeVideos: [YoutubeVideoItem]) {
+    private func updateYoutubeVideoCoreDataModel(youtubeVideos: [YoutubeVideo]) {
         container?.performBackgroundTask({ [weak self] (context) in
             for videoInfo in youtubeVideos {
                let _ = try? YoutubeVideoModel.findOrCreateYoutubeVideo(matching: videoInfo, in: context)
@@ -46,7 +47,7 @@ class YoutubeDataManager: YoutubeDataManagerOutput {
             context.perform { [weak self] in // safe main thread
                 let videoFetchRequest: NSFetchRequest<YoutubeVideoModel> = YoutubeVideoModel.fetchRequest()
                 if let videoModel = try? context.fetch(videoFetchRequest) {
-                    self?.managerInput?.didHandleFetchRequestWith(videoModel)
+                    self?.managerOutput?.didHandleFetchRequestWith(videoModel)
                 }
             }
         }
@@ -58,14 +59,12 @@ class YoutubeDataManager: YoutubeDataManagerOutput {
             defer { self?.dataTask = nil }
             if let error = error {
                 DispatchQueue.main.async {
-                    self?.managerInput?.didHandleErrorFromFetchingRequest(error.localizedDescription)
+                    self?.managerOutput?.didHandleErrorFromFetchingRequest(error.localizedDescription)
                 }
-            }else if let data = data, let response = response as? HTTPURLResponse, response.statusCode == 200 {
-                let jsonObject = JSON(data).arrayValue
-                let videoArray = jsonObject.map({
-                    return YoutubeVideo(response: $0, channel: YoutubeVideoChannel(response: $0))
-                })
-                self?.updateYoutubeVideoCoreDataModel(youtubeVideos: videoArray)
+            } else if let data = data, let response = response as? HTTPURLResponse, response.statusCode == 200 {
+                if let youtubeModels = try? JSONDecoder().decode([YoutubeVideo].self, from: data) {
+                    self?.updateYoutubeVideoCoreDataModel(youtubeVideos: youtubeModels)
+                }
             }
         })
         dataTask?.resume()
@@ -77,14 +76,12 @@ class YoutubeDataManager: YoutubeDataManagerOutput {
             defer { self?.dataTask = nil }
             if let error = error {
                 DispatchQueue.main.async {
-                    self?.managerInput?.didHandleErrorFromFetchingRequest(error.localizedDescription)
+                    self?.managerOutput?.didHandleErrorFromFetchingRequest(error.localizedDescription)
                 }
             }else if let data = data, let response = response as? HTTPURLResponse, response.statusCode == 200 {
-                let jsonObject = JSON(data).arrayValue
-                let videoArray = jsonObject.map({
-                    return YoutubeVideo(response: $0, channel: YoutubeVideoChannel(response: $0))
-                })
-                self?.updateYoutubeVideoCoreDataModel(youtubeVideos: videoArray)
+                if let youtubeModels = try? JSONDecoder().decode([YoutubeVideo].self, from: data) {
+                    self?.updateYoutubeVideoCoreDataModel(youtubeVideos: youtubeModels)
+                }
             }
         })
         dataTask?.resume()
@@ -96,14 +93,12 @@ class YoutubeDataManager: YoutubeDataManagerOutput {
             defer { self?.dataTask = nil }
             if let error = error {
                 DispatchQueue.main.async {
-                    self?.managerInput?.didHandleErrorFromFetchingRequest(error.localizedDescription)
+                    self?.managerOutput?.didHandleErrorFromFetchingRequest(error.localizedDescription)
                 }
             }else if let data = data, let response = response as? HTTPURLResponse, response.statusCode == 200 {
-                let jsonObject = JSON(data).arrayValue
-                let videoArray = jsonObject.map({
-                    return YoutubeVideo(response: $0, channel: YoutubeVideoChannel(response: $0))
-                })
-                self?.updateYoutubeVideoCoreDataModel(youtubeVideos: videoArray)
+                if let youtubeModels = try? JSONDecoder().decode([YoutubeVideo].self, from: data) {
+                    self?.updateYoutubeVideoCoreDataModel(youtubeVideos: youtubeModels)
+                }
             }
         })
         dataTask?.resume()
@@ -115,14 +110,12 @@ class YoutubeDataManager: YoutubeDataManagerOutput {
             defer { self?.dataTask = nil }
             if let error = error {
                 DispatchQueue.main.async {
-                    self?.managerInput?.didHandleErrorFromFetchingRequest(error.localizedDescription)
+                    self?.managerOutput?.didHandleErrorFromFetchingRequest(error.localizedDescription)
                 }
             }else if let data = data, let response = response as? HTTPURLResponse, response.statusCode == 200 {
-                let jsonObject = JSON(data).arrayValue
-                let videoArray = jsonObject.map({
-                    return YoutubeVideo(response: $0, channel: YoutubeVideoChannel(response: $0))
-                })
-                self?.updateYoutubeVideoCoreDataModel(youtubeVideos: videoArray)
+                if let youtubeModels = try? JSONDecoder().decode([YoutubeVideo].self, from: data) {
+                    self?.updateYoutubeVideoCoreDataModel(youtubeVideos: youtubeModels)
+                }
             }
         })
         dataTask?.resume()
