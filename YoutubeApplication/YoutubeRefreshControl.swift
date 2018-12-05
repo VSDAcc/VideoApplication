@@ -28,6 +28,11 @@ class YoutubeRefreshControl: UIControl {
         addSubview(heartImageView)
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        center = CGPoint(x: containingScrollView.bounds.midX, y: -bounds.height / 2)
+    }
+    
     func containingScrollViewDidScroll(scrollView: UIScrollView) {
         if refreshing { return }
         let offset = -(scrollView.contentOffset.y + scrollView.contentInset.top)
