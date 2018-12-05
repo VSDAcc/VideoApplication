@@ -33,6 +33,7 @@
 		7F8FC5A121B7E0EC00599D49 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F8FC5A021B7E0EB00599D49 /* String.swift */; };
 		7F8FC5A621B7E6C600599D49 /* APITimeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F8FC5A521B7E6C600599D49 /* APITimeline.swift */; };
 		7F8FC5A821B7E9F200599D49 /* TimelineHomeVideoServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F8FC5A721B7E9F200599D49 /* TimelineHomeVideoServices.swift */; };
+		7F8FC5AA21B8155C00599D49 /* ApplicationStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F8FC5A921B8155C00599D49 /* ApplicationStorage.swift */; };
 		7FCB4D1A2018EF9A007EF281 /* ListToDetailAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCB4D192018EF9A007EF281 /* ListToDetailAnimator.swift */; };
 		8A1202BC1FE912C500A27C09 /* YoutubeVideoPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1202BB1FE912C500A27C09 /* YoutubeVideoPlayerView.swift */; };
 		8A4915C01FE3C62700A187CD /* YoutubeTimelineContainerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4915BF1FE3C62700A187CD /* YoutubeTimelineContainerCollectionViewCell.swift */; };
@@ -97,6 +98,7 @@
 		7F8FC5A021B7E0EB00599D49 /* String.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		7F8FC5A521B7E6C600599D49 /* APITimeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APITimeline.swift; sourceTree = "<group>"; };
 		7F8FC5A721B7E9F200599D49 /* TimelineHomeVideoServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineHomeVideoServices.swift; sourceTree = "<group>"; };
+		7F8FC5A921B8155C00599D49 /* ApplicationStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApplicationStorage.swift; sourceTree = "<group>"; };
 		7FCB4D192018EF9A007EF281 /* ListToDetailAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListToDetailAnimator.swift; sourceTree = "<group>"; };
 		8A1202BB1FE912C500A27C09 /* YoutubeVideoPlayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YoutubeVideoPlayerView.swift; sourceTree = "<group>"; };
 		8A4915BF1FE3C62700A187CD /* YoutubeTimelineContainerCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YoutubeTimelineContainerCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -299,6 +301,7 @@
 			isa = PBXGroup;
 			children = (
 				8A7B030B1FD6A76F0028BB9B /* AppDelegate.swift */,
+				7F8FC5A921B8155C00599D49 /* ApplicationStorage.swift */,
 			);
 			name = Core;
 			sourceTree = "<group>";
@@ -306,7 +309,6 @@
 		7F8FC59521B7E05700599D49 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				7F8FC59721B7E06900599D49 /* CoreData */,
 				7F8FC59621B7E06200599D49 /* API */,
 			);
 			name = Services;
@@ -495,6 +497,7 @@
 		8A9E0FE31FDAB1580065108D /* YoutubeTestDataManager */ = {
 			isa = PBXGroup;
 			children = (
+				7F8FC59721B7E06900599D49 /* CoreData */,
 				7F5F11BD1FFF7FDD000D1F14 /* YoutubeAPIManager */,
 			);
 			name = YoutubeTestDataManager;
@@ -598,6 +601,7 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-YoutubeApplication/Pods-YoutubeApplication-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/Cache/Cache.framework",
 				"${BUILT_PRODUCTS_DIR}/Moya/Moya.framework",
 				"${BUILT_PRODUCTS_DIR}/Result/Result.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
@@ -605,6 +609,7 @@
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Cache.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Moya.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Result.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
@@ -643,6 +648,7 @@
 				8A7B032E1FD6B0510028BB9B /* YoutubeTimelineCollectionViewCell.swift in Sources */,
 				8A9E0FED1FDEAE320065108D /* YoutubeMenuBarView.swift in Sources */,
 				7F39C76A202E0B8B00F0073A /* AppCoordinator.swift in Sources */,
+				7F8FC5AA21B8155C00599D49 /* ApplicationStorage.swift in Sources */,
 				8A9E0FF51FDEB5EF0065108D /* YoutubeSettingsMenuCollectionViewCell.swift in Sources */,
 				8A9E0FEF1FDEAEBA0065108D /* YoutubeMenuBar.swift in Sources */,
 				7FCB4D1A2018EF9A007EF281 /* ListToDetailAnimator.swift in Sources */,

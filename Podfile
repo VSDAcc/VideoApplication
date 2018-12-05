@@ -8,4 +8,6 @@ target 'YoutubeApplication' do
   # Pods for YoutubeApplication
   pod 'SDWebImage'
   pod 'Moya'
+  pod 'Cache', '~> 4.1'
+  
 end
