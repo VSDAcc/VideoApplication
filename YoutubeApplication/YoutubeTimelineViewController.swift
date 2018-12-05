@@ -42,22 +42,7 @@ class YoutubeTimelineViewController: UICollectionViewController, UICollectionVie
     var selectedYoutubeCell: YoutubeTimelineCollectionViewCell?
     fileprivate var cellOffset: CGFloat = 20.0
     
-    fileprivate var collectionViewItemSizeToPortrait: CGSize {
-        get {
-            let width: CGFloat = view.frame.width
-            let height: CGFloat = view.frame.height - (menuBarHeight + cellOffset)
-            return CGSize(width: width, height: height)
-        }
-    }
-    fileprivate var collectionViewitemSizeToLandscape: CGSize {
-        get {
-            let width: CGFloat = view.frame.width
-            let height: CGFloat = view.frame.height - (menuBarHeight + cellOffset)
-            return CGSize(width: width, height: height)
-        }
-    }
     fileprivate let viewModel: YoutubeMainTimelineViewModelInput
-    
     //MARK-Loading
     init(viewModel: YoutubeMainTimelineViewModelInput, collectionViewLayout layout: UICollectionViewLayout) {
         self.viewModel = viewModel
@@ -238,9 +223,15 @@ class YoutubeTimelineViewController: UICollectionViewController, UICollectionVie
     //MARK:-UICollectionViewFlowLayout
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if UIApplication.shared.statusBarOrientation.isLandscape {
-            return collectionViewitemSizeToLandscape
-        }else {
-            return collectionViewItemSizeToPortrait
+            let width: CGFloat = collectionView.bounds.width
+            let height: CGFloat = collectionView.bounds.height - (menuBarHeight + cellOffset)
+            let size = CGSize(width: width, height: height)
+            return size
+        } else {
+            let width: CGFloat = collectionView.bounds.width
+            let height: CGFloat = collectionView.bounds.height - (menuBarHeight + cellOffset)
+            let size = CGSize(width: width, height: height)
+            return size
         }
     }
 }

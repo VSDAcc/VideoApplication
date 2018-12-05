@@ -18,24 +18,11 @@ class YoutubeTimelineContainerCollectionViewCell: UICollectionViewCell, YoutubeT
         static let youtubeTimelineCellID = "youtubeTimelineCell"
     }
     fileprivate var cellOffset: CGFloat = 20.0
-    fileprivate var collectionViewItemSizeToPortrait: CGSize {
-        get {
-            let width: CGFloat = self.frame.width - cellOffset
-            let height: CGFloat = (width / 1.15)
-            return CGSize(width: width, height: height)
-        }
-    }
-    fileprivate var collectionViewitemSizeToLandscape: CGSize {
-        get {
-            let width: CGFloat = self.frame.width / 2.2
-            let height: CGFloat = (width / 1.5) * (4 / 3)
-            return CGSize(width: width, height: height)
-        }
-    }
     lazy var collectionView: UICollectionView = self.createCollectionView()
-    var viewModel = YoutubeTimelineViewModel()
     weak var youtubeTimelineContainerViewCellHandler: YoutubeTimelineContainerViewCellHandler?
     fileprivate var youtubeRefreshControl: YoutubeRefreshControl!
+    
+    var viewModel = YoutubeTimelineViewModel()
     //MARK:-Loading
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -145,9 +132,15 @@ extension YoutubeTimelineContainerCollectionViewCell: UICollectionViewDelegateFl
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if UIApplication.shared.statusBarOrientation.isLandscape {
-            return collectionViewitemSizeToLandscape
-        }else {
-            return collectionViewItemSizeToPortrait
+            let width: CGFloat = collectionView.bounds.width / 2.2
+            let height: CGFloat = (width / 1.5) * (4 / 3)
+            let size = CGSize(width: width, height: height)
+            return size
+        } else {
+            let width: CGFloat = collectionView.bounds.width - cellOffset
+            let height: CGFloat = (width / 1.15)
+            let size = CGSize(width: width, height: height)
+            return size
         }
     }
 }
