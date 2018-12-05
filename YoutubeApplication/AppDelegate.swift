@@ -8,6 +8,32 @@
 
 import UIKit
 
+struct Configuration {
+    
+    static var debug: Bool {
+        return false
+    }
+    
+    static var production: Bool {
+        return true
+    }
+    
+    static var testEndpoint: URL {
+        return URL(string: "")!
+    }
+    
+    static var productionEndpoint: URL {
+        return URL(string: "https://s3-us-west-2.amazonaws.com")!
+    }
+    
+    static var encriptionKey: String {
+        return ""
+    }
+    
+    static var requiredEndpoint: URL {
+        return production ? productionEndpoint : testEndpoint
+    }
+}
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 

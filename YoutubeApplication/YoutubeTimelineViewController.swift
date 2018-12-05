@@ -55,6 +55,8 @@ class YoutubeTimelineViewController: UICollectionViewController, UICollectionVie
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        viewModel.loadHomeVideoData()
+        viewModel.updateHomeVideoData()
         configureCollectionViewLayout()
         configureNavigationBar()
         addAllConstraintsToViews()

@@ -14,8 +14,25 @@ protocol YoutubeMainTimelineViewModelCoordinatorDelegate: class {
 }
 protocol YoutubeMainTimelineViewModelInput {
     var coordinator: YoutubeMainTimelineViewModelCoordinatorDelegate? {get set}
+    func loadHomeVideoData()
+    func updateHomeVideoData()
 }
 class YoutubeMainTimelineViewModel: YoutubeMainTimelineViewModelInput {
     
     weak var coordinator: YoutubeMainTimelineViewModelCoordinatorDelegate?
+    
+    fileprivate var timelineHomeVideoServices: TimelineHomeVideoServicesInput
+    
+    //MARK:-Loading
+    init(_ timelineHomeVideoServices :TimelineHomeVideoServicesInput = TimelineHomeVideoServices()) {
+        self.timelineHomeVideoServices = timelineHomeVideoServices
+    }
+    
+    func loadHomeVideoData() {
+
+    }
+    
+    func updateHomeVideoData() {
+
+    }
 }

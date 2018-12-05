@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="13772" systemVersion="17C88" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="YoutubeModel">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14460.32" systemVersion="18B75" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="YoutubeModel">
+    <entity name="YoutubeAccountVideoModel" representedClassName=".YoutubeAccountVideoModel" parentEntity="YoutubeVideoModel" syncable="YES" codeGenerationType="category"/>
+    <entity name="YoutubeHomeVideoModel" representedClassName=".YoutubeHomeVideoModel" parentEntity="YoutubeVideoModel" syncable="YES" codeGenerationType="category"/>
+    <entity name="YoutubeSubscriptionVideoModel" representedClassName=".YoutubeSubscriptionVideoModel" parentEntity="YoutubeVideoModel" syncable="YES" codeGenerationType="category"/>
     <entity name="YoutubeVideoChannelModel" representedClassName=".YoutubeVideoChannelModel" syncable="YES" codeGenerationType="category">
         <attribute name="channelName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="channelProfileImageLink" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="videos" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="YoutubeVideoModel" inverseName="channel" inverseEntity="YoutubeVideoModel" syncable="YES"/>
     </entity>
-    <entity name="YoutubeVideoModel" representedClassName=".YoutubeVideoModel" syncable="YES" codeGenerationType="category">
+    <entity name="YoutubeVideoModel" representedClassName=".YoutubeVideoModel" isAbstract="YES" syncable="YES" codeGenerationType="category">
         <attribute name="videoDuration" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="videoLinkURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="videoNumberOfViews" optional="YES" attributeType="Integer 64" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
@@ -13,8 +16,13 @@
         <attribute name="videoTitle" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="channel" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="YoutubeVideoChannelModel" inverseName="videos" inverseEntity="YoutubeVideoChannelModel" syncable="YES"/>
     </entity>
+    <entity name="YuotubeTrendingVideoModel" representedClassName="YuotubeTrendingVideoModel" parentEntity="YoutubeVideoModel" syncable="YES" codeGenerationType="category"/>
     <elements>
-        <element name="YoutubeVideoChannelModel" positionX="-4707" positionY="-4662" width="243" height="88"/>
-        <element name="YoutubeVideoModel" positionX="-4401" positionY="-4669" width="243" height="133"/>
+        <element name="YoutubeVideoChannelModel" positionX="-4652.72265625" positionY="-4836.1953125" width="243" height="88"/>
+        <element name="YoutubeVideoModel" positionX="-4956.1875" positionY="-4881.05859375" width="243" height="133"/>
+        <element name="YoutubeHomeVideoModel" positionX="-5068.19921875" positionY="-4611.6796875" width="128" height="43"/>
+        <element name="YoutubeSubscriptionVideoModel" positionX="-5069.59375" positionY="-4680.3984375" width="128" height="43"/>
+        <element name="YoutubeAccountVideoModel" positionX="-5067.81640625" positionY="-4545.48828125" width="128" height="43"/>
+        <element name="YuotubeTrendingVideoModel" positionX="-5065.59765625" positionY="-4478.01953125" width="128" height="43"/>
     </elements>
 </model>

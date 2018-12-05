@@ -36,3 +36,15 @@ class YoutubeVideoModel: NSManagedObject {
         return videoModel
     }
 }
+class YoutubeHomeVideoModel: YoutubeVideoModel {
+    
+}
+class YoutubeAccountVideoModel: YoutubeVideoModel {
+    
+}
+class YoutubeSubscriptionVideoModel: YoutubeVideoModel {
+    
+}
+class YuotubeTrendingVideoModel: YoutubeVideoModel {
+    
+}
