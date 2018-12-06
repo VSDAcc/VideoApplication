@@ -80,10 +80,10 @@ class YoutubeTimelineViewController: UICollectionViewController, YoutubeTimeline
         guard let flowLayout = collectionView?.collectionViewLayout as? YoutubeCollectionViewFlowLayout else {
             return
         }
-        flowLayout.invalidateLayout()
         DispatchQueue.main.async {
-          self.collectionView?.reloadData()
+            self.collectionView?.reloadData()
         }
+        flowLayout.invalidateLayout()
     }
     //MARK:-TimelineViewControllerInput
     func viewModelDidLoadData() {

@@ -67,7 +67,6 @@ class YoutubeTimelineVideoCollectionViewCell: IdentifiableCollectionViewCell {
         }
         
         self.videoSubtitleLabel.text = model.videoTitle
-        self.videoSubtitleLabelHeightAnchor?.constant = String().estimatedSizeFor(model.videoTitle).height + 20.0
     }
     //MARK:-SetupViews
     private func createContentBubbleView() -> UIView {
@@ -94,7 +93,9 @@ class YoutubeTimelineVideoCollectionViewCell: IdentifiableCollectionViewCell {
         label.font = font
         label.contentMode = .left
         label.adjustsFontSizeToFitWidth = true
+        label.lineBreakMode = .byWordWrapping
         label.numberOfLines = 0
+        label.sizeToFit()
         addSubview(label)
         return label
     }
@@ -118,10 +119,10 @@ class YoutubeTimelineVideoCollectionViewCell: IdentifiableCollectionViewCell {
     }
     
     private func addConstraintsToVideoContentBubbleView() {
-        videoContentBubbleView.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
-        videoContentBubbleView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
-        videoContentBubbleView.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
-        videoContentBubbleView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 4/6).isActive = true
+        videoContentBubbleView.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
+        videoContentBubbleView.topAnchor.constraint(equalTo: topAnchor).isActive = true
+        videoContentBubbleView.widthAnchor.constraint(equalTo: widthAnchor).isActive = true
+        videoContentBubbleView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 4/6).isActive = true
     }
     
     private func addConstraintsToThumbnailImageView() {
@@ -132,25 +133,23 @@ class YoutubeTimelineVideoCollectionViewCell: IdentifiableCollectionViewCell {
     }
     
     private func addConstraintsToVideoAuthorImageView() {
-        videoAuthorImageView.leftAnchor.constraint(equalTo:  self.leftAnchor).isActive = true
+        videoAuthorImageView.leftAnchor.constraint(equalTo:  leftAnchor).isActive = true
         videoAuthorImageView.topAnchor.constraint(equalTo: videoContentBubbleView.bottomAnchor, constant: 15).isActive = true
         videoAuthorImageView.widthAnchor.constraint(equalTo: videoAuthorImageView.heightAnchor).isActive = true
-        videoAuthorImageView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.2).isActive = true
+        videoAuthorImageView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.2).isActive = true
     }
     
     private func addConstraintsToVideoSubtitleLabel() {
         videoSubtitleLabel.leftAnchor.constraint(equalTo: videoAuthorImageView.rightAnchor, constant: 10).isActive = true
-        videoSubtitleLabel.topAnchor.constraint(equalTo: videoAuthorImageView.topAnchor).isActive = true
-        videoSubtitleLabel.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
-        videoSubtitleLabelHeightAnchor = videoSubtitleLabel.heightAnchor.constraint(equalToConstant: 60.0)
-        videoSubtitleLabelHeightAnchor?.isActive = true
+        videoSubtitleLabel.topAnchor.constraint(equalTo: videoContentBubbleView.bottomAnchor, constant: 10).isActive = true
+        videoSubtitleLabel.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
     }
     
     private func addConstraintsToVideoSubtitleDescriptionLabel() {
         videoSubtitleDescriptionLabel.leftAnchor.constraint(equalTo: videoSubtitleLabel.leftAnchor).isActive = true
         videoSubtitleDescriptionLabel.topAnchor.constraint(equalTo: videoSubtitleLabel.bottomAnchor).isActive = true
         videoSubtitleDescriptionLabel.rightAnchor.constraint(equalTo: videoSubtitleLabel.rightAnchor).isActive = true
-        videoSubtitleDescriptionLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
+        videoSubtitleDescriptionLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -5).isActive = true
     }
     
     private func addConstraintsToSeparatingLineView() {

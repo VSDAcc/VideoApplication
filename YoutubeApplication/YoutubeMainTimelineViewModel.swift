@@ -64,7 +64,6 @@ class YoutubeMainTimelineViewModel: YoutubeMainTimelineViewModelInput {
     
     public func updateHomeVideos() {
         homeVideoServices.updateHomeVideos { [weak self] (videos) in
-            print("updateHomeVideos \(videos.count)")
             self?.homeSection.updateVideoSectionModel(videos)
             self?.view?.viewModelDidLoadData()
         }
@@ -72,7 +71,6 @@ class YoutubeMainTimelineViewModel: YoutubeMainTimelineViewModelInput {
     
     public func updateTrendingVideos() {
         trendingVideoServices.updateTrendingVideos { [weak self] (videos) in
-            print("updateTrendingVideos \(videos.count)")
             self?.trendingSection.updateVideoSectionModel(videos)
             self?.view?.viewModelDidLoadData()
         }
@@ -80,7 +78,6 @@ class YoutubeMainTimelineViewModel: YoutubeMainTimelineViewModelInput {
     
     public func updateAccountVideos() {
         homeVideoServices.updateHomeVideos { [weak self] (videos) in
-            print("updateAccountVideos \(videos.count)")
             self?.accountSection.updateVideoSectionModel(videos)
             self?.view?.viewModelDidLoadData()
         }
@@ -88,7 +85,6 @@ class YoutubeMainTimelineViewModel: YoutubeMainTimelineViewModelInput {
     
     public func updateSubscriptionVideos() {
         subscriptionVideoServices.updateSubscriptionVideos { [weak self] (videos) in
-            print("updateSubscriptionVideos \(videos.count)")
             self?.subscriptionSection.updateVideoSectionModel(videos)
             self?.view?.viewModelDidLoadData()
         }

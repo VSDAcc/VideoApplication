@@ -10,10 +10,10 @@ import UIKit
 
 class YoutubeTimelineContainerCollectionViewCell: IdentifiableCollectionViewCell {
     
+    fileprivate var model: YotubeTimelineContainerVideoCellModel?
     fileprivate var cellOffset: CGFloat = 20.0
-    lazy var collectionView: UICollectionView = self.createCollectionView()
-    weak var youtubeTimelineContainerViewCellHandler: YoutubeTimelineContainerViewCellHandler?
-    fileprivate var youtubeRefreshControl: YoutubeRefreshControl!
+    fileprivate lazy var collectionView: UICollectionView = self.createCollectionView()
+    fileprivate lazy var youtubeRefreshControl: YoutubeRefreshControl = self.createRefreshControl()
     
     //MARK:-Loading
     override func awakeFromNib() {
@@ -35,6 +35,7 @@ class YoutubeTimelineContainerCollectionViewCell: IdentifiableCollectionViewCell
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.setupAllConstraintsToViews()
+        self.collectionView.addSubview(youtubeRefreshControl)
         self.contentView.backgroundColor = UIColor.white
         self.contentView.layer.cornerRadius = 14.0
         self.contentView.layer.masksToBounds = true
@@ -57,9 +58,11 @@ class YoutubeTimelineContainerCollectionViewCell: IdentifiableCollectionViewCell
     //MARK:-CellModelRepresentable
     override func updateModel(_ model: CellIdentifiable?, viewModel: ViewModelCellPresentable?) {
         guard let model = model as? YotubeTimelineContainerVideoCellModel else { return }
+        self.model = model
         
         collectionView.delegate = model
         collectionView.dataSource = model
+        model.youtubeRefreshControl = youtubeRefreshControl
         
         defer {
             self.collectionView.reloadData()
@@ -67,13 +70,6 @@ class YoutubeTimelineContainerCollectionViewCell: IdentifiableCollectionViewCell
             self.collectionView.layoutIfNeeded()
             self.collectionView.invalidateIntrinsicContentSize()
         }
-    }
-    //MARK:-ConfigureMethods
-    fileprivate func configureRefreshControl() {
-        let refreshControl = YoutubeRefreshControl()
-        refreshControl.addTarget(self, action: #selector(actionRefreshControlDidPull(_:)), for: .valueChanged)
-        collectionView.addSubview(refreshControl)
-        youtubeRefreshControl = refreshControl
     }
     //MARK:-Actions
     @objc func actionRefreshControlDidPull(_ sender: UIRefreshControl) {
@@ -97,6 +93,12 @@ class YoutubeTimelineContainerCollectionViewCell: IdentifiableCollectionViewCell
         addSubview(collection)
         return collection
     }
+    
+    private func createRefreshControl() -> YoutubeRefreshControl {
+        let refreshControl = YoutubeRefreshControl()
+        refreshControl.addTarget(self, action: #selector(actionRefreshControlDidPull(_:)), for: .valueChanged)
+        return refreshControl
+    }
     //MARK:-SetupConstraints
     private func setupAllConstraintsToViews() {
         setupConstraintsToCollectionView()
@@ -107,15 +109,5 @@ class YoutubeTimelineContainerCollectionViewCell: IdentifiableCollectionViewCell
         collectionView.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
         collectionView.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
         collectionView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
-    }
-}
-extension YoutubeTimelineContainerCollectionViewCell: UIScrollViewDelegate {
-    
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        youtubeRefreshControl.containingScrollViewDidScroll(scrollView: scrollView)
-    }
-    
-    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        youtubeRefreshControl.containingScrollViewDidEndDragging(scrollView: scrollView, willDecelerate: decelerate)
     }
 }

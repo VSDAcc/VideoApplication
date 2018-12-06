@@ -18,6 +18,8 @@ class YotubeTimelineContainerVideoCellModel: BaseCellModel, ViewModelCellPresent
         return YoutubeTimelineContainerCollectionViewCell.reuseIdentifier
     }
 
+    public var youtubeRefreshControl: YoutubeRefreshControl?
+    
     public weak var delegate: YotubeTimelineContainerVideoCellHandler?
 
     fileprivate let cellOffset: CGFloat = 20.0
@@ -89,5 +91,15 @@ extension YotubeTimelineContainerVideoCellModel: UICollectionViewDelegateFlowLay
             let size = CGSize(width: width, height: height)
             return size
         }
+    }
+}
+extension YotubeTimelineContainerVideoCellModel: UIScrollViewDelegate {
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        youtubeRefreshControl?.containingScrollViewDidScroll(scrollView: scrollView)
+    }
+    
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        youtubeRefreshControl?.containingScrollViewDidEndDragging(scrollView: scrollView, willDecelerate: decelerate)
     }
 }
