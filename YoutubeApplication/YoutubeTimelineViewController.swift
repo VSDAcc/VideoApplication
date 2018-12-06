@@ -21,25 +21,23 @@ protocol YoutubeMenuBarDidSelectItemAtInexPath: class {
     func didSelectYoutubeMenuItem(_ item: YoutubeMenuBarItem)
 }
 protocol YoutubeTimelineContainerViewCellHandler: class {
-    func didSelectTimelineYoutubeVideoItem(_ video: YoutubeVideoModel, _ selectedCell: YoutubeTimelineCollectionViewCell)
+    func didSelectTimelineYoutubeVideoItem(_ video: YoutubeVideoModel, _ selectedCell: YoutubeTimelineVideoCollectionViewCell)
 }
-class YoutubeTimelineViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout, PresenterAlertHandler {
+protocol YoutubeTimelineViewControllerInput: YoutubeMainTimelineViewModelOutput {
     
-    fileprivate struct CellID {
-        static let youtubeTimelineHomeCellID = "youtubeTimelineHomeCell"
-        static let youtubeTimelineTrendingCellID = "youtubeTimelineTrendingCell"
-        static let youtubeTimelineSubscriptionsCellID = "youtubeTimelineSubscriptionsCell"
-        static let youtubeTimelineAccountCellID = "youtubeTimelineAccountCell"
-    }
+}
+class YoutubeTimelineViewController: UICollectionViewController, YoutubeTimelineViewControllerInput, UICollectionViewDelegateFlowLayout, PresenterAlertHandler {
+    
     fileprivate enum TimelineMenu: Int {
         case home, trending, subscriptions, account
     }
+    
     fileprivate lazy var backgroundImageView: UIImageView = self.createBackgroundImageView()
     fileprivate lazy var menuBar: YoutubeMenuBarView = self.createYoutubeMenuBar()
     fileprivate lazy var settingsMenuView: YoutubeSettingsMenuView = self.createYoutubeSettingsMenuView()
     private var menuBarHeight: CGFloat  = 50.0
     private var itemInsets: CGFloat = 50.0
-    var selectedYoutubeCell: YoutubeTimelineCollectionViewCell?
+    var selectedYoutubeCell: YoutubeTimelineVideoCollectionViewCell?
     fileprivate var cellOffset: CGFloat = 20.0
     
     fileprivate let viewModel: YoutubeMainTimelineViewModelInput
@@ -47,6 +45,7 @@ class YoutubeTimelineViewController: UICollectionViewController, UICollectionVie
     init(viewModel: YoutubeMainTimelineViewModelInput, collectionViewLayout layout: UICollectionViewLayout) {
         self.viewModel = viewModel
         super.init(collectionViewLayout: layout)
+        self.viewModel.view = self
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -55,8 +54,11 @@ class YoutubeTimelineViewController: UICollectionViewController, UICollectionVie
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        viewModel.loadHomeVideoData()
-        viewModel.updateHomeVideoData()
+        viewModel.loadVideoData()
+        viewModel.updateHomeVideos()
+        viewModel.updateAccountVideos()
+        viewModel.updateTrendingVideos()
+        viewModel.updateSubscriptionVideos()
         configureCollectionViewLayout()
         configureNavigationBar()
         addAllConstraintsToViews()
@@ -81,6 +83,21 @@ class YoutubeTimelineViewController: UICollectionViewController, UICollectionVie
         flowLayout.invalidateLayout()
         DispatchQueue.main.async {
           self.collectionView?.reloadData()
+        }
+    }
+    //MARK:-TimelineViewControllerInput
+    func viewModelDidLoadData() {
+        DispatchQueue.main.async {
+            self.collectionView.reloadData()
+        }
+    }
+    
+    func viewModelWillLoadData() {
+        //TODO:-Show activity view
+    }
+    
+    func viewModelDidHandleError(_ error: String) {
+        DispatchQueue.main.async {
         }
     }
     //MARK:-ConfigureMethods
@@ -114,10 +131,7 @@ class YoutubeTimelineViewController: UICollectionViewController, UICollectionVie
         self.collectionView?.contentInset = UIEdgeInsets.init(top: menuBarHeight, left: 0, bottom: 0, right: 0)
         self.collectionView?.scrollIndicatorInsets = UIEdgeInsets.init(top: menuBarHeight, left: 0, bottom: 0, right: 0)
         self.collectionView?.showsHorizontalScrollIndicator = false
-        self.collectionView?.register(YoutubeTimelineHomeCollectionViewCell.self, forCellWithReuseIdentifier: CellID.youtubeTimelineHomeCellID)
-        self.collectionView?.register(YoutubeTimelineTrendingCollectionViewCell.self, forCellWithReuseIdentifier: CellID.youtubeTimelineTrendingCellID)
-        self.collectionView?.register(YoutubeTimelineSubscriptionsCollectionViewCell.self, forCellWithReuseIdentifier: CellID.youtubeTimelineSubscriptionsCellID)
-        self.collectionView?.register(YoutubeTimelineAccountCollectionViewCell.self, forCellWithReuseIdentifier: CellID.youtubeTimelineAccountCellID)
+        self.collectionView?.register(YoutubeTimelineContainerCollectionViewCell.self, forCellWithReuseIdentifier: YoutubeTimelineContainerCollectionViewCell.reuseIdentifier)
     }
     //MARK:-SetupViews
     private func setupSeratchBarButtonItem() -> UIBarButtonItem {
@@ -185,31 +199,18 @@ class YoutubeTimelineViewController: UICollectionViewController, UICollectionVie
     }
     //MARK:-CollectionViewDataSource
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
+        return viewModel.numberOfSections()
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return menuBar.viewModel.numerOfItemsInSection()
+        return viewModel.numberOfItemsInSection(section: section)
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        var identifire: String
-        if indexPath.row == TimelineMenu.home.rawValue {
-            identifire = CellID.youtubeTimelineHomeCellID
-        } else if indexPath.row == TimelineMenu.trending.rawValue {
-            identifire = CellID.youtubeTimelineTrendingCellID
-        } else if indexPath.row == TimelineMenu.subscriptions.rawValue {
-            identifire = CellID.youtubeTimelineSubscriptionsCellID
-        } else {
-            identifire = CellID.youtubeTimelineAccountCellID
-        }
-        let timelineCell = collectionView.dequeueReusableCell(withReuseIdentifier: identifire, for: indexPath) as! YoutubeTimelineContainerCollectionViewCell
-        timelineCell.youtubeTimelineContainerViewCellHandler = self
-        DispatchQueue.main.async {
-            timelineCell.setNeedsLayout()
-            timelineCell.layoutIfNeeded()
-        }
-        return timelineCell
+        let iphoneCellModel = viewModel.selectedItemAt(section: indexPath.section, atIndex: indexPath.row)
+        let iphoneCell = collectionView.dequeueReusableCell(withReuseIdentifier: iphoneCellModel.cellIdentifier, for: indexPath) as! IdentifiableCollectionViewCell
+        iphoneCell.updateModel(iphoneCellModel, viewModel: viewModel)
+        return iphoneCell
     }
     //MARK:-ScrollViewDelegate
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -266,7 +267,7 @@ extension YoutubeTimelineViewController: YoutubeSettingsMenuHandler {
 extension YoutubeTimelineViewController: YoutubeMenuBarDidSelectItemAtInexPath {
     
     func didSelectMenuBarItemAtIndexPath(_ indexPath: IndexPath) {
-        self.collectionView?.scrollToItem(at: indexPath, at: .right, animated: true)
+        //self.collectionView?.scrollToItem(at: indexPath, at: .right, animated: true)
     }
     
     func didSelectYoutubeMenuItem(_ item: YoutubeMenuBarItem) {
@@ -275,7 +276,7 @@ extension YoutubeTimelineViewController: YoutubeMenuBarDidSelectItemAtInexPath {
 }
 extension YoutubeTimelineViewController: YoutubeTimelineContainerViewCellHandler {
     
-    func didSelectTimelineYoutubeVideoItem(_ video: YoutubeVideoModel, _ selectedCell: YoutubeTimelineCollectionViewCell) {
+    func didSelectTimelineYoutubeVideoItem(_ video: YoutubeVideoModel, _ selectedCell: YoutubeTimelineVideoCollectionViewCell) {
         selectedYoutubeCell = selectedCell
         viewModel.coordinator?.showYoutubeDetailViewController(YoutubeDetailVideoViewModel(videoItem: video))
     }

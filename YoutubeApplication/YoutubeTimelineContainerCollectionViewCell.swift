@@ -8,46 +8,65 @@
 
 import UIKit
 
-protocol YoutubeTimelineViewControllerInput: class {
-    func didFinishUpdates()
-    func didHandleError(_ error: String)
-}
-class YoutubeTimelineContainerCollectionViewCell: UICollectionViewCell, YoutubeTimelineViewControllerInput {
+class YoutubeTimelineContainerCollectionViewCell: IdentifiableCollectionViewCell {
     
-    fileprivate struct CellID {
-        static let youtubeTimelineCellID = "youtubeTimelineCell"
-    }
     fileprivate var cellOffset: CGFloat = 20.0
     lazy var collectionView: UICollectionView = self.createCollectionView()
     weak var youtubeTimelineContainerViewCellHandler: YoutubeTimelineContainerViewCellHandler?
     fileprivate var youtubeRefreshControl: YoutubeRefreshControl!
     
-    var viewModel = YoutubeTimelineViewModel()
     //MARK:-Loading
     override func awakeFromNib() {
         super.awakeFromNib()
         self.translatesAutoresizingMaskIntoConstraints = false
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        self.collectionView.delegate = nil
+        self.collectionView.dataSource = nil
+        self.collectionView.reloadData()
+        self.collectionView.setNeedsLayout()
+        self.collectionView.layoutIfNeeded()
+        self.collectionView.invalidateIntrinsicContentSize()
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
-        addAllConstraintsToViews()
-        self.contentView.backgroundColor = UIColor.clear
-        viewModel.view = self
-        fetchVideosFromDataManager()
-        configureRefreshControl()
+        self.setupAllConstraintsToViews()
+        self.contentView.backgroundColor = UIColor.white
+        self.contentView.layer.cornerRadius = 14.0
+        self.contentView.layer.masksToBounds = true
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
         guard let flowLayout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout else {
             return
         }
+        DispatchQueue.main.async {
+            self.collectionView.reloadData()
+        }
         flowLayout.invalidateLayout()
+    }
+    //MARK:-CellModelRepresentable
+    override func updateModel(_ model: CellIdentifiable?, viewModel: ViewModelCellPresentable?) {
+        guard let model = model as? YotubeTimelineContainerVideoCellModel else { return }
+        
+        collectionView.delegate = model
+        collectionView.dataSource = model
+        
+        defer {
+            self.collectionView.reloadData()
+            self.collectionView.setNeedsLayout()
+            self.collectionView.layoutIfNeeded()
+            self.collectionView.invalidateIntrinsicContentSize()
+        }
     }
     //MARK:-ConfigureMethods
     fileprivate func configureRefreshControl() {
@@ -62,16 +81,6 @@ class YoutubeTimelineContainerCollectionViewCell: UICollectionViewCell, YoutubeT
             self.youtubeRefreshControl.endRefreshing()
         }
     }
-    
-    func fetchVideosFromDataManager() { }
-    //MARK:-YoutubeTimelineViewControllerInput
-    func didFinishUpdates() {
-        collectionView.reloadData()
-    }
-    
-    func didHandleError(_ error: String) {
-        //presentAlertWith(title: "Data Error", massage: error)
-    }
     //MARK:-CreateConstraints
     private func createCollectionView() -> UICollectionView {
         let flowLayout = UICollectionViewFlowLayout()
@@ -82,66 +91,22 @@ class YoutubeTimelineContainerCollectionViewCell: UICollectionViewCell, YoutubeT
         flowLayout.sectionInset = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
         let collection = UICollectionView(frame: self.frame, collectionViewLayout: flowLayout)
         collection.translatesAutoresizingMaskIntoConstraints = false
-        collection.register(YoutubeTimelineCollectionViewCell.self, forCellWithReuseIdentifier: CellID.youtubeTimelineCellID)
-        collection.delegate = self
-        collection.dataSource = self
+        collection.register(YoutubeTimelineVideoCollectionViewCell.self, forCellWithReuseIdentifier: YoutubeTimelineVideoCollectionViewCell.reuseIdentifier)
         collection.backgroundColor = UIColor.white
         collection.showsVerticalScrollIndicator = false
         addSubview(collection)
         return collection
     }
     //MARK:-SetupConstraints
-    private func addAllConstraintsToViews() {
-        addConstraintsToCollectionView()
+    private func setupAllConstraintsToViews() {
+        setupConstraintsToCollectionView()
     }
     
-    private func addConstraintsToCollectionView() {
-        collectionView.centerXAnchor.constraint(lessThanOrEqualTo: self.centerXAnchor).isActive = true
-        collectionView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        collectionView.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
-        collectionView.heightAnchor.constraint(equalTo: self.heightAnchor).isActive = true
-    }
-}
-extension YoutubeTimelineContainerCollectionViewCell: UICollectionViewDataSource {
-    
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return viewModel.numerOfItemsInSection(section: section)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let timelineCell = collectionView.dequeueReusableCell(withReuseIdentifier: CellID.youtubeTimelineCellID, for: indexPath) as! YoutubeTimelineCollectionViewCell
-        let video = viewModel.selectedItemAt(indexPath: indexPath)
-        timelineCell.youtubeVideo = video
-        timelineCell.layoutIfNeeded()
-        return timelineCell
-    }
-}
-extension YoutubeTimelineContainerCollectionViewCell: UICollectionViewDelegate {
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let video = viewModel.selectedItemAt(indexPath: indexPath)
-        let selectedCell = collectionView.cellForItem(at: indexPath) as! YoutubeTimelineCollectionViewCell
-        youtubeTimelineContainerViewCellHandler?.didSelectTimelineYoutubeVideoItem(video, selectedCell)
-    }
-}
-extension YoutubeTimelineContainerCollectionViewCell: UICollectionViewDelegateFlowLayout {
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        if UIApplication.shared.statusBarOrientation.isLandscape {
-            let width: CGFloat = collectionView.bounds.width / 2.2
-            let height: CGFloat = (width / 1.5) * (4 / 3)
-            let size = CGSize(width: width, height: height)
-            return size
-        } else {
-            let width: CGFloat = collectionView.bounds.width - cellOffset
-            let height: CGFloat = (width / 1.15)
-            let size = CGSize(width: width, height: height)
-            return size
-        }
+    private func setupConstraintsToCollectionView() {
+        collectionView.topAnchor.constraint(lessThanOrEqualTo: topAnchor).isActive = true
+        collectionView.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
+        collectionView.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
+        collectionView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
     }
 }
 extension YoutubeTimelineContainerCollectionViewCell: UIScrollViewDelegate {

@@ -8,55 +8,42 @@
 
 import UIKit
 
-class YoutubeTimelineCollectionViewCell: UICollectionViewCell {
+class YoutubeTimelineVideoCollectionViewCell: IdentifiableCollectionViewCell {
     
     private lazy var videoContentBubbleView: UIView = self.createContentBubbleView()
     private lazy var separatingLineView: UIView = self.createSeparatingLineView()
+    
     lazy var videoAuthorImageView: UIImageView = self.createVideoAuthorImageView()
     lazy var videoSubtitleLabel: UILabel = self.createVideoSubtitleLabelWith(font: UIFont().avenirNextRegularTitleFont)
     lazy var videoSubtitleDescriptionLabel: UILabel = self.createVideoSubtitleLabelWith(font: UIFont().avenirNextRegularDescriptionFont)
+    
     lazy var thumbnailImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleToFill
         return imageView
     }()
-    private var videoSubtitleLabelHeightAnchor: NSLayoutConstraint?
-    var youtubeHelpedMethods = YoutubeHelpedMethods()
-    var youtubeVideo: YoutubeVideoModel! {
-        didSet {
-            updateUI()
-        }
-    }
-    private func updateUI() {
-        DispatchQueue.main.async {
-            self.thumbnailImageView.downloadImageUsingCache(stringURL: self.youtubeVideo.videoThumbnailImage!)
-            if let channel = self.youtubeVideo.channel {
-                self.videoAuthorImageView.downloadImageUsingCache(stringURL: channel.channelProfileImageLink!)
-                self.videoSubtitleDescriptionLabel.text = channel.channelName! + " ● \(self.youtubeHelpedMethods.formateNumberToStringInDecimalFormat(NSNumber(value: self.youtubeVideo.videoNumberOfViews))) views"
-            }
-            self.videoSubtitleLabel.text = self.youtubeVideo.videoTitle
-            self.videoSubtitleLabelHeightAnchor?.constant = self.youtubeHelpedMethods.configureEstimatedHeightForText(self.youtubeVideo.videoTitle!).height + 20.0
-            self.thumbnailImageView.downloadImageUsingCache(stringURL: self.youtubeVideo.videoThumbnailImage!)
-            if let channel = self.youtubeVideo.channel {
-                self.videoAuthorImageView.downloadImageUsingCache(stringURL: channel.channelProfileImageLink!)
-                self.videoSubtitleDescriptionLabel.text = channel.channelName! + " ● \(self.youtubeHelpedMethods.formateNumberToStringInDecimalFormat(NSNumber(value: self.youtubeVideo.videoNumberOfViews))) views"
-            }
-            self.videoSubtitleLabel.text = self.youtubeVideo.videoTitle
-            self.videoSubtitleLabelHeightAnchor?.constant = self.youtubeHelpedMethods.configureEstimatedHeightForText(self.youtubeVideo.videoTitle!).height + 20.0
-        }
-    }
     //MARK:-Loading
     override func awakeFromNib() {
         super.awakeFromNib()
         self.translatesAutoresizingMaskIntoConstraints = false
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        self.thumbnailImageView.image = nil
+        self.videoAuthorImageView.image = nil
+        self.videoSubtitleLabel.text = ""
+        self.videoSubtitleDescriptionLabel.text = ""
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.contentView.backgroundColor = UIColor.clear
+        contentView.backgroundColor = UIColor.clear
         videoContentBubbleView.addSubview(thumbnailImageView)
-        addAllConstraintsToViews()
+        setupAllConstraintsToViews()
+        contentView.layer.cornerRadius = 12.0
+        contentView.layer.masksToBounds = true
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -65,10 +52,22 @@ class YoutubeTimelineCollectionViewCell: UICollectionViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        self.layer.cornerRadius = 12.0
-        self.layer.masksToBounds = true
         self.videoAuthorImageView.layer.cornerRadius = self.videoAuthorImageView.bounds.width / 2
         self.videoAuthorImageView.clipsToBounds = true
+    }
+    //MARK:-CellModelRepresentable
+    override func updateModel(_ model: CellIdentifiable?, viewModel: ViewModelCellPresentable?) {
+        guard let model = model as? YotubeTimelineVideoCellModel else { return }
+        
+        self.thumbnailImageView.downloadImageUsingCache(stringURL: model.thumbnailImage)
+        
+        if let channel = model.channel {
+            self.videoAuthorImageView.downloadImageUsingCache(stringURL: channel.channelImageURL)
+            self.videoSubtitleDescriptionLabel.text = channel.channelName + " ● \(String().formateNumberToStringInDecimalFormat(NSNumber(value: model.videoNumberOfViews))) views"
+        }
+        
+        self.videoSubtitleLabel.text = model.videoTitle
+        self.videoSubtitleLabelHeightAnchor?.constant = String().estimatedSizeFor(model.videoTitle).height + 20.0
     }
     //MARK:-SetupViews
     private func createContentBubbleView() -> UIView {
@@ -108,7 +107,8 @@ class YoutubeTimelineCollectionViewCell: UICollectionViewCell {
         return view
     }
     //MARK:-SetupConstraints
-    private func addAllConstraintsToViews() {
+    private var videoSubtitleLabelHeightAnchor: NSLayoutConstraint?
+    private func setupAllConstraintsToViews() {
         addConstraintsToVideoContentBubbleView()
         addConstraintsToThumbnailImageView()
         addConstraintsToVideoAuthorImageView()

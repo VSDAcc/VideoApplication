@@ -212,7 +212,7 @@ class YoutubeVideoPlayerView: UIView, YoutubeVideoPlayerManager {
     private func createThumbnailVideoImageView() -> UIImageView {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.contentMode = .scaleToFill
+        imageView.contentMode = .scaleAspectFill
         addSubview(imageView)
         return imageView
     }

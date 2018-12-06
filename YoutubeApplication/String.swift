@@ -111,6 +111,13 @@ extension String {
         let attribute = [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 18, weight: .regular)]
         return NSString(string: text).boundingRect(with: size, options: options, attributes: attribute, context: nil)
     }
+    
+    func formateNumberToStringInDecimalFormat(_ number: NSNumber) -> String {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        formatter.alwaysShowsDecimalSeparator = true
+        return formatter.string(from: number)!
+    }
 }
 func randomString(length: Int) -> String {
     
