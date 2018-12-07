@@ -49,20 +49,6 @@ class YoutubeMenuBarView: UIView {
             underlineViewLeadingConstraint?.constant = newValue
         }
     }
-    fileprivate var collectionViewItemSizeToPortrait: CGSize {
-        get {
-            let width: CGFloat = (self.frame.width / 4)
-            let height: CGFloat = self.frame.height
-            return CGSize(width: width, height: height)
-        }
-    }
-    fileprivate var collectionViewitemSizeToLandscape: CGSize {
-        get {
-            let width: CGFloat = (self.frame.width / 4)
-            let height: CGFloat = self.frame.height
-            return CGSize(width: width, height: height)
-        }
-    }
     var viewModel = YoutubeMenuBarViewModel()
     //MARK:-Loading
     override init(frame: CGRect) {
@@ -147,9 +133,15 @@ extension YoutubeMenuBarView: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if UIApplication.shared.statusBarOrientation.isLandscape {
-            return collectionViewitemSizeToLandscape
-        }else {
-            return collectionViewItemSizeToPortrait
+            let width: CGFloat = collectionView.bounds.width / 4
+            let height: CGFloat = collectionView.bounds.height
+            let size = CGSize(width: width, height: height)
+            return size
+        } else {
+            let width: CGFloat = collectionView.bounds.width / 4
+            let height: CGFloat = collectionView.bounds.height
+            let size = CGSize(width: width, height: height)
+            return size
         }
     }
 }

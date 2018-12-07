@@ -15,8 +15,8 @@ protocol YoutubeDetailVideoViewModelInput: class {
     var videoURL: Box<String?> { get }
     var videoTitle: Box<String?> { get }
     var thumbnailImage: Box<String?> { get }
-    var videoNumberOfViews: Box<Int64?> { get }
-    var videoDuration: Box<Int64?>{ get }
+    var videoNumberOfViews: Box<Int?> { get }
+    var videoDuration: Box<Int?>{ get }
     var coordinator: YoutubeDetailVideoViewModelCoordinatorDelegate? {get set}
 }
 class YoutubeDetailVideoViewModel: YoutubeDetailVideoViewModelInput {
@@ -24,32 +24,32 @@ class YoutubeDetailVideoViewModel: YoutubeDetailVideoViewModelInput {
     weak var coordinator: YoutubeDetailVideoViewModelCoordinatorDelegate?
     
     var videoURL: Box<String?> {
-        return Box(video?.videoLinkURL)
+        return Box(video?.videoLinkUrl)
     }
     var videoTitle: Box<String?> {
         return Box(video?.videoTitle)
     }
     var thumbnailImage: Box<String?> {
-        return Box(video?.videoThumbnailImage)
+        return Box(video?.thumbnailImage)
     }
-    var videoNumberOfViews: Box<Int64?> {
+    var videoNumberOfViews: Box<Int?> {
         return Box(video?.videoNumberOfViews)
     }
-    var videoDuration: Box<Int64?> {
+    var videoDuration: Box<Int?> {
         return Box(video?.videoDuration)
     }
     
-    fileprivate var video: YoutubeVideoModel? {
+    fileprivate var video: YoutubeVideo? {
         didSet {
-            videoURL.value = video?.videoLinkURL
+            videoURL.value = video?.videoLinkUrl
             videoTitle.value = video?.videoTitle
-            thumbnailImage.value = video?.videoThumbnailImage
+            thumbnailImage.value = video?.thumbnailImage
             videoNumberOfViews.value = video?.videoNumberOfViews
             videoDuration.value = video?.videoDuration
         }
     }
     //MARK:-Loading
-    convenience init(videoItem: YoutubeVideoModel) {
+    convenience init(videoItem: YoutubeVideo) {
         self.init()
         self.video = videoItem
     }

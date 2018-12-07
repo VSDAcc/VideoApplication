@@ -27,10 +27,10 @@ class YoutubeTimelineViewController: UICollectionViewController, YoutubeTimeline
     fileprivate lazy var backgroundImageView: UIImageView = self.createBackgroundImageView()
     fileprivate lazy var menuBar: YoutubeMenuBarView = self.createYoutubeMenuBar()
     fileprivate lazy var settingsMenuView: YoutubeSettingsMenuView = self.createYoutubeSettingsMenuView()
+    fileprivate var cellOffset: CGFloat = 20.0
     private var menuBarHeight: CGFloat  = 50.0
     private var itemInsets: CGFloat = 50.0
-    var selectedYoutubeCell: YoutubeTimelineVideoCollectionViewCell?
-    fileprivate var cellOffset: CGFloat = 20.0
+    weak var selectedYoutubeCell: YoutubeTimelineVideoCollectionViewCell?
     
     fileprivate let viewModel: YoutubeMainTimelineViewModelInput
     //MARK-Loading
@@ -94,6 +94,12 @@ class YoutubeTimelineViewController: UICollectionViewController, YoutubeTimeline
     func viewModelDidHandleError(_ error: String) {
         DispatchQueue.main.async {
         }
+    }
+    
+    func viewModelDidSelectVideoModel(_ model: YotubeTimelineVideoCellModel, cell: YoutubeTimelineVideoCollectionViewCell) {
+        selectedYoutubeCell = cell
+        let video = YoutubeVideo(videoTitle: model.videoTitle, thumbnailImage: model.thumbnailImage, videoLinkUrl: model.videoLinkUrl, videoNumberOfViews: model.videoNumberOfViews, videoDuration: model.videoDuration, channel: model.channel)
+        viewModel.coordinator?.showYoutubeDetailViewController(YoutubeDetailVideoViewModel(videoItem: video))
     }
     //MARK:-ConfigureMethods
     fileprivate lazy var navigationTitleView: YoutubeNavigationBarTitleView = {
@@ -243,13 +249,6 @@ extension YoutubeTimelineViewController: YoutubeMenuBarDidSelectItemAtInexPath {
     
     func didSelectYoutubeMenuItem(_ item: YoutubeMenuBarItem) {
         self.navigationTitleView.titleLabel.text = item.itemTitleName.description
-    }
-}
-extension YoutubeTimelineViewController: YoutubeTimelineContainerViewCellHandler {
-    
-    func didSelectTimelineYoutubeVideoItem(_ video: YoutubeVideoModel, _ selectedCell: YoutubeTimelineVideoCollectionViewCell) {
-        selectedYoutubeCell = selectedCell
-        viewModel.coordinator?.showYoutubeDetailViewController(YoutubeDetailVideoViewModel(videoItem: video))
     }
 }
 extension YoutubeTimelineViewController: ListToDetailAnimatable {

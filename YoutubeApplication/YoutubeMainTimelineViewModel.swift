@@ -16,8 +16,9 @@ protocol YoutubeMainTimelineViewModelOutput: class {
     func viewModelDidLoadData()
     func viewModelWillLoadData()
     func viewModelDidHandleError(_ error: String)
+    func viewModelDidSelectVideoModel(_ model: YotubeTimelineVideoCellModel, cell: YoutubeTimelineVideoCollectionViewCell)
 }
-protocol YoutubeMainTimelineViewModelInput: ViewModelCellPresentable, YoutubeSettingsMenuHandler {
+protocol YoutubeMainTimelineViewModelInput: ViewModelCellPresentable, YoutubeSettingsMenuHandler, YoutubeTimelineVideoSectionModelHandler {
     var coordinator: YoutubeMainTimelineViewModelCoordinatorDelegate? {get set}
     var view: YoutubeMainTimelineViewModelOutput? {get set}
     func loadVideoData()
@@ -47,10 +48,14 @@ class YoutubeMainTimelineViewModel: YoutubeMainTimelineViewModelInput {
          _ timelineTrendingVideoServices: TimelineTrendingVideoServicesInput = TimelineTrendingVideoServices(),
          _ timelineAccountVideoServices: TimelineAccountVideoServicesInput = TimelineAccountVideoServices(),
          _ timelineSubscriptionVideoServices: TimelineSubscriptionVideoServicesInput = TimelineSubscriptionVideoServices()) {
-        self.homeVideoServices = timelineHomeVideoServices
-        self.trendingVideoServices = timelineTrendingVideoServices
-        self.accountVideoServices = timelineAccountVideoServices
-        self.subscriptionVideoServices = timelineSubscriptionVideoServices
+        homeVideoServices = timelineHomeVideoServices
+        trendingVideoServices = timelineTrendingVideoServices
+        accountVideoServices = timelineAccountVideoServices
+        subscriptionVideoServices = timelineSubscriptionVideoServices
+        homeSection.delegate = self
+        trendingSection.delegate = self
+        subscriptionSection.delegate = self
+        accountSection.delegate = self
     }
     //MARK:-YoutubeMainTimelineViewModelInput
     public func loadVideoData() {
@@ -88,6 +93,10 @@ class YoutubeMainTimelineViewModel: YoutubeMainTimelineViewModelInput {
             self?.subscriptionSection.updateVideoSectionModel(videos)
             self?.view?.viewModelDidLoadData()
         }
+    }
+    //MARK:-YoutubeTimelineVideoSectionModelHandler
+    func didSelectVideoModel(_ model: YotubeTimelineVideoCellModel, cell: YoutubeTimelineVideoCollectionViewCell) {
+        view?.viewModelDidSelectVideoModel(model, cell: cell)
     }
 }
 extension YoutubeMainTimelineViewModel {

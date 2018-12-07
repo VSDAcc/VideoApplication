@@ -81,7 +81,7 @@ extension YotubeTimelineContainerVideoCellModel: UICollectionViewDelegateFlowLay
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if UIApplication.shared.statusBarOrientation.isLandscape {
-            let width: CGFloat = collectionView.bounds.width / 2.2
+            let width: CGFloat = (collectionView.bounds.width / 2) - cellOffset
             let height: CGFloat = (width / 1.5) * (4 / 3)
             let size = CGSize(width: width, height: height)
             return size
