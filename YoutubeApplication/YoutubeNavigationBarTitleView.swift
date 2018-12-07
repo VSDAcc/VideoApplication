@@ -9,6 +9,7 @@
 import UIKit
 
 class YoutubeNavigationBarTitleView: UIView {
+    
     lazy var titleLabel: UILabel = self.createTitleLabel()
     
     //MARK:-Loading

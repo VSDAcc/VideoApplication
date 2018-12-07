@@ -8,6 +8,14 @@
 
 import UIKit
 
+protocol YoutubeSettingsMenuHandler: class {
+    func didPressedSettingsMenu(settings: YoutubeSettingsMenuItem)
+    func didPressedTermsAndPrivacyMenu(settings: YoutubeSettingsMenuItem)
+    func didPressedSendFeedbackMenu(settings: YoutubeSettingsMenuItem)
+    func didPressedHelpMenu(settings: YoutubeSettingsMenuItem)
+    func didPressedSwitchAccountMenu(settings: YoutubeSettingsMenuItem)
+    func didPressedCancelMenu(settings: YoutubeSettingsMenuItem)
+}
 class YoutubeSettingsMenuView: UIView {
     
     fileprivate struct CellID {
@@ -43,6 +51,7 @@ class YoutubeSettingsMenuView: UIView {
             return CGSize(width: width, height: height)
         }
     }
+    
     var viewModel = YoutubeSettingsMenuViewModel()
     //MARK:-Loading
     override init(frame: CGRect) {

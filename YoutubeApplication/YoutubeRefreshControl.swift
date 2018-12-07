@@ -18,7 +18,7 @@ class YoutubeRefreshControl: UIControl {
     override func didMoveToSuperview() {
         super.didMoveToSuperview()
         guard let scrollView = superview as? UIScrollView else {
-            assertionFailure("Can only add to a scrollView")
+            //assertionFailure("Can only add to a scrollView")
             return
         }
         heartImageView.isHidden = true

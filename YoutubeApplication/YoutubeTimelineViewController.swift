@@ -8,14 +8,6 @@
 
 import UIKit
 
-protocol YoutubeSettingsMenuHandler: class {
-    func didPressedSettingsMenu(settings: YoutubeSettingsMenuItem)
-    func didPressedTermsAndPrivacyMenu(settings: YoutubeSettingsMenuItem)
-    func didPressedSendFeedbackMenu(settings: YoutubeSettingsMenuItem)
-    func didPressedHelpMenu(settings: YoutubeSettingsMenuItem)
-    func didPressedSwitchAccountMenu(settings: YoutubeSettingsMenuItem)
-    func didPressedCancelMenu(settings: YoutubeSettingsMenuItem)
-}
 protocol YoutubeMenuBarDidSelectItemAtInexPath: class {
     func didSelectMenuBarItemAtIndexPath(_ indexPath: IndexPath)
     func didSelectYoutubeMenuItem(_ item: YoutubeMenuBarItem)
@@ -81,7 +73,10 @@ class YoutubeTimelineViewController: UICollectionViewController, YoutubeTimeline
             return
         }
         DispatchQueue.main.async {
-            self.collectionView?.reloadData()
+            self.collectionView.setNeedsLayout()
+            self.collectionView.layoutIfNeeded()
+            self.collectionView.invalidateIntrinsicContentSize()
+            self.collectionView.reloadData()
         }
         flowLayout.invalidateLayout()
     }
@@ -113,12 +108,10 @@ class YoutubeTimelineViewController: UICollectionViewController, YoutubeTimeline
             return
         }
         flowLayout.scrollDirection = .horizontal
-        flowLayout.sectionHeadersPinToVisibleBounds = true
+        flowLayout.sectionHeadersPinToVisibleBounds = false
         flowLayout.minimumInteritemSpacing = 0
         flowLayout.sectionInset = UIEdgeInsets.init(top: 0, left: 0, bottom: 0, right: 0)
         flowLayout.minimumLineSpacing = 0
-        flowLayout.headerReferenceSize = CGSize(width: 0, height: 0)
-        flowLayout.footerReferenceSize = CGSize(width: 0, height: 0)
     }
     
     private func configureNavigationBar() {
@@ -132,6 +125,7 @@ class YoutubeTimelineViewController: UICollectionViewController, YoutubeTimeline
         self.collectionView?.scrollIndicatorInsets = UIEdgeInsets.init(top: menuBarHeight, left: 0, bottom: 0, right: 0)
         self.collectionView?.showsHorizontalScrollIndicator = false
         self.collectionView?.register(YoutubeTimelineContainerCollectionViewCell.self, forCellWithReuseIdentifier: YoutubeTimelineContainerCollectionViewCell.reuseIdentifier)
+        self.collectionView?.alwaysBounceHorizontal = true
     }
     //MARK:-SetupViews
     private func setupSeratchBarButtonItem() -> UIBarButtonItem {
@@ -143,6 +137,7 @@ class YoutubeTimelineViewController: UICollectionViewController, YoutubeTimeline
     @objc private func actionSearchButtonDidPressed(_ sender: UIBarButtonItem) {
         print("Hello")
     }
+    
     private func setupMoreBarButtonItem() -> UIBarButtonItem {
         let image = UIImage(named: "nav_more_icon")?.withRenderingMode(.alwaysOriginal)
         let barButton = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(actionMoreButtonDidPressed(_ :)))
@@ -174,7 +169,7 @@ class YoutubeTimelineViewController: UICollectionViewController, YoutubeTimeline
         menu.translatesAutoresizingMaskIntoConstraints = false
         menu.isHidden = true
         menu.backgroundColor = UIColor.clear
-        menu.settingsMenuHandler = self
+        menu.settingsMenuHandler = viewModel
         self.view.addSubview(menu)
         return menu
     }
@@ -238,36 +233,12 @@ class YoutubeTimelineViewController: UICollectionViewController, YoutubeTimeline
         }
     }
 }
-extension YoutubeTimelineViewController: YoutubeSettingsMenuHandler {
-    func didPressedSettingsMenu(settings: YoutubeSettingsMenuItem) {
-        
-        print(settings.settingsTitle)
-    }
-    
-    func didPressedTermsAndPrivacyMenu(settings: YoutubeSettingsMenuItem) {
-        print(settings.settingsTitle)
-    }
-    
-    func didPressedSendFeedbackMenu(settings: YoutubeSettingsMenuItem) {
-        print(settings.settingsTitle)
-    }
-    
-    func didPressedHelpMenu(settings: YoutubeSettingsMenuItem) {
-        print(settings.settingsTitle)
-    }
-    
-    func didPressedSwitchAccountMenu(settings: YoutubeSettingsMenuItem) {
-        print(settings.settingsTitle)
-    }
-    
-    func didPressedCancelMenu(settings: YoutubeSettingsMenuItem) {
-        print(settings.settingsTitle)
-    }
-}
 extension YoutubeTimelineViewController: YoutubeMenuBarDidSelectItemAtInexPath {
     
     func didSelectMenuBarItemAtIndexPath(_ indexPath: IndexPath) {
-        //self.collectionView?.scrollToItem(at: indexPath, at: .right, animated: true)
+        let sctionIndexPath = IndexPath(item: 0, section: indexPath.row)
+        self.collectionView?.scrollToItem(at: sctionIndexPath, at: .right, animated: true)
+        self.collectionView?.layoutSubviews()
     }
     
     func didSelectYoutubeMenuItem(_ item: YoutubeMenuBarItem) {

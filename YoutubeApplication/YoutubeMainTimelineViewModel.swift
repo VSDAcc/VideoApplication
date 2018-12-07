@@ -17,7 +17,7 @@ protocol YoutubeMainTimelineViewModelOutput: class {
     func viewModelWillLoadData()
     func viewModelDidHandleError(_ error: String)
 }
-protocol YoutubeMainTimelineViewModelInput: ViewModelCellPresentable {
+protocol YoutubeMainTimelineViewModelInput: ViewModelCellPresentable, YoutubeSettingsMenuHandler {
     var coordinator: YoutubeMainTimelineViewModelCoordinatorDelegate? {get set}
     var view: YoutubeMainTimelineViewModelOutput? {get set}
     func loadVideoData()
@@ -102,5 +102,32 @@ extension YoutubeMainTimelineViewModel {
     
     func numberOfItemsInSection(section: Int) -> Int {
         return sections[section].rows.count
+    }
+}
+extension YoutubeMainTimelineViewModel {
+    
+    func didPressedSettingsMenu(settings: YoutubeSettingsMenuItem) {
+        
+        print(settings.settingsTitle)
+    }
+    
+    func didPressedTermsAndPrivacyMenu(settings: YoutubeSettingsMenuItem) {
+        print(settings.settingsTitle)
+    }
+    
+    func didPressedSendFeedbackMenu(settings: YoutubeSettingsMenuItem) {
+        print(settings.settingsTitle)
+    }
+    
+    func didPressedHelpMenu(settings: YoutubeSettingsMenuItem) {
+        print(settings.settingsTitle)
+    }
+    
+    func didPressedSwitchAccountMenu(settings: YoutubeSettingsMenuItem) {
+        print(settings.settingsTitle)
+    }
+    
+    func didPressedCancelMenu(settings: YoutubeSettingsMenuItem) {
+        print(settings.settingsTitle)
     }
 }
