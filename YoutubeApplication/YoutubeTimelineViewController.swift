@@ -126,12 +126,13 @@ class YoutubeTimelineViewController: UICollectionViewController, YoutubeTimeline
     }
     
     private func configureTimelineCollectionView() {
-        self.collectionView?.backgroundColor = UIColor.white
-        self.collectionView?.contentInset = UIEdgeInsets.init(top: menuBarHeight, left: 0, bottom: 0, right: 0)
-        self.collectionView?.scrollIndicatorInsets = UIEdgeInsets.init(top: menuBarHeight, left: 0, bottom: 0, right: 0)
-        self.collectionView?.showsHorizontalScrollIndicator = false
-        self.collectionView?.register(YoutubeTimelineContainerCollectionViewCell.self, forCellWithReuseIdentifier: YoutubeTimelineContainerCollectionViewCell.reuseIdentifier)
-        self.collectionView?.alwaysBounceHorizontal = true
+        self.collectionView.backgroundColor = UIColor.white
+        self.collectionView.contentInset = UIEdgeInsets.init(top: menuBarHeight, left: 0, bottom: 0, right: 0)
+        self.collectionView.scrollIndicatorInsets = UIEdgeInsets.init(top: menuBarHeight, left: 0, bottom: 0, right: 0)
+        self.collectionView.showsHorizontalScrollIndicator = false
+        self.collectionView.decelerationRate = .fast
+        self.collectionView.register(YoutubeTimelineContainerCollectionViewCell.self, forCellWithReuseIdentifier: YoutubeTimelineContainerCollectionViewCell.reuseIdentifier)
+        self.collectionView.alwaysBounceHorizontal = true
     }
     //MARK:-SetupViews
     private func setupSeratchBarButtonItem() -> UIBarButtonItem {
@@ -243,8 +244,9 @@ extension YoutubeTimelineViewController: YoutubeMenuBarDidSelectItemAtInexPath {
     
     func didSelectMenuBarItemAtIndexPath(_ indexPath: IndexPath) {
         let sctionIndexPath = IndexPath(item: 0, section: indexPath.row)
-        self.collectionView?.scrollToItem(at: sctionIndexPath, at: .right, animated: true)
-        self.collectionView?.layoutSubviews()
+        self.collectionView.scrollToItem(at: sctionIndexPath, at: .right, animated: true)
+        self.collectionView.setNeedsLayout()
+        self.collectionView.layoutIfNeeded()
     }
     
     func didSelectYoutubeMenuItem(_ item: YoutubeMenuBarItem) {

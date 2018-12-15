@@ -73,6 +73,10 @@ extension AppCoordinator: TimelineCoordinatorDelegate {
 extension AppCoordinator: UINavigationControllerDelegate {
     
     func navigationController(_ navigationController: UINavigationController, animationControllerFor operation: UINavigationController.Operation, from fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        return navigationDelegate
+        switch operation {
+        case .push: return navigationDelegate
+        case .pop: return navigationDelegate
+        case .none: return nil
+        }
     }
 }
