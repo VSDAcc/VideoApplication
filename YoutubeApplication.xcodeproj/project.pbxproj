@@ -172,6 +172,7 @@
 			children = (
 				7F39C769202E0B8B00F0073A /* AppCoordinator.swift */,
 				7F3B30652164EE2400CB6183 /* Timeline */,
+				7F8FC57721B7DB2600599D49 /* Animators */,
 			);
 			name = Coordinator;
 			sourceTree = "<group>";
@@ -179,7 +180,6 @@
 		7F3B30652164EE2400CB6183 /* Timeline */ = {
 			isa = PBXGroup;
 			children = (
-				7F8FC57721B7DB2600599D49 /* CustomTransitions */,
 				7F39C76B202E0BF700F0073A /* TimelineCoordinator.swift */,
 			);
 			name = Timeline;
@@ -221,12 +221,12 @@
 			name = RefreshControl;
 			sourceTree = "<group>";
 		};
-		7F8FC57721B7DB2600599D49 /* CustomTransitions */ = {
+		7F8FC57721B7DB2600599D49 /* Animators */ = {
 			isa = PBXGroup;
 			children = (
 				7FCB4D192018EF9A007EF281 /* ListToDetailAnimator.swift */,
 			);
-			name = CustomTransitions;
+			name = Animators;
 			sourceTree = "<group>";
 		};
 		7F8FC57821B7DB8700599D49 /* FlowLayout */ = {

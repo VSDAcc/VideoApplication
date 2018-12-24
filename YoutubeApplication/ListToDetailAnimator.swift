@@ -14,7 +14,7 @@ protocol ListToDetailAnimatable {
 }
 class ListToDetailAnimator: NSObject, UIViewControllerAnimatedTransitioning {
     
-    private let duration: TimeInterval = 3
+    private let duration: TimeInterval = 1
     
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         return duration
@@ -37,15 +37,15 @@ class ListToDetailAnimator: NSObject, UIViewControllerAnimatedTransitioning {
         let toAnimatable = toViewController as! ListToDetailAnimatable
         let outgoingSnapshots = canvas.snapshotViews(views: fromAnimatable.animatableCells, afterUpdates: true)
         let incomingSnapshots = canvas.snapshotViews(views: toAnimatable.morphViews, afterUpdates: true)
-        let scaleTransform = CGAffineTransform(scaleX: 0.5, y: 0.5)
+        //let scaleTransform = CGAffineTransform(scaleX: 0.5, y: 0.5)
         for view in incomingSnapshots {
-            view.transform  = scaleTransform
+            //view.transform  = scaleTransform
             view.alpha = 0
         }
         UIView.animateKeyframes(withDuration: duration, delay: 0, options: .calculationModeLinear, animations: {
             UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.25, animations: {
                 for view in outgoingSnapshots {
-                    view.transform = scaleTransform
+                   // view.transform = scaleTransform
                     view.alpha = 0
                 }
             })
