@@ -35,23 +35,31 @@ class ListToDetailAnimator: NSObject, UIViewControllerAnimatedTransitioning {
         
         let fromAnimatable = fromViewController as! ListToDetailAnimatable
         let toAnimatable = toViewController as! ListToDetailAnimatable
+        
         let outgoingSnapshots = canvas.snapshotViews(views: fromAnimatable.animatableCells, afterUpdates: true)
         let incomingSnapshots = canvas.snapshotViews(views: toAnimatable.morphViews, afterUpdates: true)
         //let scaleTransform = CGAffineTransform(scaleX: 0.5, y: 0.5)
+        
         for view in incomingSnapshots {
             //view.transform  = scaleTransform
             view.alpha = 0
+            view.layer.cornerRadius = 12.0
+            view.layer.masksToBounds = true
         }
         UIView.animateKeyframes(withDuration: duration, delay: 0, options: .calculationModeLinear, animations: {
             UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.25, animations: {
                 for view in outgoingSnapshots {
                    // view.transform = scaleTransform
                     view.alpha = 0
+                    view.layer.cornerRadius = 0.0
+                    view.layer.masksToBounds = true
                 }
             })
             UIView.addKeyframe(withRelativeStartTime: 0.75, relativeDuration: 0.25, animations: {
                 for view in incomingSnapshots {
                     view.transform = CGAffineTransform.identity
+                    view.layer.cornerRadius = 12.0
+                    view.layer.masksToBounds = true
                     view.alpha = 1
                 }
             })
@@ -74,12 +82,18 @@ class ListToDetailAnimator: NSObject, UIViewControllerAnimatedTransitioning {
         toView.alpha = 0
         toView.transform = fromView.scaleSnapshotToView(toView: toView)
         toView.center = fromView.center
+        toView.layer.cornerRadius = 12.0
+        toView.layer.masksToBounds = true
         
         UIView.animate(withDuration: duration) {
             fromView.alpha = 0
             fromView.transform = toView.transform.inverted()
             fromView.center = targetCenter
+            fromView.layer.cornerRadius = 0.0
+            fromView.layer.masksToBounds = true
             
+            toView.layer.cornerRadius = 12.0
+            toView.layer.masksToBounds = true
             toView.alpha = 1
             toView.transform = CGAffineTransform.identity
             toView.center = targetCenter
