@@ -36,15 +36,12 @@ protocol Coordinator: class {
 final class AppCoordinator: NSObject, RootCoordinator, Coordinator {
     
     fileprivate let navigationController: UINavigationController
-    fileprivate let navigationDelegate: ListToDetailAnimator?
     
     var childCoordinators = [Coordinator]()
     
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController
-        self.navigationDelegate = ListToDetailAnimator()
         super.init()
-        self.navigationController.delegate = self
         self.configureNavigationBar()
     }
     
@@ -69,14 +66,4 @@ final class AppCoordinator: NSObject, RootCoordinator, Coordinator {
 }
 extension AppCoordinator: TimelineCoordinatorDelegate {
     
-}
-extension AppCoordinator: UINavigationControllerDelegate {
-    
-    func navigationController(_ navigationController: UINavigationController, animationControllerFor operation: UINavigationController.Operation, from fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        switch operation {
-        case .push: return navigationDelegate
-        case .pop: return navigationDelegate
-        case .none: return nil
-        }
-    }
 }

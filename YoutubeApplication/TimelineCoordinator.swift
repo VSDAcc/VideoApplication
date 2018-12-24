@@ -17,11 +17,14 @@ final class TimelineCoordinator: Coordinator, RootCoordinator {
     let rootNavigationController: UINavigationController
     var timelineViewController: YoutubeTimelineViewController
     var childCoordinators: [Coordinator] = [Coordinator]()
+    
+    fileprivate let navigationDelegate: ListToDetialTransitioningDelegate?
     fileprivate var viewModel: YoutubeMainTimelineViewModelInput
     
     init(navigationController: UINavigationController) {
         rootNavigationController = navigationController
         viewModel = YoutubeMainTimelineViewModel()
+        navigationDelegate = ListToDetialTransitioningDelegate()
         timelineViewController = YoutubeTimelineViewController(viewModel: viewModel, collectionViewLayout: YoutubeCollectionViewFlowLayout())
     }
     
@@ -33,12 +36,14 @@ final class TimelineCoordinator: Coordinator, RootCoordinator {
     func showYoutubeDetailVC(_ viewModel: YoutubeDetailVideoViewModelInput) {
         let youtubeDetailVC = YoutubeDetailVideoViewController(viewModel: viewModel)
         viewModel.coordinator = self
+        rootNavigationController.delegate = navigationDelegate
         youtubeDetailVC.animatableYoutubeCells = (timelineViewController.collectionView?.visibleCells.filter({$0 != timelineViewController.selectedYoutubeCell}))!
         rootNavigationController.show(youtubeDetailVC, sender: self)
     }
     
     func popNavigationController(animated: Bool) {
         rootNavigationController.popViewController(animated: animated)
+        rootNavigationController.delegate = nil
     }
 }
 extension TimelineCoordinator: TimelineCoordinatorDelegate {

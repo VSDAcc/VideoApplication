@@ -8,13 +8,9 @@
 
 import UIKit
 
-protocol ListToDetailAnimatable {
-    var morphViews: [UIView] { get }
-    var animatableCells: [UICollectionViewCell] { get }
-}
-class ListToDetailAnimator: NSObject, UIViewControllerAnimatedTransitioning {
+class ListToDetailAnimator: NSObject, AnimatedTransitioning {
     
-    private let duration: TimeInterval = 1
+    let duration: TimeInterval = 1
     
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         return duration
