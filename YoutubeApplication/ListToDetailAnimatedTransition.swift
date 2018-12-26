@@ -9,6 +9,7 @@
 import UIKit
 
 protocol AnimatedTransitioning: UIViewControllerAnimatedTransitioning {
+    var operation: UINavigationController.Operation { get set }
     var duration : TimeInterval { get }
 }
 

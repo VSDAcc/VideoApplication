@@ -22,6 +22,12 @@ final class ListToDetialTransitioningDelegate: NSObject {
 extension ListToDetialTransitioningDelegate: UINavigationControllerDelegate {
 
     func navigationController(_ navigationController: UINavigationController, animationControllerFor operation: UINavigationController.Operation, from fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        
+        guard let _ = fromVC as? ListToDetailAnimatable, let _ = toVC as? ListToDetailAnimatable else {
+                return nil
+        }
+        animator.operation = operation
+        
         switch operation {
         case .push:
             return animator
@@ -29,5 +35,9 @@ extension ListToDetialTransitioningDelegate: UINavigationControllerDelegate {
             return animator
         case .none: return nil
         }
+    }
+    
+    public func navigationController(_ navigationController: UINavigationController, interactionControllerFor animationController: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
+        return interactionController
     }
 }

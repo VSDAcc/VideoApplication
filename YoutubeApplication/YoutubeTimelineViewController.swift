@@ -30,7 +30,11 @@ class YoutubeTimelineViewController: UICollectionViewController, YoutubeTimeline
     fileprivate var cellOffset: CGFloat = 20.0
     private var menuBarHeight: CGFloat  = 50.0
     private var itemInsets: CGFloat = 50.0
+    
     weak var selectedYoutubeCell: YoutubeTimelineVideoCollectionViewCell?
+    var animatableYoutubeCells: [UICollectionViewCell] {
+        return (collectionView?.visibleCells.filter({$0 != selectedYoutubeCell}))!
+    }
     
     fileprivate let viewModel: YoutubeMainTimelineViewModelInput
     //MARK-Loading
@@ -258,8 +262,8 @@ extension YoutubeTimelineViewController: ListToDetailAnimatable {
     var morphViews: [UIView] {
         return [selectedYoutubeCell!.thumbnailImageView]
     }
-    
+
     var animatableCells: [UICollectionViewCell] {
-        return (collectionView?.visibleCells.filter({$0 != selectedYoutubeCell}))!
+        return animatableYoutubeCells
     }
 }

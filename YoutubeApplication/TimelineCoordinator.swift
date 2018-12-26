@@ -37,7 +37,7 @@ final class TimelineCoordinator: Coordinator, RootCoordinator {
         let youtubeDetailVC = YoutubeDetailVideoViewController(viewModel: viewModel)
         viewModel.coordinator = self
         rootNavigationController.delegate = navigationDelegate
-        youtubeDetailVC.animatableYoutubeCells = (timelineViewController.collectionView?.visibleCells.filter({$0 != timelineViewController.selectedYoutubeCell}))!
+        youtubeDetailVC.animatableYoutubeCells = timelineViewController.animatableCells
         rootNavigationController.show(youtubeDetailVC, sender: self)
     }
     
