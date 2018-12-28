@@ -60,6 +60,7 @@ class YoutubeVideoPlayerView: UIView, YoutubeVideoPlayerManager {
     deinit {
         player?.removeObserver(self, forKeyPath: VideoPlayerObserverConstants.loadedTimeRanges)
         player?.removeTimeObserver(self.timeObserverToken ?? "")
+        player = nil
     }
     //MARK:-YoutubeVideoPlayerManager
     func addThumbnailVideoImageWith(_ url: String) {
