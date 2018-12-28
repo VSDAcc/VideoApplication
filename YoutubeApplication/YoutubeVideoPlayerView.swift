@@ -147,6 +147,10 @@ class YoutubeVideoPlayerView: UIView, YoutubeVideoPlayerManager {
     @objc private func actionSliderValueDidChange(_ sender: UISlider) {
         if let totalSeconds = actionGetCurrentPlayerSecondsDuration() {
             let value = Float64(sender.value) * totalSeconds
+            guard !(value.isNaN || value.isInfinite) else {
+                player?.pause()
+                return
+            }
             let seekTime = CMTime(value: Int64(value), timescale: 1)
             player?.seek(to: seekTime, completionHandler: { (finished) in })
         }

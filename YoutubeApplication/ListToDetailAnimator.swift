@@ -11,7 +11,7 @@ import UIKit
 class ListToDetailAnimator: NSObject, AnimatedTransitioning {
     
     var operation: UINavigationController.Operation = .none
-    let duration: TimeInterval = 1
+    let duration: TimeInterval = 1.0
     
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         return duration
@@ -81,7 +81,7 @@ class ListToDetailAnimator: NSObject, AnimatedTransitioning {
     }
     
     private func animateMorhpFromView(view: UIView, toView: UIView, canvas: UIView) {
-        let fromView = canvas.snapshotView(view: view, afterUpdates: false)
+        let fromView = canvas.snapshotView(view: view, afterUpdates: true)
         let toView = canvas.snapshotView(view: toView, afterUpdates: true)
         
         let targetCenter = toView.center
@@ -90,16 +90,15 @@ class ListToDetailAnimator: NSObject, AnimatedTransitioning {
         toView.center = fromView.center
         toView.layer.cornerRadius = 0.0
         toView.layer.masksToBounds = true
+        fromView.layer.masksToBounds = true
         
         UIView.animate(withDuration: duration) {
             fromView.alpha = 1
             fromView.transform = toView.transform.inverted()
             fromView.center = targetCenter
             fromView.layer.cornerRadius = 0.0
-            fromView.layer.masksToBounds = true
             
             toView.layer.cornerRadius = 12.0
-            toView.layer.masksToBounds = true
             toView.alpha = 1
             toView.transform = CGAffineTransform.identity
             toView.center = targetCenter

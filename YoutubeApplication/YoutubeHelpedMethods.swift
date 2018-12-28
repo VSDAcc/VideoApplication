@@ -28,6 +28,9 @@ struct YoutubeHelpedMethods {
     func formateCMTimeToString(time: CMTime) -> String {
         var textTime = "00:00"
         let seconds = CMTimeGetSeconds(time)
+        guard !(seconds.isNaN || seconds.isInfinite) else {
+            return textTime // illegal value
+        }
         let textSeconds = Int(seconds) % 60
         let textMinutes = String(format: "%02d", Int(seconds) / 60)
         textTime = "\(textMinutes):\(textSeconds)"

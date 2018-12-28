@@ -30,6 +30,7 @@ extension ListToDetialTransitioningDelegate: UINavigationControllerDelegate {
         
         switch operation {
         case .push:
+            interactionController = ListToDetailInteractionAnimator(viewController: toVC)
             return animator
         case .pop:
             return animator
@@ -37,7 +38,20 @@ extension ListToDetialTransitioningDelegate: UINavigationControllerDelegate {
         }
     }
     
+    func navigationController(_ navigationController: UINavigationController, didShow viewController: UIViewController, animated: Bool) {
+        if viewController == navigationController.viewControllers.first {
+            interactionController = nil
+        }
+    }
+    
     public func navigationController(_ navigationController: UINavigationController, interactionControllerFor animationController: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
-        return interactionController
+        switch animator.operation {
+        case .push:
+            return nil
+        case .pop:
+            return interactionController
+        default:
+            return nil
+        }
     }
 }
