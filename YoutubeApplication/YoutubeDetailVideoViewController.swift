@@ -30,7 +30,7 @@ class YoutubeDetailVideoViewController: UIViewController {
         super.viewDidLoad()
         addAllConstraintsToViews()
         addVideoThumbnailImage()
-        self.view.backgroundColor = UIColor.white
+        view.backgroundColor = UIColor.white
         setNeedsStatusBarAppearanceUpdate()
     }
     

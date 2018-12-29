@@ -53,10 +53,11 @@ class ListToDetailAnimator: NSObject, AnimatedTransitioning {
             view.layer.cornerRadius = 12.0
             view.layer.masksToBounds = true
         }
+        
         UIView.animateKeyframes(withDuration: duration, delay: 0, options: .allowUserInteraction, animations: {
             UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 1/2, animations: {
                 for view in outgoingSnapshots {
-                    view.alpha = 0
+                    view.alpha = 0.0
                     view.layer.cornerRadius = 0.0
                     view.layer.masksToBounds = true
                 }
@@ -64,9 +65,6 @@ class ListToDetailAnimator: NSObject, AnimatedTransitioning {
             UIView.addKeyframe(withRelativeStartTime: 1/2, relativeDuration: 1/2, animations: {
                 for view in incomingSnapshots {
                     view.transform = CGAffineTransform.identity
-                    view.layer.cornerRadius = 12.0
-                    view.layer.masksToBounds = true
-                    view.alpha = 1
                 }
             })
         }, completion: { (finished) in
@@ -77,11 +75,17 @@ class ListToDetailAnimator: NSObject, AnimatedTransitioning {
     }
     
     private func animateMorphViews(views: [(fromView: UIView, toView: UIView)], canvas: UIView) {
-        views.forEach({animateMorhpFromView(view: $0.fromView, toView: $0.toView, canvas: canvas)})
+        switch operation {
+        case .push:
+            views.forEach({ animatePushMorhpFromView(view: $0.fromView, toView: $0.toView, canvas: canvas) })
+        case .pop:
+            views.forEach({ animatePopMorhpFromView(view: $0.fromView, toView: $0.toView, canvas: canvas) })
+        default: break
+        }
     }
     
-    private func animateMorhpFromView(view: UIView, toView: UIView, canvas: UIView) {
-        let fromView = canvas.snapshotView(view: view, afterUpdates: true)
+    private func animatePushMorhpFromView(view: UIView, toView: UIView, canvas: UIView) {
+        let fromView = canvas.snapshotView(view: view, afterUpdates: false)
         let toView = canvas.snapshotView(view: toView, afterUpdates: true)
         
         let targetCenter = toView.center
@@ -90,6 +94,7 @@ class ListToDetailAnimator: NSObject, AnimatedTransitioning {
         toView.center = fromView.center
         toView.layer.cornerRadius = 0.0
         toView.layer.masksToBounds = true
+        fromView.layer.cornerRadius = 12.0
         fromView.layer.masksToBounds = true
         
         UIView.animate(withDuration: duration) {
@@ -98,8 +103,31 @@ class ListToDetailAnimator: NSObject, AnimatedTransitioning {
             fromView.center = targetCenter
             fromView.layer.cornerRadius = 0.0
             
-            toView.layer.cornerRadius = 12.0
             toView.alpha = 1
+            toView.transform = CGAffineTransform.identity
+            toView.center = targetCenter
+        }
+    }
+    
+    private func animatePopMorhpFromView(view: UIView, toView: UIView, canvas: UIView) {
+        let fromView = canvas.snapshotView(view: view, afterUpdates: false)
+        let toView = canvas.snapshotView(view: toView, afterUpdates: true)
+        
+        let targetCenter = toView.center
+        toView.alpha = 1
+        toView.transform = fromView.scaleSnapshotToView(toView: toView)
+        toView.center = fromView.center
+        toView.layer.cornerRadius = 12.0
+        toView.layer.masksToBounds = true
+        fromView.layer.cornerRadius = 12.0
+        fromView.layer.masksToBounds = true
+        
+        UIView.animate(withDuration: duration) {
+            fromView.alpha = 0
+            fromView.transform = toView.transform.inverted()
+            fromView.center = targetCenter
+            fromView.layer.cornerRadius = 0.0
+            
             toView.transform = CGAffineTransform.identity
             toView.center = targetCenter
         }
