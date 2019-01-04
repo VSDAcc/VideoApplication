@@ -31,7 +31,7 @@ class YotubeTimelineContainerVideoCellModel: BaseCellModel, ViewModelCellPresent
         self.youtubeTimelineVideoSectionModel.updateVideoSectionModel(videos)
     }
 
-    func didSelectModel(_ model: CellIdentifiable, cell: YoutubeTimelineVideoCollectionViewCell) {
+    fileprivate func didSelectModel(_ model: CellIdentifiable, cell: YoutubeTimelineVideoCollectionViewCell) {
         if let videoModel = model as? YotubeTimelineVideoCellModel {
             delegate?.didSelectVideoModel(videoModel, cell: cell)
         }

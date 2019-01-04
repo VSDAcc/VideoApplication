@@ -16,6 +16,7 @@ class YoutubeDetailVideoViewController: UIViewController {
     private var isStatusBarHidden: Bool = false
     
     fileprivate let viewModel: YoutubeDetailVideoViewModelInput
+    
     //MARK:-Loading
     init(viewModel: YoutubeDetailVideoViewModelInput) {
         self.viewModel = viewModel
