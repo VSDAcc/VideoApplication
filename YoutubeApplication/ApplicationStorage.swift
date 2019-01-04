@@ -9,6 +9,7 @@
 import Foundation
 import Cache
 
+public struct Cashable: Codable { }
 class AppStorage {
     
     public enum AppStoragePriority {
@@ -18,29 +19,31 @@ class AppStorage {
     
     private static var permanentStorage: Storage = try! Storage(
         diskConfig: AppCachePreferences.Permanent.diskConfig,
-        memoryConfig: AppCachePreferences.Permanent.memoryConfig
+        memoryConfig: AppCachePreferences.Permanent.memoryConfig,
+        transformer: TransformerFactory.forCodable(ofType: Cashable.self)
     )
     
-    private static var cacheStorage:     Storage = try! Storage(
+    private static var cacheStorage: Storage = try! Storage(
         diskConfig: AppCachePreferences.Cache.diskConfig,
-        memoryConfig: AppCachePreferences.Cache.memoryConfig
+        memoryConfig: AppCachePreferences.Cache.memoryConfig,
+        transformer: TransformerFactory.forCodable(ofType: Cashable.self)
     )
     
     static func setObject<T>(_ object: T, forKey key: String, priority: AppStoragePriority = .cache) where T: Codable {
         switch priority {
         case .permanent:
-            try? permanentStorage.setObject(object, forKey: key)
+            try? permanentStorage.transformCodable(ofType: T.self).setObject(object, forKey: key)
         case .cache:
-            try? cacheStorage.setObject(object, forKey: key)
+            try? cacheStorage.transformCodable(ofType: T.self).setObject(object, forKey: key)
         }
     }
     
     static func getObject<T>(ofType type: T.Type, forKey key: String, priority: AppStoragePriority = .cache) -> T? where T: Codable {
         switch priority {
         case .permanent:
-            return try? permanentStorage.object(ofType: type, forKey: key)
+            return try? permanentStorage.transformCodable(ofType: T.self).object(forKey: key)
         case .cache:
-            return try? cacheStorage.object(ofType: type, forKey: key)
+            return try? cacheStorage.transformCodable(ofType: T.self).object(forKey: key)
         }
     }
     
