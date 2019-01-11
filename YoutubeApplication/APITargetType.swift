@@ -9,7 +9,10 @@
 import Foundation
 import Moya
 
-extension TargetType {
+protocol VideoTargetType: TargetType {
+    
+}
+extension VideoTargetType {
     
     var baseURL: URL {
         return Configuration.requiredEndpoint

@@ -37,6 +37,7 @@ class YoutubeTimelineViewController: UICollectionViewController, YoutubeTimeline
     }
     
     fileprivate let viewModel: YoutubeMainTimelineViewModelInput
+    
     //MARK-Loading
     init(viewModel: YoutubeMainTimelineViewModelInput, collectionViewLayout layout: UICollectionViewLayout) {
         self.viewModel = viewModel

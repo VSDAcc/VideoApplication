@@ -23,8 +23,8 @@ final class TimelineCoordinator: Coordinator, RootCoordinator {
     
     init(navigationController: UINavigationController) {
         rootNavigationController = navigationController
-        viewModel = YoutubeMainTimelineViewModel()
         navigationDelegate = ListToDetialTransitioningDelegate()
+        viewModel = YoutubeMainTimelineViewModel()
         timelineViewController = YoutubeTimelineViewController(viewModel: viewModel, collectionViewLayout: YoutubeCollectionViewFlowLayout())
     }
     

@@ -15,7 +15,7 @@ enum APITimeline {
     case subscriptionVideos
     case accountVideos
 }
-extension APITimeline: TargetType {
+extension APITimeline: VideoTargetType {
     
     var path: String {
         switch self {

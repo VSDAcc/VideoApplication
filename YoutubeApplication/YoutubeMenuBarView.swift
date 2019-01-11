@@ -38,7 +38,7 @@ class YoutubeMenuBarView: UIView {
     
     var menuSelectedItem: IndexPath = IndexPath(item: 0, section: 0) {
         didSet {
-            collectionView.selectItem(at: menuSelectedItem, animated: true, scrollPosition: .right)
+            collectionView.selectItem(at: menuSelectedItem, animated: true, scrollPosition: .centeredHorizontally)
             menuBarDidSelectItemAtInexPath?.didSelectYoutubeMenuItem(viewModel.selectedItemAt(indexPath: menuSelectedItem))
         }
     }

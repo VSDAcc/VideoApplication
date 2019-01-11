@@ -52,11 +52,11 @@ extension YoutubeVideo: Codable {
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
-        try container.encode(videoTitle, forKey: .videoTitle)
-        try container.encode(thumbnailImage, forKey: .thumbnailImage)
-        try container.encode(videoNumberOfViews, forKey: .videoNumberOfViews)
-        try container.encode(videoDuration, forKey: .videoDuration)
-        try container.encode(channel, forKey: .channel)
+        try container.encodeIfPresent(videoTitle, forKey: .videoTitle)
+        try container.encodeIfPresent(thumbnailImage, forKey: .thumbnailImage)
+        try container.encodeIfPresent(videoNumberOfViews, forKey: .videoNumberOfViews)
+        try container.encodeIfPresent(videoDuration, forKey: .videoDuration)
+        try container.encodeIfPresent(channel, forKey: .channel)
     }
 }
 struct YoutubeVideoChannel {
@@ -85,8 +85,8 @@ extension YoutubeVideoChannel: Codable {
     
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(channelName, forKey: .name)
-        try container.encode(channelImageURL, forKey: .profileImage)
+        try container.encodeIfPresent(channelName, forKey: .name)
+        try container.encodeIfPresent(channelImageURL, forKey: .profileImage)
     }
 }
 struct IphoneList {
@@ -116,10 +116,9 @@ extension IphoneList: Codable {
     }
     
     func encode(to encoder: Encoder) throws {
-        
         var container = encoder.container(keyedBy: CodingKeys.self)
         
-        try container.encode(images, forKey: .images)
-        try container.encode(title, forKey: .title)
+        try container.encodeIfPresent(images, forKey: .images)
+        try container.encodeIfPresent(title, forKey: .title)
     }
 }
