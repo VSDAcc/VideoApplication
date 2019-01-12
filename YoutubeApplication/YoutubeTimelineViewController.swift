@@ -86,22 +86,21 @@ class YoutubeTimelineViewController: UICollectionViewController, YoutubeTimeline
         flowLayout.invalidateLayout()
     }
     //MARK:-TimelineViewControllerInput
-    func viewModelDidLoadData() {
+    func viewModelDidLoadData(_ viewModel: YoutubeMainTimelineViewModelInput) {
         DispatchQueue.main.async {
             self.collectionView.reloadData()
         }
     }
     
-    func viewModelWillLoadData() {
-        //TODO:-Show activity view
+    func viewModelWillLoadData(_ viewModel: YoutubeMainTimelineViewModelInput) {
+        
     }
     
-    func viewModelDidHandleError(_ error: String) {
-        DispatchQueue.main.async {
-        }
+    func viewModel(_ viewModel: YoutubeMainTimelineViewModelInput, didHandleError error: String) {
+        
     }
     
-    func viewModelDidSelectVideoModel(_ model: YotubeTimelineVideoCellModel, cell: YoutubeTimelineVideoCollectionViewCell) {
+    func viewModel(_ viewModel: YoutubeMainTimelineViewModelInput, didSelectVideoModel model: YotubeTimelineVideoCellModel, cell: YoutubeTimelineVideoCollectionViewCell) {
         selectedYoutubeCell = cell
         let video = YoutubeVideo(videoTitle: model.videoTitle, thumbnailImage: model.thumbnailImage, videoLinkUrl: model.videoLinkUrl, videoNumberOfViews: model.videoNumberOfViews, videoDuration: model.videoDuration, channel: model.channel)
         viewModel.coordinator?.showYoutubeDetailViewController(YoutubeDetailVideoViewModel(videoItem: video))

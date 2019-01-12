@@ -13,10 +13,10 @@ protocol YoutubeMainTimelineViewModelCoordinatorDelegate: class {
     func showYoutubeDetailViewController(_ viewModel: YoutubeDetailVideoViewModelInput)
 }
 protocol YoutubeMainTimelineViewModelOutput: class {
-    func viewModelDidLoadData()
-    func viewModelWillLoadData()
-    func viewModelDidHandleError(_ error: String)
-    func viewModelDidSelectVideoModel(_ model: YotubeTimelineVideoCellModel, cell: YoutubeTimelineVideoCollectionViewCell)
+    func viewModelDidLoadData(_ viewModel: YoutubeMainTimelineViewModelInput)
+    func viewModelWillLoadData(_ viewModel: YoutubeMainTimelineViewModelInput)
+    func viewModel(_ viewModel: YoutubeMainTimelineViewModelInput, didHandleError error: String)
+    func viewModel(_ viewModel: YoutubeMainTimelineViewModelInput, didSelectVideoModel model: YotubeTimelineVideoCellModel, cell: YoutubeTimelineVideoCollectionViewCell)
 }
 protocol YoutubeMainTimelineViewModelInput: ViewModelCellPresentable, YoutubeSettingsMenuHandler, YoutubeTimelineVideoSectionModelHandler {
     var coordinator: YoutubeMainTimelineViewModelCoordinatorDelegate? {get set}
@@ -64,39 +64,43 @@ class YoutubeMainTimelineViewModel: YoutubeMainTimelineViewModelInput {
         trendingSection.updateVideoSectionModel(trendingVideoServices.queryTrendingVideos())
         accountSection.updateVideoSectionModel(accountVideoServices.queryAccountVideos())
         subscriptionSection.updateVideoSectionModel(subscriptionVideoServices.querySubscriptionVideos())
-        view?.viewModelDidLoadData()
+        view?.viewModelDidLoadData(self)
     }
     
     public func updateHomeVideos() {
         homeVideoServices.updateHomeVideos { [weak self] (videos) in
-            self?.homeSection.updateVideoSectionModel(videos)
-            self?.view?.viewModelDidLoadData()
+            guard let strongSelf = self else { return }
+            strongSelf.homeSection.updateVideoSectionModel(videos)
+            strongSelf.view?.viewModelDidLoadData(strongSelf)
         }
     }
     
     public func updateTrendingVideos() {
         trendingVideoServices.updateTrendingVideos { [weak self] (videos) in
-            self?.trendingSection.updateVideoSectionModel(videos)
-            self?.view?.viewModelDidLoadData()
+            guard let strongSelf = self else { return }
+            strongSelf.trendingSection.updateVideoSectionModel(videos)
+            strongSelf.view?.viewModelDidLoadData(strongSelf)
         }
     }
     
     public func updateAccountVideos() {
         homeVideoServices.updateHomeVideos { [weak self] (videos) in
-            self?.accountSection.updateVideoSectionModel(videos)
-            self?.view?.viewModelDidLoadData()
+            guard let strongSelf = self else { return }
+            strongSelf.accountSection.updateVideoSectionModel(videos)
+            strongSelf.view?.viewModelDidLoadData(strongSelf)
         }
     }
     
     public func updateSubscriptionVideos() {
         subscriptionVideoServices.updateSubscriptionVideos { [weak self] (videos) in
-            self?.subscriptionSection.updateVideoSectionModel(videos)
-            self?.view?.viewModelDidLoadData()
+            guard let strongSelf = self else { return }
+            strongSelf.subscriptionSection.updateVideoSectionModel(videos)
+            strongSelf.view?.viewModelDidLoadData(strongSelf)
         }
     }
     //MARK:-YoutubeTimelineVideoSectionModelHandler
     func didSelectVideoModel(_ model: YotubeTimelineVideoCellModel, cell: YoutubeTimelineVideoCollectionViewCell) {
-        view?.viewModelDidSelectVideoModel(model, cell: cell)
+        view?.viewModel(self, didSelectVideoModel: model, cell: cell)
     }
 }
 extension YoutubeMainTimelineViewModel {
