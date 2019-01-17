@@ -256,17 +256,6 @@
 			name = FlowLayout;
 			sourceTree = "<group>";
 		};
-		7F8FC57921B7DC7600599D49 /* Timeline */ = {
-			isa = PBXGroup;
-			children = (
-				8A7B032B1FD6B01D0028BB9B /* Cell */,
-				8A8906AE1FD81ABB00D303E6 /* Custom Views */,
-				7F8895B42017633C0039097A /* RefreshControl */,
-				7F8FC57821B7DB8700599D49 /* FlowLayout */,
-			);
-			name = Timeline;
-			sourceTree = "<group>";
-		};
 		7F8FC57A21B7DE4F00599D49 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
@@ -385,26 +374,6 @@
 			name = Box;
 			sourceTree = "<group>";
 		};
-		7F94CD8321B945F000F53DB3 /* View */ = {
-			isa = PBXGroup;
-			children = (
-				8A7B03251FD6A93D0028BB9B /* YoutubeTimelineViewController.swift */,
-				8ABD0F6A1FEA528700C8D254 /* YoutubeDetailVideoViewController.swift */,
-			);
-			name = View;
-			sourceTree = "<group>";
-		};
-		7F94CD8421B945FE00F53DB3 /* ViewModel */ = {
-			isa = PBXGroup;
-			children = (
-				7F2D2E2A202DD2E000DC8741 /* YoutubeMainTimelineViewModel.swift */,
-				8ABD0F6C1FEA84C500C8D254 /* YoutubeDetailVideoViewModel.swift */,
-				8A9E0FEA1FDEAD720065108D /* YoutubeSettingsMenuViewModel.swift */,
-				8A9E0FDD1FD96D8C0065108D /* YoutubeMenuBarViewModel.swift */,
-			);
-			name = ViewModel;
-			sourceTree = "<group>";
-		};
 		7F94CD8721B9464E00F53DB3 /* Section&Cell */ = {
 			isa = PBXGroup;
 			children = (
@@ -457,11 +426,30 @@
 			name = Menu;
 			sourceTree = "<group>";
 		};
+		7FBC2E1D21F09D2600202FBC /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				7FBC2E1E21F09D2D00202FBC /* Timeline */,
+			);
+			name = ViewModel;
+			sourceTree = "<group>";
+		};
+		7FBC2E1E21F09D2D00202FBC /* Timeline */ = {
+			isa = PBXGroup;
+			children = (
+				7F2D2E2A202DD2E000DC8741 /* YoutubeMainTimelineViewModel.swift */,
+				8ABD0F6C1FEA84C500C8D254 /* YoutubeDetailVideoViewModel.swift */,
+				8A9E0FEA1FDEAD720065108D /* YoutubeSettingsMenuViewModel.swift */,
+				8A9E0FDD1FD96D8C0065108D /* YoutubeMenuBarViewModel.swift */,
+			);
+			name = Timeline;
+			sourceTree = "<group>";
+		};
 		7FCB4D172018EF2B007EF281 /* Timeline */ = {
 			isa = PBXGroup;
 			children = (
-				7F94CD8421B945FE00F53DB3 /* ViewModel */,
-				7F94CD8321B945F000F53DB3 /* View */,
+				8A7B03251FD6A93D0028BB9B /* YoutubeTimelineViewController.swift */,
+				8ABD0F6A1FEA528700C8D254 /* YoutubeDetailVideoViewController.swift */,
 			);
 			name = Timeline;
 			sourceTree = "<group>";
@@ -490,8 +478,8 @@
 				7F8FC59421B7DF5B00599D49 /* Core */,
 				7F39C766202E09AF00F0073A /* Coordinator */,
 				7F8FC59521B7E05700599D49 /* Services */,
-				8A7B03221FD6A82C0028BB9B /* Controller */,
 				8A7B03201FD6A81E0028BB9B /* Model */,
+				7FBC2E1D21F09D2600202FBC /* ViewModel */,
 				8A7B031E1FD6A7A60028BB9B /* View */,
 				7F8FC57A21B7DE4F00599D49 /* Protocols */,
 				8A7B032F1FD6D30E0028BB9B /* Extensions */,
@@ -512,7 +500,11 @@
 		8A7B031E1FD6A7A60028BB9B /* View */ = {
 			isa = PBXGroup;
 			children = (
-				7F8FC57921B7DC7600599D49 /* Timeline */,
+				8A7B03221FD6A82C0028BB9B /* Controller */,
+				8A7B032B1FD6B01D0028BB9B /* Cell */,
+				8A8906AE1FD81ABB00D303E6 /* Custom Views */,
+				7F8895B42017633C0039097A /* RefreshControl */,
+				7F8FC57821B7DB8700599D49 /* FlowLayout */,
 			);
 			name = View;
 			sourceTree = "<group>";
