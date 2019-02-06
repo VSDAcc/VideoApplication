@@ -45,6 +45,7 @@
 		7F94CD8F21B9468E00F53DB3 /* YoutubeTimelineVideoSectionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F94CD8E21B9468E00F53DB3 /* YoutubeTimelineVideoSectionModel.swift */; };
 		7F94CD9321B94F4000F53DB3 /* YoutubeTimelineVideoCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F94CD9221B94F4000F53DB3 /* YoutubeTimelineVideoCellModel.swift */; };
 		7F993FDD21D3AB8000F28AEB /* ListToDetailInteractionAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F993FDC21D3AB8000F28AEB /* ListToDetailInteractionAnimator.swift */; };
+		7FB023C3220AFAE400AEB051 /* TimelineAssembler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FB023C2220AFAE400AEB051 /* TimelineAssembler.swift */; };
 		7FCB4D1A2018EF9A007EF281 /* ListToDetailAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCB4D192018EF9A007EF281 /* ListToDetailAnimator.swift */; };
 		8A1202BC1FE912C500A27C09 /* YoutubeVideoPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1202BB1FE912C500A27C09 /* YoutubeVideoPlayerView.swift */; };
 		8A4915C01FE3C62700A187CD /* YoutubeTimelineContainerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4915BF1FE3C62700A187CD /* YoutubeTimelineContainerCollectionViewCell.swift */; };
@@ -116,6 +117,7 @@
 		7F94CD8E21B9468E00F53DB3 /* YoutubeTimelineVideoSectionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YoutubeTimelineVideoSectionModel.swift; sourceTree = "<group>"; };
 		7F94CD9221B94F4000F53DB3 /* YoutubeTimelineVideoCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YoutubeTimelineVideoCellModel.swift; sourceTree = "<group>"; };
 		7F993FDC21D3AB8000F28AEB /* ListToDetailInteractionAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListToDetailInteractionAnimator.swift; sourceTree = "<group>"; };
+		7FB023C2220AFAE400AEB051 /* TimelineAssembler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineAssembler.swift; sourceTree = "<group>"; };
 		7FCB4D192018EF9A007EF281 /* ListToDetailAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListToDetailAnimator.swift; sourceTree = "<group>"; };
 		8A1202BB1FE912C500A27C09 /* YoutubeVideoPlayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YoutubeVideoPlayerView.swift; sourceTree = "<group>"; };
 		8A4915BF1FE3C62700A187CD /* YoutubeTimelineContainerCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YoutubeTimelineContainerCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -175,19 +177,20 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
-		7F39C766202E09AF00F0073A /* Coordinator */ = {
+		7F39C766202E09AF00F0073A /* Coordinators */ = {
 			isa = PBXGroup;
 			children = (
 				7F39C769202E0B8B00F0073A /* AppCoordinator.swift */,
 				7F3B30652164EE2400CB6183 /* Timeline */,
 				7F8FC57721B7DB2600599D49 /* Animators */,
 			);
-			name = Coordinator;
+			name = Coordinators;
 			sourceTree = "<group>";
 		};
 		7F3B30652164EE2400CB6183 /* Timeline */ = {
 			isa = PBXGroup;
 			children = (
+				7FB023C2220AFAE400AEB051 /* TimelineAssembler.swift */,
 				7F39C76B202E0BF700F0073A /* TimelineCoordinator.swift */,
 			);
 			name = Timeline;
@@ -476,7 +479,7 @@
 			isa = PBXGroup;
 			children = (
 				7F8FC59421B7DF5B00599D49 /* Core */,
-				7F39C766202E09AF00F0073A /* Coordinator */,
+				7F39C766202E09AF00F0073A /* Coordinators */,
 				7F8FC59521B7E05700599D49 /* Services */,
 				8A7B03201FD6A81E0028BB9B /* Model */,
 				7FBC2E1D21F09D2600202FBC /* ViewModel */,
@@ -715,6 +718,7 @@
 				7F5F11C81FFF89D7000D1F14 /* YoutubeVideoChannelModel.swift in Sources */,
 				7F8FC58821B7DEA100599D49 /* IdentifiableTableViewCell.swift in Sources */,
 				8A8906B01FD81B0D00D303E6 /* YoutubeNavigationBarTitleView.swift in Sources */,
+				7FB023C3220AFAE400AEB051 /* TimelineAssembler.swift in Sources */,
 				7F94CD8D21B9467C00F53DB3 /* YotubeTimelineContainerCellModel.swift in Sources */,
 				8AEC3D111FEAB73800B4FFA9 /* ProgressHudView.swift in Sources */,
 				7F5F11CA1FFF89FC000D1F14 /* YoutubeVideoModel.swift in Sources */,

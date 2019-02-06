@@ -44,7 +44,7 @@ extension YoutubeVideo: Codable {
         let videoDuration: Int = try container.decodeIfPresent(Int.self, forKey: .videoDuration) ?? 0
         let channel: YoutubeVideoChannel = try container.decodeIfPresent(YoutubeVideoChannel.self, forKey: .channel) ?? YoutubeVideoChannel(channelName: "", channelImageURL: "")
         
-        let videoURL: String = "https://firebasestorage.googleapis.com/v0/b/photocardtest-bf9cd.appspot.com/o/Video_Storage%2FTestVideo.mov?alt=media&token=3ec6809a-b6c5-4f6e-a925-85d000588343"
+        let videoURL: String = "https://firebasestorage.googleapis.com/v0/b/newsapplication-b0c79.appspot.com/o/Image_Storage%2FTestVideo.mov?alt=media&token=f5503923-6f8d-473a-b2cc-a807d5ebed43"
         
         self.init(videoTitle: videoTitle, thumbnailImage: thumbnailImage, videoLinkUrl: videoURL, videoNumberOfViews: videoNumberOfViews, videoDuration: videoDuration, channel: channel)
     }

@@ -65,7 +65,7 @@ class YoutubeDetailVideoViewController: UIViewController {
     @objc func actionHideVideoPlayer(_ sender: UIButton) {
         videoPlayerView.actionStopPlayingVideo()
         actionIsStatusBarHidden(false)
-        viewModel.coordinator?.backToYoutubeTimelineViewController(animated: true)
+        viewModel.backToYoutubeTimelineViewController(animated: true)
     }
     
     private func actionIsStatusBarHidden(_ hidden: Bool) {

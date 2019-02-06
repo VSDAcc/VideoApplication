@@ -64,14 +64,14 @@ class YoutubeVideoPlayerView: UIView, YoutubeVideoPlayerManager {
     }
     //MARK:-YoutubeVideoPlayerManager
     func addThumbnailVideoImageWith(_ url: String) {
-        DispatchQueue.main.async {
-            self.thumbnailVideoImageView.downloadImageUsingCache(stringURL: url)
-        }
+        self.thumbnailVideoImageView.downloadImageUsingCache(stringURL: url)
     }
     
     func actionPrepareVideoForPlayingWith(_ url: String) {
         if let videoURL = URL(string: url) {
-            setupVideoPlayerWith(url: videoURL)
+            DispatchQueue.main.async {
+                self.setupVideoPlayerWith(url: videoURL)
+            }
         }
     }
     
@@ -109,10 +109,17 @@ class YoutubeVideoPlayerView: UIView, YoutubeVideoPlayerManager {
     
     private func addTimeObserverTokenToPlayer() {
         self.timeObserverToken = player?.addPeriodicTimeObserver(forInterval: CMTime(value: 1, timescale: 2), queue: .main, using: { [weak self] (progressTime) in
-            self?.videoCurrentTimeLabel.text = self?.helpedMethods.formateCMTimeToString(time: progressTime)
-            if let totalSeconds = self?.actionGetCurrentPlayerSecondsDuration() {
-                let seconds = CMTimeGetSeconds(progressTime)
-                self?.videoPlayerSlider.value = Float(seconds / totalSeconds)
+            guard let strongSelf = self else { return }
+            DispatchQueue.main.async {
+                strongSelf.videoCurrentTimeLabel.text = strongSelf.helpedMethods.formateCMTimeToString(time: progressTime)
+                if let totalSeconds = strongSelf.actionGetCurrentPlayerSecondsDuration() {
+                    let seconds = CMTimeGetSeconds(progressTime)
+                    UIView.animate(withDuration: 0.1, animations: {
+                        strongSelf.videoPlayerSlider.value = Float(seconds / totalSeconds)
+                    })
+                } else {
+                    strongSelf.videoPlayerSlider.value = 0.0
+                }
             }
         })
     }
@@ -121,7 +128,9 @@ class YoutubeVideoPlayerView: UIView, YoutubeVideoPlayerManager {
         if keyPath == VideoPlayerObserverConstants.loadedTimeRanges {
             showControlsContainerView()
             if let time = player?.currentItem?.duration {
-                videoDurationLabel.text = helpedMethods.formateCMTimeToString(time: time)
+                DispatchQueue.main.async {
+                    self.videoDurationLabel.text = self.helpedMethods.formateCMTimeToString(time: time)
+                }
             }
         }
     }
@@ -139,7 +148,7 @@ class YoutubeVideoPlayerView: UIView, YoutubeVideoPlayerManager {
         if isPlayerPlay {
             actionStopPlayingVideo()
             playButton.setImage(UIImage(named: "play"), for: .normal)
-        }else {
+        } else {
             actionStartPlayingVideo()
             playButton.setImage(UIImage(named: "pause"), for: .normal)
         }
@@ -158,7 +167,7 @@ class YoutubeVideoPlayerView: UIView, YoutubeVideoPlayerManager {
     }
     
     private func actionGetCurrentPlayerSecondsDuration() -> Float64? {
-        if let duration = player?.currentItem?.duration{
+        if let duration = player?.currentItem?.duration {
             return CMTimeGetSeconds(duration)
         }
         return nil

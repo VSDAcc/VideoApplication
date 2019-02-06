@@ -15,9 +15,8 @@ protocol YoutubeMenuBarDidSelectItemAtInexPath: class {
 protocol YoutubeTimelineContainerViewCellHandler: class {
     func didSelectTimelineYoutubeVideoItem(_ video: YoutubeVideoModel, _ selectedCell: YoutubeTimelineVideoCollectionViewCell)
 }
-protocol YoutubeTimelineViewControllerInput: YoutubeMainTimelineViewModelOutput {
-    
-}
+protocol YoutubeTimelineViewControllerInput: YoutubeMainTimelineViewModelOutput { }
+
 class YoutubeTimelineViewController: UICollectionViewController, YoutubeTimelineViewControllerInput, UICollectionViewDelegateFlowLayout, PresenterAlertHandler {
     
     fileprivate enum TimelineMenu: Int {
@@ -103,7 +102,7 @@ class YoutubeTimelineViewController: UICollectionViewController, YoutubeTimeline
     func viewModel(_ viewModel: YoutubeMainTimelineViewModelInput, didSelectVideoModel model: YotubeTimelineVideoCellModel, cell: YoutubeTimelineVideoCollectionViewCell) {
         selectedYoutubeCell = cell
         let video = YoutubeVideo(videoTitle: model.videoTitle, thumbnailImage: model.thumbnailImage, videoLinkUrl: model.videoLinkUrl, videoNumberOfViews: model.videoNumberOfViews, videoDuration: model.videoDuration, channel: model.channel)
-        viewModel.coordinator?.showYoutubeDetailViewController(YoutubeDetailVideoViewModel(videoItem: video))
+        viewModel.showYoutubeDetailViewController(video)
     }
     //MARK:-ConfigureMethods
     fileprivate lazy var navigationTitleView: YoutubeNavigationBarTitleView = {

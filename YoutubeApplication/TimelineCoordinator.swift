@@ -15,27 +15,25 @@ final class TimelineCoordinator: Coordinator, RootCoordinator {
     weak var rootCoordinator: TimelineCoordinatorDelegate?
     
     let rootNavigationController: UINavigationController
-    var timelineViewController: YoutubeTimelineViewController
     var childCoordinators: [Coordinator] = [Coordinator]()
     
     fileprivate let navigationDelegate: ListToDetialTransitioningDelegate?
-    fileprivate var viewModel: YoutubeMainTimelineViewModelInput
+    fileprivate var timelineAssembler: TimelineAssemblerDelegate
+    fileprivate var timelineViewController: YoutubeTimelineViewController!
     
     init(navigationController: UINavigationController) {
         rootNavigationController = navigationController
         navigationDelegate = ListToDetialTransitioningDelegate()
-        viewModel = YoutubeMainTimelineViewModel()
-        timelineViewController = YoutubeTimelineViewController(viewModel: viewModel, collectionViewLayout: YoutubeCollectionViewFlowLayout())
+        timelineAssembler = TimelineAssembler()
     }
     
     func start() {
+        timelineViewController = timelineAssembler.resolve(with: self)
         rootNavigationController.setViewControllers([timelineViewController], animated: false)
-        viewModel.coordinator = self
     }
     
-    func showYoutubeDetailVC(_ viewModel: YoutubeDetailVideoViewModelInput) {
-        let youtubeDetailVC = YoutubeDetailVideoViewController(viewModel: viewModel)
-        viewModel.coordinator = self
+    func showYoutubeDetailVC(_ video: YoutubeVideo) {
+        let youtubeDetailVC: YoutubeDetailVideoViewController = timelineAssembler.resolve(with: self, video: video)
         rootNavigationController.delegate = navigationDelegate
         youtubeDetailVC.animatableYoutubeCells = timelineViewController.animatableCells
         rootNavigationController.show(youtubeDetailVC, sender: self)
@@ -51,8 +49,8 @@ extension TimelineCoordinator: TimelineCoordinatorDelegate {
 }
 extension TimelineCoordinator: YoutubeMainTimelineViewModelCoordinatorDelegate {
     
-    func showYoutubeDetailViewController(_ viewModel: YoutubeDetailVideoViewModelInput) {
-        showYoutubeDetailVC(viewModel)
+    func showYoutubeDetailViewController(_ video: YoutubeVideo) {
+        showYoutubeDetailVC(video)
     }
 }
 extension TimelineCoordinator: YoutubeDetailVideoViewModelCoordinatorDelegate {

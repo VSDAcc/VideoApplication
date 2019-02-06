@@ -34,20 +34,31 @@ class YoutubeDataManager: YoutubeDataManagerInput {
     
     private func updateYoutubeVideoCoreDataModel(youtubeVideos: [YoutubeVideo]) {
         container?.performBackgroundTask({ [weak self] (context) in
+            guard let strongSelf = self else { return }
+            
             for videoInfo in youtubeVideos {
-               let _ = try? YoutubeVideoModel.findOrCreateYoutubeVideo(matching: videoInfo, in: context)
+                let _ = try? YoutubeVideoModel.findOrCreateYoutubeVideo(matching: videoInfo, in: context)
             }
-            try? context.save()
-            self?.printDatabaseStatistic()
+            if context.hasChanges {
+                do {
+                    try context.save()
+                } catch {
+                    let nserror = error as NSError
+                    fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
+                }
+            }
+            strongSelf.printDatabaseStatistic()
         })
     }
     
     private func printDatabaseStatistic() {
-        if let context = container?.viewContext { // should be main thread
-            context.perform { [weak self] in // safe main thread
+        if let context = container?.viewContext { // viewContext is a main queue context
+            context.perform { [weak self] in // Perfom means do this block, but what ever you do - do this in the right queue for this context
+                guard let strongSelf = self else { return }
                 let videoFetchRequest: NSFetchRequest<YoutubeVideoModel> = YoutubeVideoModel.fetchRequest()
+                //can do predicate here to fetch unique videos
                 if let videoModel = try? context.fetch(videoFetchRequest) {
-                    self?.managerOutput?.didHandleFetchRequestWith(videoModel)
+                    strongSelf.managerOutput?.didHandleFetchRequestWith(videoModel)
                 }
             }
         }
@@ -56,14 +67,15 @@ class YoutubeDataManager: YoutubeDataManagerInput {
     func fetchHomeVideosFromDataManager() {
         dataTask?.cancel()
         dataTask = defaultSession.dataTask(with: homeURL, completionHandler: { [weak self] (data, response, error) in
+            guard let strongSelf = self else { return }
             defer { self?.dataTask = nil }
             if let error = error {
                 DispatchQueue.main.async {
-                    self?.managerOutput?.didHandleErrorFromFetchingRequest(error.localizedDescription)
+                    strongSelf.managerOutput?.didHandleErrorFromFetchingRequest(error.localizedDescription)
                 }
             } else if let data = data, let response = response as? HTTPURLResponse, response.statusCode == 200 {
                 if let youtubeModels = try? JSONDecoder().decode([YoutubeVideo].self, from: data) {
-                    self?.updateYoutubeVideoCoreDataModel(youtubeVideos: youtubeModels)
+                    strongSelf.updateYoutubeVideoCoreDataModel(youtubeVideos: youtubeModels)
                 }
             }
         })
@@ -73,14 +85,15 @@ class YoutubeDataManager: YoutubeDataManagerInput {
     func fetchTrendingVideosFromDataManager() {
         dataTask?.cancel()
         dataTask = defaultSession.dataTask(with: trendingURL, completionHandler: { [weak self] (data, response, error) in
+            guard let strongSelf = self else { return }
             defer { self?.dataTask = nil }
             if let error = error {
                 DispatchQueue.main.async {
-                    self?.managerOutput?.didHandleErrorFromFetchingRequest(error.localizedDescription)
+                    strongSelf.managerOutput?.didHandleErrorFromFetchingRequest(error.localizedDescription)
                 }
             }else if let data = data, let response = response as? HTTPURLResponse, response.statusCode == 200 {
                 if let youtubeModels = try? JSONDecoder().decode([YoutubeVideo].self, from: data) {
-                    self?.updateYoutubeVideoCoreDataModel(youtubeVideos: youtubeModels)
+                    strongSelf.updateYoutubeVideoCoreDataModel(youtubeVideos: youtubeModels)
                 }
             }
         })
@@ -90,14 +103,15 @@ class YoutubeDataManager: YoutubeDataManagerInput {
     func fetchSubscriptionsVideosFromDataManager() {
         dataTask?.cancel()
         dataTask = defaultSession.dataTask(with: subscriptionsURL, completionHandler: { [weak self] (data, response, error) in
+            guard let strongSelf = self else { return }
             defer { self?.dataTask = nil }
             if let error = error {
                 DispatchQueue.main.async {
-                    self?.managerOutput?.didHandleErrorFromFetchingRequest(error.localizedDescription)
+                    strongSelf.managerOutput?.didHandleErrorFromFetchingRequest(error.localizedDescription)
                 }
             }else if let data = data, let response = response as? HTTPURLResponse, response.statusCode == 200 {
                 if let youtubeModels = try? JSONDecoder().decode([YoutubeVideo].self, from: data) {
-                    self?.updateYoutubeVideoCoreDataModel(youtubeVideos: youtubeModels)
+                    strongSelf.updateYoutubeVideoCoreDataModel(youtubeVideos: youtubeModels)
                 }
             }
         })
@@ -107,14 +121,15 @@ class YoutubeDataManager: YoutubeDataManagerInput {
     func fetchAccountVideosFromDataManager() {
         dataTask?.cancel()
         dataTask = defaultSession.dataTask(with: accountURL, completionHandler: { [weak self] (data, response, error) in
+            guard let strongSelf = self else { return }
             defer { self?.dataTask = nil }
             if let error = error {
                 DispatchQueue.main.async {
-                    self?.managerOutput?.didHandleErrorFromFetchingRequest(error.localizedDescription)
+                    strongSelf.managerOutput?.didHandleErrorFromFetchingRequest(error.localizedDescription)
                 }
             }else if let data = data, let response = response as? HTTPURLResponse, response.statusCode == 200 {
                 if let youtubeModels = try? JSONDecoder().decode([YoutubeVideo].self, from: data) {
-                    self?.updateYoutubeVideoCoreDataModel(youtubeVideos: youtubeModels)
+                    strongSelf.updateYoutubeVideoCoreDataModel(youtubeVideos: youtubeModels)
                 }
             }
         })

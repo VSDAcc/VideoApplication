@@ -16,8 +16,9 @@ protocol YoutubeDetailVideoViewModelInput: class {
     var videoTitle: Box<String?> { get }
     var thumbnailImage: Box<String?> { get }
     var videoNumberOfViews: Box<Int?> { get }
-    var videoDuration: Box<Int?>{ get }
-    var coordinator: YoutubeDetailVideoViewModelCoordinatorDelegate? {get set}
+    var videoDuration: Box<Int?> { get }
+    var coordinator: YoutubeDetailVideoViewModelCoordinatorDelegate? { get set }
+    func backToYoutubeTimelineViewController(animated: Bool)
 }
 class YoutubeDetailVideoViewModel: YoutubeDetailVideoViewModelInput {
     
@@ -49,8 +50,13 @@ class YoutubeDetailVideoViewModel: YoutubeDetailVideoViewModelInput {
         }
     }
     //MARK:-Loading
-    convenience init(videoItem: YoutubeVideo) {
-        self.init()
-        self.video = videoItem
+    init(video: YoutubeVideo,
+         _ detailVideoCoordinator: YoutubeDetailVideoViewModelCoordinatorDelegate? = nil) {
+        self.video = video
+        self.coordinator = detailVideoCoordinator
+    }
+    //MARK:-YoutubeDetailVideoViewModelInput
+    func backToYoutubeTimelineViewController(animated: Bool) {
+        coordinator?.backToYoutubeTimelineViewController(animated: animated)
     }
 }

@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 protocol YoutubeMainTimelineViewModelCoordinatorDelegate: class {
-    func showYoutubeDetailViewController(_ viewModel: YoutubeDetailVideoViewModelInput)
+    func showYoutubeDetailViewController(_ video: YoutubeVideo)
 }
 protocol YoutubeMainTimelineViewModelOutput: class {
     func viewModelDidLoadData(_ viewModel: YoutubeMainTimelineViewModelInput)
@@ -26,6 +26,7 @@ protocol YoutubeMainTimelineViewModelInput: ViewModelCellPresentable, YoutubeSet
     func updateTrendingVideos()
     func updateAccountVideos()
     func updateSubscriptionVideos()
+    func showYoutubeDetailViewController(_ video: YoutubeVideo)
 }
 class YoutubeMainTimelineViewModel: YoutubeMainTimelineViewModelInput {
     
@@ -47,11 +48,13 @@ class YoutubeMainTimelineViewModel: YoutubeMainTimelineViewModelInput {
     init(_ timelineHomeVideoServices: TimelineHomeVideoServicesInput = TimelineHomeVideoServices(),
          _ timelineTrendingVideoServices: TimelineTrendingVideoServicesInput = TimelineTrendingVideoServices(),
          _ timelineAccountVideoServices: TimelineAccountVideoServicesInput = TimelineAccountVideoServices(),
-         _ timelineSubscriptionVideoServices: TimelineSubscriptionVideoServicesInput = TimelineSubscriptionVideoServices()) {
+         _ timelineSubscriptionVideoServices: TimelineSubscriptionVideoServicesInput = TimelineSubscriptionVideoServices(),
+         _ timelineCoordinator: YoutubeMainTimelineViewModelCoordinatorDelegate? = nil) {
         homeVideoServices = timelineHomeVideoServices
         trendingVideoServices = timelineTrendingVideoServices
         accountVideoServices = timelineAccountVideoServices
         subscriptionVideoServices = timelineSubscriptionVideoServices
+        coordinator = timelineCoordinator
         homeSection.delegate = self
         trendingSection.delegate = self
         subscriptionSection.delegate = self
@@ -97,6 +100,10 @@ class YoutubeMainTimelineViewModel: YoutubeMainTimelineViewModelInput {
             strongSelf.subscriptionSection.updateVideoSectionModel(videos)
             strongSelf.view?.viewModelDidLoadData(strongSelf)
         }
+    }
+    
+    func showYoutubeDetailViewController(_ video: YoutubeVideo) {
+        coordinator?.showYoutubeDetailViewController(video)
     }
     //MARK:-YoutubeTimelineVideoSectionModelHandler
     func didSelectVideoModel(_ model: YotubeTimelineVideoCellModel, cell: YoutubeTimelineVideoCollectionViewCell) {
