@@ -9,11 +9,20 @@
 import Foundation
 import Moya
 
-enum APITimeline {
+enum APITimeline: CustomStringConvertible {
     case homeVideos
     case trendingVideos
     case subscriptionVideos
     case accountVideos
+    
+    var description : String {
+        switch self {
+        case .homeVideos: return "videos.home"
+        case .trendingVideos: return "videos.trending"
+        case .subscriptionVideos: return "videos.subscription timeout"
+        case .accountVideos: return "videos.account"
+        }
+    }
 }
 extension APITimeline: VideoTargetType {
     

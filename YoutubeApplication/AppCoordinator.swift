@@ -64,6 +64,4 @@ final class AppCoordinator: NSObject, RootCoordinator, Coordinator {
         navigationController.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
     }
 }
-extension AppCoordinator: TimelineCoordinatorDelegate {
-    
-}
+extension AppCoordinator: TimelineCoordinatorDelegate { }

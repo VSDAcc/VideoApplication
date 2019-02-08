@@ -8,8 +8,8 @@
 
 import UIKit
 
-protocol TimelineCoordinatorDelegate: class {
-}
+protocol TimelineCoordinatorDelegate: class { }
+
 final class TimelineCoordinator: Coordinator, RootCoordinator {
     
     weak var rootCoordinator: TimelineCoordinatorDelegate?

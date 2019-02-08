@@ -14,10 +14,7 @@ class TimelineAssembler: TimelineAssemblerDelegate { }
 protocol TimelineVideosAssembler {
     func resolve(with coordinator: YoutubeMainTimelineViewModelCoordinatorDelegate?) -> YoutubeTimelineViewController
     func resolve(with coordinator: YoutubeMainTimelineViewModelCoordinatorDelegate?) -> YoutubeMainTimelineViewModelInput
-    func resolve() -> TimelineHomeVideoServicesInput
-    func resolve() -> TimelineTrendingVideoServicesInput
-    func resolve() -> TimelineAccountVideoServicesInput
-    func resolve() -> TimelineSubscriptionVideoServicesInput
+    func resolve() -> TimelineVideoServicesDelegate
 }
 extension TimelineVideosAssembler {
     func resolve(with coordinator: YoutubeMainTimelineViewModelCoordinatorDelegate?) -> YoutubeTimelineViewController {
@@ -25,23 +22,11 @@ extension TimelineVideosAssembler {
     }
     
     func resolve(with coordinator: YoutubeMainTimelineViewModelCoordinatorDelegate?) -> YoutubeMainTimelineViewModelInput {
-        return YoutubeMainTimelineViewModel(resolve(), resolve(), resolve(), resolve(), coordinator)
+        return YoutubeMainTimelineViewModel(resolve(), coordinator)
     }
     
-    func resolve() -> TimelineHomeVideoServicesInput {
-        return TimelineHomeVideoServices()
-    }
-    
-    func resolve() -> TimelineTrendingVideoServicesInput {
-        return TimelineTrendingVideoServices()
-    }
-    
-    func resolve() -> TimelineAccountVideoServicesInput {
-        return TimelineAccountVideoServices()
-    }
-    
-    func resolve() -> TimelineSubscriptionVideoServicesInput {
-        return TimelineSubscriptionVideoServices()
+    func resolve() -> TimelineVideoServicesDelegate {
+        return TimelineVideoServices()
     }
 }
 

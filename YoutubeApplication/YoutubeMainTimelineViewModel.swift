@@ -33,27 +33,18 @@ class YoutubeMainTimelineViewModel: YoutubeMainTimelineViewModelInput {
     weak var coordinator: YoutubeMainTimelineViewModelCoordinatorDelegate?
     weak var view: YoutubeMainTimelineViewModelOutput?
     
+    fileprivate var group = DispatchGroup()
     fileprivate var sections = [SectionRowsRepresentable]()
     fileprivate var homeSection = YoutubeTimelineVideoContainerSectionModel()
     fileprivate var subscriptionSection = YoutubeTimelineVideoContainerSectionModel()
     fileprivate var accountSection = YoutubeTimelineVideoContainerSectionModel()
     fileprivate var trendingSection = YoutubeTimelineVideoContainerSectionModel()
-    
-    fileprivate var homeVideoServices: TimelineHomeVideoServicesInput
-    fileprivate var trendingVideoServices: TimelineTrendingVideoServicesInput
-    fileprivate var accountVideoServices: TimelineAccountVideoServicesInput
-    fileprivate var subscriptionVideoServices: TimelineSubscriptionVideoServicesInput
+    fileprivate var videoServices: TimelineVideoServicesDelegate
     
     //MARK:-Loading
-    init(_ timelineHomeVideoServices: TimelineHomeVideoServicesInput = TimelineHomeVideoServices(),
-         _ timelineTrendingVideoServices: TimelineTrendingVideoServicesInput = TimelineTrendingVideoServices(),
-         _ timelineAccountVideoServices: TimelineAccountVideoServicesInput = TimelineAccountVideoServices(),
-         _ timelineSubscriptionVideoServices: TimelineSubscriptionVideoServicesInput = TimelineSubscriptionVideoServices(),
+    init(_ videoServices: TimelineVideoServicesDelegate = TimelineVideoServices(),
          _ timelineCoordinator: YoutubeMainTimelineViewModelCoordinatorDelegate? = nil) {
-        homeVideoServices = timelineHomeVideoServices
-        trendingVideoServices = timelineTrendingVideoServices
-        accountVideoServices = timelineAccountVideoServices
-        subscriptionVideoServices = timelineSubscriptionVideoServices
+        self.videoServices = videoServices
         coordinator = timelineCoordinator
         homeSection.delegate = self
         trendingSection.delegate = self
@@ -62,16 +53,20 @@ class YoutubeMainTimelineViewModel: YoutubeMainTimelineViewModelInput {
     }
     //MARK:-YoutubeMainTimelineViewModelInput
     public func loadVideoData() {
+        group.enter()
         sections = [homeSection, trendingSection, subscriptionSection, accountSection]
-        homeSection.updateVideoSectionModel(homeVideoServices.queryHomeVideos())
-        trendingSection.updateVideoSectionModel(trendingVideoServices.queryTrendingVideos())
-        accountSection.updateVideoSectionModel(accountVideoServices.queryAccountVideos())
-        subscriptionSection.updateVideoSectionModel(subscriptionVideoServices.querySubscriptionVideos())
-        view?.viewModelDidLoadData(self)
+        homeSection.updateVideoSectionModel(videoServices.queryVideos(with: .homeVideos))
+        trendingSection.updateVideoSectionModel(videoServices.queryVideos(with: .trendingVideos))
+        accountSection.updateVideoSectionModel(videoServices.queryVideos(with: .accountVideos))
+        subscriptionSection.updateVideoSectionModel(videoServices.queryVideos(with: .subscriptionVideos))
+        group.leave()
+        group.notify(queue: .main) {
+            self.view?.viewModelDidLoadData(self)
+        }
     }
     
     public func updateHomeVideos() {
-        homeVideoServices.updateHomeVideos { [weak self] (videos) in
+        videoServices.updateVideos(with: .homeVideos) { [weak self] (videos) in
             guard let strongSelf = self else { return }
             strongSelf.homeSection.updateVideoSectionModel(videos)
             strongSelf.view?.viewModelDidLoadData(strongSelf)
@@ -79,7 +74,7 @@ class YoutubeMainTimelineViewModel: YoutubeMainTimelineViewModelInput {
     }
     
     public func updateTrendingVideos() {
-        trendingVideoServices.updateTrendingVideos { [weak self] (videos) in
+        videoServices.updateVideos(with: .trendingVideos) { [weak self] (videos) in
             guard let strongSelf = self else { return }
             strongSelf.trendingSection.updateVideoSectionModel(videos)
             strongSelf.view?.viewModelDidLoadData(strongSelf)
@@ -87,7 +82,7 @@ class YoutubeMainTimelineViewModel: YoutubeMainTimelineViewModelInput {
     }
     
     public func updateAccountVideos() {
-        homeVideoServices.updateHomeVideos { [weak self] (videos) in
+        videoServices.updateVideos(with: .homeVideos) { [weak self] (videos) in
             guard let strongSelf = self else { return }
             strongSelf.accountSection.updateVideoSectionModel(videos)
             strongSelf.view?.viewModelDidLoadData(strongSelf)
@@ -95,7 +90,7 @@ class YoutubeMainTimelineViewModel: YoutubeMainTimelineViewModelInput {
     }
     
     public func updateSubscriptionVideos() {
-        subscriptionVideoServices.updateSubscriptionVideos { [weak self] (videos) in
+        videoServices.updateVideos(with: .subscriptionVideos) { [weak self] (videos) in
             guard let strongSelf = self else { return }
             strongSelf.subscriptionSection.updateVideoSectionModel(videos)
             strongSelf.view?.viewModelDidLoadData(strongSelf)
