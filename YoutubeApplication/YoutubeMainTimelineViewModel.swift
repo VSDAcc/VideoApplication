@@ -39,12 +39,12 @@ class YoutubeMainTimelineViewModel: YoutubeMainTimelineViewModelInput {
     fileprivate var subscriptionSection = YoutubeTimelineVideoContainerSectionModel()
     fileprivate var accountSection = YoutubeTimelineVideoContainerSectionModel()
     fileprivate var trendingSection = YoutubeTimelineVideoContainerSectionModel()
-    fileprivate var videoServices: TimelineVideoServicesDelegate
+    fileprivate var videoService: TimelineVideoServicesStrategy
     
     //MARK:-Loading
-    init(_ videoServices: TimelineVideoServicesDelegate = TimelineVideoServices(),
+    init(_ videoService: TimelineVideoServicesStrategy = TimelineVideoService(service: TimelineVideoProvider()),
          _ timelineCoordinator: YoutubeMainTimelineViewModelCoordinatorDelegate? = nil) {
-        self.videoServices = videoServices
+        self.videoService = videoService
         coordinator = timelineCoordinator
         homeSection.delegate = self
         trendingSection.delegate = self
@@ -55,10 +55,10 @@ class YoutubeMainTimelineViewModel: YoutubeMainTimelineViewModelInput {
     public func loadVideoData() {
         group.enter()
         sections = [homeSection, trendingSection, subscriptionSection, accountSection]
-        homeSection.updateVideoSectionModel(videoServices.queryVideos(with: .homeVideos))
-        trendingSection.updateVideoSectionModel(videoServices.queryVideos(with: .trendingVideos))
-        accountSection.updateVideoSectionModel(videoServices.queryVideos(with: .accountVideos))
-        subscriptionSection.updateVideoSectionModel(videoServices.queryVideos(with: .subscriptionVideos))
+        homeSection.updateVideoSectionModel(videoService.queryVideos(with: .homeVideos))
+        trendingSection.updateVideoSectionModel(videoService.queryVideos(with: .trendingVideos))
+        accountSection.updateVideoSectionModel(videoService.queryVideos(with: .accountVideos))
+        subscriptionSection.updateVideoSectionModel(videoService.queryVideos(with: .subscriptionVideos))
         group.leave()
         group.notify(queue: .main) {
             self.view?.viewModelDidLoadData(self)
@@ -66,7 +66,7 @@ class YoutubeMainTimelineViewModel: YoutubeMainTimelineViewModelInput {
     }
     
     public func updateHomeVideos() {
-        videoServices.updateVideos(with: .homeVideos) { [weak self] (videos) in
+        videoService.updateVideos(with: .homeVideos) { [weak self] (videos) in
             guard let strongSelf = self else { return }
             strongSelf.homeSection.updateVideoSectionModel(videos)
             strongSelf.view?.viewModelDidLoadData(strongSelf)
@@ -74,7 +74,7 @@ class YoutubeMainTimelineViewModel: YoutubeMainTimelineViewModelInput {
     }
     
     public func updateTrendingVideos() {
-        videoServices.updateVideos(with: .trendingVideos) { [weak self] (videos) in
+        videoService.updateVideos(with: .trendingVideos) { [weak self] (videos) in
             guard let strongSelf = self else { return }
             strongSelf.trendingSection.updateVideoSectionModel(videos)
             strongSelf.view?.viewModelDidLoadData(strongSelf)
@@ -82,7 +82,7 @@ class YoutubeMainTimelineViewModel: YoutubeMainTimelineViewModelInput {
     }
     
     public func updateAccountVideos() {
-        videoServices.updateVideos(with: .homeVideos) { [weak self] (videos) in
+        videoService.updateVideos(with: .homeVideos) { [weak self] (videos) in
             guard let strongSelf = self else { return }
             strongSelf.accountSection.updateVideoSectionModel(videos)
             strongSelf.view?.viewModelDidLoadData(strongSelf)
@@ -90,7 +90,7 @@ class YoutubeMainTimelineViewModel: YoutubeMainTimelineViewModelInput {
     }
     
     public func updateSubscriptionVideos() {
-        videoServices.updateVideos(with: .subscriptionVideos) { [weak self] (videos) in
+        videoService.updateVideos(with: .subscriptionVideos) { [weak self] (videos) in
             guard let strongSelf = self else { return }
             strongSelf.subscriptionSection.updateVideoSectionModel(videos)
             strongSelf.view?.viewModelDidLoadData(strongSelf)

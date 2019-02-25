@@ -8,12 +8,7 @@
 
 import Foundation
 
-protocol TimelineVideoServicesDelegate {
-    func queryVideos(with target: APITimeline) -> [YoutubeVideo]
-    func updateVideos(with target: APITimeline,
-                      onSuccess: @escaping (_ models: [YoutubeVideo]) -> ())
-}
-class TimelineVideoServices: Handler, TimelineVideoServicesDelegate {
+class TimelineVideoProvider: Handler, TimelineVideoServicesStrategy {
     
     private let semaphore = DispatchSemaphore(value: 1)
     private let provider = APIProvider<APITimeline>()
