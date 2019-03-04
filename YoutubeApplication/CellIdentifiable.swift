@@ -17,10 +17,6 @@ class BaseCellModel: NSObject, CellIdentifiable {
         return ""
     }
     
-    static func == (lhs: BaseCellModel, rhs: BaseCellModel) -> Bool {
-        return isEqual(rhs)
-    }
-    
     override func isEqual(_ object: Any?) -> Bool {
         guard let rhs = object as? BaseCellModel else {
             return false

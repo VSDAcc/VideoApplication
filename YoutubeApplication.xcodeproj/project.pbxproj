@@ -371,23 +371,6 @@
 			name = Box;
 			sourceTree = "<group>";
 		};
-		7F94CD8721B9464E00F53DB3 /* Section&Cell */ = {
-			isa = PBXGroup;
-			children = (
-				7F94CD8821B9465800F53DB3 /* Timeline */,
-			);
-			name = "Section&Cell";
-			sourceTree = "<group>";
-		};
-		7F94CD8821B9465800F53DB3 /* Timeline */ = {
-			isa = PBXGroup;
-			children = (
-				7F94CD8A21B9466400F53DB3 /* CellModel */,
-				7F94CD8921B9465E00F53DB3 /* SectionModel */,
-			);
-			name = Timeline;
-			sourceTree = "<group>";
-		};
 		7F94CD8921B9465E00F53DB3 /* SectionModel */ = {
 			isa = PBXGroup;
 			children = (
@@ -421,6 +404,16 @@
 				8A9E0FF41FDEB5EF0065108D /* YoutubeSettingsMenuCollectionViewCell.swift */,
 			);
 			name = Menu;
+			sourceTree = "<group>";
+		};
+		7FA7A650222D24D0001E64C7 /* Timeline */ = {
+			isa = PBXGroup;
+			children = (
+				7F5F11CC1FFFC1E7000D1F14 /* YoutubeModel */,
+				7F94CD8A21B9466400F53DB3 /* CellModel */,
+				7F94CD8921B9465E00F53DB3 /* SectionModel */,
+			);
+			name = Timeline;
 			sourceTree = "<group>";
 		};
 		7FAC54AB2224307C001CE2F8 /* Director */ = {
@@ -527,10 +520,9 @@
 		8A7B03201FD6A81E0028BB9B /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				7F94CD8721B9464E00F53DB3 /* Section&Cell */,
+				7FA7A650222D24D0001E64C7 /* Timeline */,
 				7F94CD8221B945C800F53DB3 /* Box */,
 				7F5F11C31FFF8115000D1F14 /* CoreDataModel */,
-				7F5F11CC1FFFC1E7000D1F14 /* YoutubeModel */,
 			);
 			name = Model;
 			sourceTree = "<group>";
