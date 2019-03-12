@@ -12,44 +12,7 @@ import UIKit
 enum StringError: Error {
     case dataCorrupted
 }
-
 extension String {
-    
-    static var hryvniaSign: String {
-        return "₴"
-    }
-    
-    var int: Int {
-        return Int(self) ?? 0
-    }
-    
-    var url: URL? {
-        return URL(string: self.replacingOccurrences(of: "ftp://ftp.pro-pharma.com.ua", with: "ftp://medbook_docflow:MbDf340674eee@ftp.pro-pharma.com.ua", options: .literal, range: nil))
-    }
-    
-    var localized: String {
-        return NSLocalizedString(self, comment: "")
-    }
-    
-    var clearTags: String {
-        do {
-            
-            guard let data = self.data(using: .utf8, allowLossyConversion: true) else {
-                throw StringError.dataCorrupted
-            }
-            
-            let attributedString = try NSAttributedString(data: data,
-                                                          options: [.documentType : NSAttributedString.DocumentType.html, .characterEncoding: String.Encoding.utf8.rawValue],
-                                                          documentAttributes: nil)
-            
-            return attributedString.string
-            
-        } catch {
-            return self
-                .replacingOccurrences(of: "<[^>]*>", with: "", options: .regularExpression, range: nil)
-                .replacingOccurrences(of: "&quot;", with: "\"", options: .regularExpression, range: nil)
-        }
-    }
     
     func dateFormatter(_ format: String) -> String {
         
@@ -118,19 +81,4 @@ extension String {
         formatter.alwaysShowsDecimalSeparator = true
         return formatter.string(from: number)!
     }
-}
-func randomString(length: Int) -> String {
-    
-    let letters : NSString = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-    let len = UInt32(letters.length)
-    
-    var randomString = ""
-    
-    for _ in 0 ..< length {
-        let rand = arc4random_uniform(len)
-        var nextChar = letters.character(at: Int(rand))
-        randomString += NSString(characters: &nextChar, length: 1) as String
-    }
-    
-    return randomString
 }
