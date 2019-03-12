@@ -14,6 +14,10 @@ enum StringError: Error {
 }
 extension String {
     
+    var localized: String {
+        return NSLocalizedString(self, comment: "")
+    }
+    
     func dateFormatter(_ format: String) -> String {
         
         let dateFormatterGet = DateFormatter()
